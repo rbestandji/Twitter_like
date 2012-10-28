@@ -72,6 +72,7 @@ public class MessagesResource {
         // voir envoyer un email à l'exploitant de l'application.
       }
     }
+    
     return Response.ok("Creer un msg " + u_tmp.getNom() + "  " + u_tmp.getId()).status(sta).build();
   }
 
@@ -88,6 +89,9 @@ public class MessagesResource {
     return Response.ok(getMessages(Integer.parseInt(authenciateCookie.getValue())), MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
   }
 
+    /*
+   * Retourne la liste des messages de l'utilisateur avec l'identifiant en PathParam.
+   */
   @Path("/get/{id}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)

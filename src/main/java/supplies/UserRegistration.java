@@ -66,6 +66,6 @@ public class UserRegistration {
     }
 
 
-    return Response.ok("go inscription").status(sta).build();
+    return Response.status(sta).build();
   }
 }
