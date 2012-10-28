@@ -11,7 +11,9 @@ import java.net.URL;
 import javax.ws.rs.core.MediaType;
 import com.sun.jersey.client.apache.config.DefaultApacheHttpClientConfig;
 import core.Status;
+import java.util.LinkedHashMap;
 import java.util.List;
+import model.Message;
 import model.User;
 import org.junit.After;
 import org.junit.Assert;
@@ -211,7 +213,7 @@ public class WebappIT extends TestCase {
 
     /* Envoie d'un trooisieme message sur Twitter avec le compte de bernard !!!*/
     f.clear();
-    f.add("msg", "Salut ! Moi je suis un message");
+    f.add("msg", " Moi je suis un message");
     webResource = client.resource(new URL(this.baseUrl + "/messages/envoie").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(result.getStatus(), Status.OK);
@@ -229,6 +231,18 @@ public class WebappIT extends TestCase {
     Assert.assertEquals(result.getEntity(List.class).size(), 2); //Jitou à posté deux messages.
     result.close();
 
+     /* Lecture des messages à partir du mail. */
+    webResource = client.resource(new URL(this.baseUrl + "/messages/getuser/lavalber02@gmail.com").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+    Assert.assertEquals(((LinkedHashMap)(result.getEntity(List.class).get(0))).get("text"), " Moi je suis un message");
+    result.close();
+    
+     /* Lecture des messages à partir d'un mauvais mail. */
+    webResource = client.resource(new URL(this.baseUrl + "/messages/getuser/lavalber03@gmail.com").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+    Assert.assertEquals(Status.UTILISATEUR_PAS_DE_COMPTE, result.getStatus());
+    result.close();
+    
   }
 
   /* Cette fonction va tester la lecture d'un profile */
@@ -247,12 +261,10 @@ public class WebappIT extends TestCase {
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
-
-    /* Tentative d'envoie d'un message sans connection*/
+    /*Lecture des messages de l'utilisateur 1*/
     webResource = client.resource(new URL(this.baseUrl + "/users/get/1").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(result.getEntity(User.class).getEmail(), "le.jitou@gmail.com");
     result.close();
-
   }
 }
