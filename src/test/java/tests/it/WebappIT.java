@@ -11,6 +11,7 @@ import java.net.URL;
 import javax.ws.rs.core.MediaType;
 import com.sun.jersey.client.apache.config.DefaultApacheHttpClientConfig;
 import core.Status;
+import java.util.List;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -180,7 +181,42 @@ public class WebappIT extends TestCase {
     webResource = client.resource(new URL(this.baseUrl + "/messages/envoie").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(result.getStatus(), Status.OK);
+    result.close();
 
+    /* L'utilisateur 1 se deconnecte */
+    webResource = client.resource(new URL(this.baseUrl + "/bye").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+    Assert.assertEquals(result.getStatus(), Status.OK);
+    result.close();
+
+    /* L'utilisateur 2  se connecter */
+    f.clear();
+    f.add("email", "lavalber02@gmail.com");
+    f.add("mdp", "monMDP");
+    webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+    Assert.assertEquals(result.getStatus(), Status.OK);
+    result.close();
+
+    /* Envoie d'un trooisieme message sur Twitter avec le compte de bernard !!!*/
+    f.clear();
+    f.add("msg", "Salut ! Moi je suis un message");
+    webResource = client.resource(new URL(this.baseUrl + "/messages/envoie").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+    Assert.assertEquals(result.getStatus(), Status.OK);
+    result.close();
+
+    /* Benard veut lire son message !*/
+    webResource = client.resource(new URL(this.baseUrl + "/messages/my").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+    Assert.assertEquals(result.getEntity(List.class).size(), 1);
+    result.close();
+
+    /* Benard veut lire les messages de 1 !*/
+    webResource = client.resource(new URL(this.baseUrl + "/messages/get/1").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+    Assert.assertEquals(result.getEntity(List.class).size(), 2); //Jitou à posté deux messages.
+    result.close();
 
   }
 }
