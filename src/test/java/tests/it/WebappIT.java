@@ -261,10 +261,16 @@ public class WebappIT extends TestCase {
         Assert.assertEquals(result.getStatus(), Status.OK);
         result.close();
 
-        /*Lecture des messages de l'utilisateur 1*/
+        /*Lecture de l'utilisateur 1*/
         webResource = client.resource(new URL(this.baseUrl + "/users/get/1").toURI());
         result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
         Assert.assertEquals(result.getEntity(User.class).getEmail(), "le.jitou@gmail.com");
+        result.close();
+        
+         /*Lecture de l'utilisateur 3 à partir du mail ! */
+        webResource = client.resource(new URL(this.baseUrl + "/users/getuser/lionel.muller.34@gmail.com").toURI());
+        result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+        Assert.assertEquals(result.getEntity(User.class).getEmail(), "lionel.muller.34@gmail.com");
         result.close();
     }
 }

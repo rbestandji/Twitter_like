@@ -26,11 +26,26 @@ public class UserView {
     @Path("/get/{id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response obtenirMessages(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("id") String id) {
+    public Response obtenirUserAvecID(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("id") String id) {
         if (authenciateCookie == null) {
             return Response.status(new Status(Status.UTILISATEUR_PAS_CONNECTE)).build();
         }
         return Response.ok(getUser(Long.parseLong(id)), MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
+    }
+
+    @Path("/getuser/{email}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response obtenirUserAvecMail(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("email") String email) {
+        if (authenciateCookie == null) {
+            return Response.status(new Status(Status.UTILISATEUR_PAS_CONNECTE)).build();
+        }
+        Long id = getId(email);
+        if (id == null) {
+            return Response.status(new Status(Status.UTILISATEUR_PAS_DE_COMPTE)).build();
+        } else {
+            return Response.ok(getUser(id), MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
+        }
     }
 
     public static User getUser(Long id) {
