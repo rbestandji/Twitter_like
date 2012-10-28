@@ -1,20 +1,15 @@
 package supplies;
 
 import core.Status;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.transaction.UserTransaction;
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -46,10 +41,16 @@ public class UserRegistration {
       // Transaciton begin
       utx.begin();
       em.joinTransaction();
-      User msg = new User(nom, prenom, email, mdp);
-      em.persist(msg);
+      List<User> lu = em.createQuery("SELECT x FROM User x WHERE x.email='" + email + "'").getResultList();
+      if (lu.isEmpty()) {
+        User newUser = new User(nom, prenom, email, mdp);
+        em.persist(newUser);
+        sta = new Status(Status.OK);
+      }
+      else{
+        sta = new Status(Status.EMAIL_PRISE);
+      }
       utx.commit();
-      sta = new Status(Status.OK);
       //em.close();
 
     } catch (Exception ex) {

@@ -19,6 +19,7 @@ public class Status implements StatusType {
   public final static int UTILISATEUR_MAUVAIS_MOT_PASS = 3;
   public final static int ERREUR_BDD = 4;
   public final static int OK = 200;
+  public final static int EMAIL_PRISE = 5;
   private int code;
 
   public Status(int code) {

@@ -85,6 +85,16 @@ public class WebappIT extends TestCase {
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
+    /* Utilisateur 4 */
+    f.clear();
+    f.add("email", "lionel.muller.34@gmail.com");
+    f.add("mdp", "dfdfs");
+    f.add("nom", "castorPirate");
+    f.add("prenom", "Waza");
+    webResource = client.resource(new URL(this.baseUrl + "/inscription").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+    Assert.assertEquals(result.getStatus(), Status.EMAIL_PRISE);
+    result.close();
 
   }
 
