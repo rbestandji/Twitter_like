@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import com.sun.jersey.client.apache.config.DefaultApacheHttpClientConfig;
 import core.Status;
 import java.util.List;
+import model.User;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -229,61 +230,29 @@ public class WebappIT extends TestCase {
     result.close();
 
   }
+
+  /* Cette fonction va tester la lecture d'un profile */
+  @Test
+  public void testViewUser() throws Exception {
+    Form f = new Form();
+    WebResource webResource;
+    ClientResponse result;
+    System.out.println("****************** Tests lecture profil ! ******************");
+
+    /* Connexion de l'utilisateur 1 */
+    f.add("email", "le.jitou@gmail.com");
+    f.add("mdp", "mdp");
+    webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+    Assert.assertEquals(result.getStatus(), Status.OK);
+    result.close();
+
+
+    /* Tentative d'envoie d'un message sans connection*/
+    webResource = client.resource(new URL(this.baseUrl + "/users/get/1").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+    Assert.assertEquals(result.getEntity(User.class).getEmail(), "le.jitou@gmail.com");
+    result.close();
+
+  }
 }
-
-
-
-    /*
-    
-     Form f = new Form();
-  
-     WebResource webResource = null;
-     ClientResponse result = null;
-    
-     webResource = c.resource(new URL(this.baseUrl + "/inscription").toURI());
-     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-     System.out.println(result.getEntity(String.class));
-    
-    
-     webResource = c.resource(new URL(this.baseUrl + "/connection").toURI());
-     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-     System.out.println(result.getEntity(String.class));
-    
-    
-     webResource = c.resource(new URL(this.baseUrl + "/bye").toURI());
-     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-     System.out.println(result.getEntity(String.class));
-    
-     f.clear();
-     f.add("email", "email");
-     f.add("mdp", "mdp");
-     webResource = c.resource(new URL(this.baseUrl + "/connection").toURI());
-     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-     System.out.println(result.getStatus());
-     System.out.println(result.getEntity(String.class));
-    
-     webResource = c.resource(new URL(this.baseUrl + "/messages/my").toURI());
-     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-     System.out.println("List messages : " + result.getEntity(List.class));
-    
-    
-    
-     f.clear();
-     f.add("msg", "Hello tout le monde");
-     webResource = c.resource(new URL(this.baseUrl + "/messages/envoie").toURI());
-     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-     System.out.println(result.getEntity(String.class));
-    
-     webResource = c.resource(new URL(this.baseUrl + "/messages/my").toURI());
-     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-     System.out.println("List messages : " + result.getEntity(List.class));
-    
-     webResource = c.resource(new URL(this.baseUrl + "/messages/get/1").toURI());
-     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-     System.out.println("List messages : " + result.getEntity(List.class));
-    
-    
-     webResource = c.resource(new URL(this.baseUrl + "/users/get/1").toURI());
-     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-     System.out.println("User 1 : " + result.getEntity(String.class));
-     */
