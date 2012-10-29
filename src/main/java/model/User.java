@@ -35,7 +35,7 @@ public class User implements Serializable {
   private Date date_derniere_connection = new Date();
   @OneToMany
   private List<Message> listeMessage = new ArrayList<Message>();
- 
+
   /* Constructeurs */
   public User() {
   }
@@ -51,17 +51,11 @@ public class User implements Serializable {
     this.setEmail(email);
   }
 
-
-  
-  
-  
-  
-  /******************************************************
+  /**
+   * ****************************************************
    * Accesseurs et Setters 
-   * ***************************************************/
-  
-
-
+   * **************************************************
+   */
   public List<Message> getListeMessage() {
     return listeMessage;
   }

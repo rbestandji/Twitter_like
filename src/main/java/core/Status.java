@@ -37,7 +37,9 @@ public class Status implements StatusType {
   public String getReasonPhrase() {
     String str = "";
     switch (code) {
-
+      /* Pff long à faire pour rien ....
+       * Seriously !!!
+       */
     }
     return str;
   }

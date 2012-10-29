@@ -46,8 +46,7 @@ public class UserRegistration {
         User newUser = new User(nom, prenom, email, mdp);
         em.persist(newUser);
         sta = new Status(Status.OK);
-      }
-      else{
+      } else {
         sta = new Status(Status.EMAIL_PRISE);
       }
       utx.commit();

@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -21,18 +23,14 @@ public class Message implements Serializable {
   @Id
   @GeneratedValue( strategy = GenerationType.SEQUENCE)
   private Long id;
-  
   @ManyToOne
   private User auteur = new User();
-  
   //@JoinColumn(name="Utilisateur_id")
   @Column( length = 500)
   private String text = "";
   @Temporal( javax.persistence.TemporalType.DATE)
   private Date date_envoie = new Date();
 
-  
-  
   public Message() {
   }
 
