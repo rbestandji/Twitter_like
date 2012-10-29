@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>fmin362</groupId>
   <artifactId>cargo-webapp</artifactId>
-  <version>1.1</version>
+  <version>1.2</version>
   <packaging>war</packaging>
   <name>${project.artifactId}</name>
 

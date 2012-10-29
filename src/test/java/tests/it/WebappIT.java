@@ -310,6 +310,7 @@ public class WebappIT extends TestCase {
     webResource = client.resource(new URL(this.baseUrl + "/messages/get/1").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     List<Map<String, ?>> r = result.getEntity(List.class);
+    //Pas trés propre mais va être amélioré.
     Assert.assertEquals(((List<Map<String, ?>>) r.get(0).get("commentaires")).get(0).get("text"), "Commentaire");
     result.close();
   }
