@@ -98,7 +98,7 @@ public class MessagesResource {
   }
 
   /*
-   * Retourne la liste des messages de l'utilisateur avec l'identifiant en PathParam.
+   * Retourne la liste des messages de l'utilisateur avec le mail en PathParam.
    */
   @Path("/getuser/{email}")
   @GET
@@ -115,6 +115,9 @@ public class MessagesResource {
     }
   }
 
+  /*
+   * Fonction cherchant tout les messages pour un identifiant donné
+   */
   public static List<Message> getMessages(Long id) {
     List<Message> liste = new ArrayList<Message>();
     UserTransaction utx = null;

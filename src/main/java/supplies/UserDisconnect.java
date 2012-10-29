@@ -11,6 +11,9 @@ import javax.ws.rs.core.Response;
 @Path("/bye")
 public class UserDisconnect {
 
+  /*
+   * Fonction de deconnection => destruction de authCookie
+   */
   @GET
   @Produces( MediaType.APPLICATION_JSON)
   public Response deconnection() {

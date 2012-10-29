@@ -18,6 +18,9 @@ import model.User;
 @Path( "/inscription")
 public class UserRegistration {
 
+  /*
+   * Fonction permettant de creer un compte.
+   */
   @POST
   @Produces( MediaType.APPLICATION_JSON)
   public Response inscription(@CookieParam("authCookie") Cookie authenciateCookie,
@@ -25,8 +28,6 @@ public class UserRegistration {
           @FormParam("mdp") String mdp,
           @FormParam("nom") String nom,
           @FormParam("prenom") String prenom) {
-
-
     if (authenciateCookie != null) {
       return Response.status(new Status(Status.UTILISATEUR_CONNECTE)).build();
     }
@@ -37,8 +38,6 @@ public class UserRegistration {
       InitialContext ic = new InitialContext();
       utx = (UserTransaction) ic.lookup("java:comp/UserTransaction");
       EntityManager em = (EntityManager) ic.lookup("java:comp/env/persistence/EntityManager");
-
-      // Transaciton begin
       utx.begin();
       em.joinTransaction();
       List<User> lu = em.createQuery("SELECT x FROM User x WHERE x.email='" + email + "'").getResultList();
@@ -50,11 +49,8 @@ public class UserRegistration {
         sta = new Status(Status.EMAIL_PRISE);
       }
       utx.commit();
-      //em.close();
-
     } catch (Exception ex) {
       sta = new Status(Status.ERREUR_BDD);
-
       try {
         if (utx != null) {
           utx.setRollbackOnly();
@@ -64,8 +60,6 @@ public class UserRegistration {
         // voir envoyer un email à l'exploitant de l'application.
       }
     }
-
-
     return Response.status(sta).build();
   }
 }

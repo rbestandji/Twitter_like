@@ -19,6 +19,9 @@ import model.User;
 @Path( "/connection")
 public class UserConnection {
 
+  /*
+   * Fonction de connection (=> creation du cookie : authCookie)
+   */
   @POST
   @Produces( MediaType.APPLICATION_JSON)
   public Response connection(@CookieParam("authCookie") Cookie authenciateCookie,
@@ -39,11 +42,8 @@ public class UserConnection {
       utx = (UserTransaction) ic.lookup("java:comp/UserTransaction");
       EntityManager em = (EntityManager) ic.lookup("java:comp/env/persistence/EntityManager");
 
-
-      // Transaciton begin
       utx.begin();
       em.joinTransaction();
-
       List<User> lu = em.createQuery("SELECT x FROM User x WHERE x.email='" + email + "'").getResultList();
       if (lu.isEmpty()) {
         sta = new Status(Status.UTILISATEUR_PAS_DE_COMPTE);
@@ -57,13 +57,7 @@ public class UserConnection {
           sta = new Status(Status.UTILISATEUR_MAUVAIS_MOT_PASS);
         }
       }
-
       utx.commit();
-
-
-      /*return Response.ok("Ici cc ok ", MediaType.APPLICATION_JSON).cookie(cookie).build();
-       em.close();*/
-
     } catch (Exception ex) {
       try {
         if (utx != null) {
@@ -76,9 +70,6 @@ public class UserConnection {
       sta = new Status(Status.ERREUR_BDD);
       return Response.ok("Erreur : " + ex.getLocalizedMessage() + "  " + ex.toString(), MediaType.APPLICATION_JSON).status(sta).build();
     }
-
-
     return Response.status(sta).build();
-
   }
 }

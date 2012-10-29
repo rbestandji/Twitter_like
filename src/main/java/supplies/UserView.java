@@ -59,6 +59,11 @@ public class UserView {
     return Response.ok(searchUser(nom), MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
   }
 
+  
+  
+  /*
+   * Retourne la liste des utilisateurs dont le nom contrient la chaine 'nom' en paramètre.
+   */
   public static List<User> searchUser(String nom) {
     List<User> users = null;
     UserTransaction utx = null;
@@ -87,6 +92,9 @@ public class UserView {
     return users;
   }
 
+  /*
+   * Retourne l'utilisateur correspondant à l'id.
+   */
   public static User getUser(Long id) {
     User user = null;
     UserTransaction utx = null;
@@ -113,6 +121,9 @@ public class UserView {
     return user;
   }
 
+  /*
+   * Retourne l'id correspondant au mail.
+   */
   public static Long getId(String email) {
     Long id = null;
     UserTransaction utx = null;
