@@ -51,10 +51,11 @@ public class User implements Serializable {
     this.setEmail(email);
   }
 
+
   /**
-   * ****************************************************
-   * Accesseurs et Setters 
-   * **************************************************
+   * *************************************************
+   * Getters et Setters 
+   **************************************************
    */
   public List<Message> getListeMessage() {
     return listeMessage;

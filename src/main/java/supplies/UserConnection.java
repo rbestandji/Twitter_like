@@ -52,7 +52,6 @@ public class UserConnection {
           utilisateur = lu.get(0);
           cookie = new NewCookie("authCookie", String.valueOf(utilisateur.getId()), "/", "localhost", "", 1000, false);
           sta = new Status(Status.OK);
-          return Response.ok("test", MediaType.APPLICATION_JSON).status(sta).cookie(cookie).build();
         } else {
           sta = new Status(Status.UTILISATEUR_MAUVAIS_MOT_PASS);
         }
@@ -70,6 +69,7 @@ public class UserConnection {
       sta = new Status(Status.ERREUR_BDD);
       return Response.ok("Erreur : " + ex.getLocalizedMessage() + "  " + ex.toString(), MediaType.APPLICATION_JSON).status(sta).build();
     }
-    return Response.status(sta).build();
+
+    return Response.status(sta).cookie(cookie).build();
   }
 }

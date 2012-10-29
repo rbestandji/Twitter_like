@@ -1,17 +1,16 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 
@@ -25,11 +24,15 @@ public class Message implements Serializable {
   private Long id;
   @ManyToOne
   private User auteur = new User();
-  //@JoinColumn(name="Utilisateur_id")
   @Column( length = 500)
   private String text = "";
   @Temporal( javax.persistence.TemporalType.DATE)
   private Date date_envoie = new Date();
+  @Column
+  private Long estUnCommentaire = null;
+  
+  @OneToMany
+  private Collection<Message> commentaires = new ArrayList<Message>();
 
   public Message() {
   }
@@ -37,6 +40,26 @@ public class Message implements Serializable {
   public Message(String text, Date date) {
     setText(text);
     setDate(date);
+  }
+
+  /**
+   * *************************************************
+   * Getters et Setters *************************************************
+   */
+  public Long getEstUnCommentaire() {
+    return estUnCommentaire;
+  }
+
+  public void setEstUnCommentaire(Long estUnCommentaire) {
+    this.estUnCommentaire = estUnCommentaire;
+  }
+
+  public Collection<Message> getCommentaires() {
+    return commentaires;
+  }
+
+  public void setCommentaires(Collection<Message> commentaires) {
+    this.commentaires = commentaires;
   }
 
   public Date getDate_envoie() {
