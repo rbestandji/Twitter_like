@@ -1,10 +1,14 @@
 package supplies;
 
+import core.DAOExceptionUser;
 import core.Status;
+import core.UserDAO;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -108,11 +112,12 @@ public class MessagesResource {
     if (authenciateCookie == null) {
       return Response.status(new Status(Status.UTILISATEUR_PAS_CONNECTE)).build();
     }
-    Long id = UserView.getId(email);
-    if (id == null) {
-      return Response.status(new Status(Status.UTILISATEUR_PAS_DE_COMPTE)).build();
-    } else {
+    Long id;
+    try {
+      id = UserDAO.getId(email);
       return Response.ok(getMessages(id), MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
+    } catch (DAOExceptionUser ex) {
+      return Response.status(ex.getStatus()).build();
     }
   }
 
@@ -152,9 +157,8 @@ public class MessagesResource {
     }
     return liste;
   }
-  
-  
-   /*
+
+  /*
    * Permet à l'utilisateur connecté de commenter un message
    */
   @POST
@@ -165,7 +169,7 @@ public class MessagesResource {
     if (authenciateCookie == null) {
       return Response.status(new Status(Status.UTILISATEUR_PAS_CONNECTE)).build();
     }
-    
+
     Status sta = null;
     UserTransaction utx = null;
     User u_tmp = null;
@@ -179,7 +183,7 @@ public class MessagesResource {
       Message commentaire = new Message(msg, new Date());
       u_tmp = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + authenciateCookie.getValue() + "").getSingleResult();
       commentaire.setAuteur(u_tmp);
-      
+
       Message m = (Message) em.createQuery("SELECT x FROM Message x WHERE x.id=" + id + "").getSingleResult();
       Collection<Message> liste = m.getCommentaires();
       liste.add(commentaire);

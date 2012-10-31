@@ -37,6 +37,8 @@ public class UserConnection {
 
     User utilisateur = null;
     Status sta = null;
+    
+    
     UserTransaction utx = null;
     try {
       InitialContext ic = new InitialContext();

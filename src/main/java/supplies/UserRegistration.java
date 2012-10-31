@@ -1,7 +1,11 @@
 package supplies;
 
+import core.DAOExceptionUser;
 import core.Status;
+import core.UserDAO;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.transaction.UserTransaction;
@@ -33,32 +37,14 @@ public class UserRegistration {
     }
 
     Status sta = null;
-    UserTransaction utx = null;
+    User newUser = new User(nom, prenom, email, mdp);
     try {
-      InitialContext ic = new InitialContext();
-      utx = (UserTransaction) ic.lookup("java:comp/UserTransaction");
-      EntityManager em = (EntityManager) ic.lookup("java:comp/env/persistence/EntityManager");
-      utx.begin();
-      em.joinTransaction();
-      List<User> lu = em.createQuery("SELECT x FROM User x WHERE x.email='" + email + "'").getResultList();
-      if (lu.isEmpty()) {
-        User newUser = new User(nom, prenom, email, mdp);
-        em.persist(newUser);
-        sta = new Status(Status.OK);
-      } else {
-        sta = new Status(Status.EMAIL_PRISE);
-      }
-      utx.commit();
-    } catch (Exception ex) {
-      sta = new Status(Status.ERREUR_BDD);
-      try {
-        if (utx != null) {
-          utx.setRollbackOnly();
-        }
-      } catch (Exception rollbackEx) {
-        // Impossible d'annuler les changements, vous devriez logguer une erreur,
-        // voir envoyer un email à l'exploitant de l'application.
-      }
+      UserDAO.createUser(newUser);
+      sta = new Status(Status.OK);
+    } catch (DAOExceptionUser ex) {
+      sta = ex.getStatus();
+          return Response.ok(ex.getMsg()).status(sta).build();
+
     }
     return Response.status(sta).build();
   }
