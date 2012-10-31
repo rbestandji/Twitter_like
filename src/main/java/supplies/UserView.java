@@ -3,13 +3,6 @@ package supplies;
 import core.DAOExceptionUser;
 import core.Status;
 import core.UserDAO;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.naming.InitialContext;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.transaction.UserTransaction;
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.GET;
 
