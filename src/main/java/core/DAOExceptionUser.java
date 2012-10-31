@@ -1,15 +1,15 @@
-
 package core;
 
-
 public class DAOExceptionUser extends Exception {
+
   private Status status;
   private String msg;
-  
-  public DAOExceptionUser(Status status){
+
+  public DAOExceptionUser(Status status) {
     this(status, "");
   }
-   public DAOExceptionUser(Status status, String msg){
+
+  public DAOExceptionUser(Status status, String msg) {
     this.msg = msg;
     this.status = status;
   }
@@ -21,5 +21,4 @@ public class DAOExceptionUser extends Exception {
   public String getMsg() {
     return msg;
   }
-   
 }

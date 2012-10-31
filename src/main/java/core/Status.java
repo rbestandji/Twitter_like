@@ -3,7 +3,6 @@ package core;
 import javax.ws.rs.core.Response.Status.Family;
 import javax.ws.rs.core.Response.StatusType;
 
-
 public class Status implements StatusType {
 
   public final static int UTILISATEUR_PAS_CONNECTE = 0;

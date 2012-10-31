@@ -149,4 +149,46 @@ public class UserDAO {
 
     return users;
   }
+
+  /* Connection */
+  public static User connection(String email, String mdp) throws DAOExceptionUser {
+    User utilisateur = null;
+    Status sta = null;
+
+    UserTransaction utx = null;
+    try {
+      InitialContext ic = new InitialContext();
+      utx = (UserTransaction) ic.lookup("java:comp/UserTransaction");
+      EntityManager em = (EntityManager) ic.lookup("java:comp/env/persistence/EntityManager");
+
+      utx.begin();
+      em.joinTransaction();
+      List<User> lu = em.createQuery("SELECT x FROM User x WHERE x.email='" + email + "'").getResultList();
+      if (lu.isEmpty()) {
+        sta = new Status(Status.UTILISATEUR_PAS_DE_COMPTE);
+      } else {
+        if (((User) lu.get(0)).getMdp().equals(mdp)) {
+          utilisateur = lu.get(0);
+        } else {
+          sta = new Status(Status.UTILISATEUR_MAUVAIS_MOT_PASS);
+        }
+      }
+      utx.commit();
+    } catch (Exception ex) {
+      try {
+        if (utx != null) {
+          utx.setRollbackOnly();
+        }
+      } catch (Exception rollbackEx) {
+        // Impossible d'annuler les changements, vous devriez logguer une erreur,
+        // voir envoyer un email à l'exploitant de l'application.
+      }
+      throw new DAOExceptionUser(new Status(Status.ERREUR_BDD), ex.getMessage());
+    }
+    if (sta != null) {
+      throw new DAOExceptionUser(sta);
+    }
+
+    return utilisateur;
+  }
 }

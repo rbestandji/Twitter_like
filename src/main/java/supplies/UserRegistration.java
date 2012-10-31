@@ -43,8 +43,7 @@ public class UserRegistration {
       sta = new Status(Status.OK);
     } catch (DAOExceptionUser ex) {
       sta = ex.getStatus();
-          return Response.ok(ex.getMsg()).status(sta).build();
-
+      return Response.ok(ex.getMsg()).status(sta).build();
     }
     return Response.status(sta).build();
   }
