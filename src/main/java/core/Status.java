@@ -1,16 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package core;
 
 import javax.ws.rs.core.Response.Status.Family;
 import javax.ws.rs.core.Response.StatusType;
 
-/**
- *
- * @author jitou
- */
+
 public class Status implements StatusType {
 
   public final static int UTILISATEUR_PAS_CONNECTE = 0;

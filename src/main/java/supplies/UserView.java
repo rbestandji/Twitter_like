@@ -62,7 +62,7 @@ public class UserView {
   
   
   /*
-   * Retourne la liste des utilisateurs dont le nom contrient la chaine 'nom' en paramètre.
+   * Retourne la liste des utilisateurs dont le nom contient la chaine 'nom' en paramètre.
    */
   public static List<User> searchUser(String nom) {
     List<User> users = null;

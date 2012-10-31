@@ -1,6 +1,7 @@
 package supplies;
 
 import core.Status;
+import java.util.Date;
 import java.util.List;
 import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
@@ -50,6 +51,7 @@ public class UserConnection {
       } else {
         if (((User) lu.get(0)).getMdp().equals(mdp)) {
           utilisateur = lu.get(0);
+          lu.get(0).setDate_derniere_connection(new Date());
           cookie = new NewCookie("authCookie", String.valueOf(utilisateur.getId()), "/", "localhost", "", 1000, false);
           sta = new Status(Status.OK);
         } else {
