@@ -11,6 +11,7 @@ import java.net.URL;
 import javax.ws.rs.core.MediaType;
 import com.sun.jersey.client.apache.config.DefaultApacheHttpClientConfig;
 import core.Status;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,16 +24,16 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class WebappIT extends TestCase {
-  
+
   private String baseUrl;
   private DefaultApacheHttpClientConfig config;
   private ApacheHttpClient client;
-  
+
   public void setUp() throws Exception {
     super.setUp();
     String port = System.getProperty("servlet.port");
     this.baseUrl = "http://localhost:" + port + "/cargo-webapp";
-    
+
     config = new DefaultApacheHttpClientConfig();
 
     //Autorisation des cookies
@@ -44,13 +45,13 @@ public class WebappIT extends TestCase {
     //Client apache :)
     client = ApacheHttpClient.create(config);
     client.setFollowRedirects(Boolean.TRUE);/* Plus utilisé */
-    
+
   }
 
   /* Dans cette fonction nous allons creer des utilisateurs */
   @Before
   public void testCreationDesUsers() throws Exception {
-    
+
     Form f = new Form();
     WebResource webResource = null;
     ClientResponse result = null;
@@ -100,7 +101,7 @@ public class WebappIT extends TestCase {
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(result.getStatus(), Status.EMAIL_PRISE);
     result.close();
-    
+
   }
 
   /* Cette fonction test qu'un utilisateur peut se connecter avec (qu'avec) son compte.*/
@@ -155,7 +156,7 @@ public class WebappIT extends TestCase {
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(result.getStatus(), Status.UTILISATEUR_PAS_DE_COMPTE);
     result.close();
-    
+
   }
 
   /* Cette fonction va tester l'envoie de Twitte ainsi que leur lecture */
@@ -245,7 +246,7 @@ public class WebappIT extends TestCase {
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.UTILISATEUR_PAS_DE_COMPTE, result.getStatus());
     result.close();
-    
+
   }
 
   /* Cette fonction va tester la lecture d'un profile */
@@ -313,5 +314,13 @@ public class WebappIT extends TestCase {
     //Pas trés propre mais va être amélioré.
     Assert.assertEquals(((List<Map<String, ?>>) r.get(0).get("commentaires")).get(0).get("text"), "Commentaire");
     result.close();
+  }
+
+  /*Fonction test Put */
+  @Test
+  public void testPut() throws Exception {
+    System.out.println("****************** Tests des PUT ! ******************");
+    WebResource webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
+    System.out.println(webResource.type(MediaType.APPLICATION_JSON).put(String.class, new Message("Hello ", new Date())));
   }
 }
