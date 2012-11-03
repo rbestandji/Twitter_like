@@ -23,7 +23,7 @@ public class MessagesResource {
 
   /*
    * Permet à l'utilisateur connecté d'envoyer un message 
-   * La gestion de mur ou autre n'est pas encore implémenté.
+   * La gestion de mur ou autre n'est pas encore implémentée.
    * Le message est donc juste créé et rattaché à User.
    */
   @POST

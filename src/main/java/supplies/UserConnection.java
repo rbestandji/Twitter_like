@@ -20,7 +20,7 @@ import model.User;
 public class UserConnection {
 
   /*
-   * Fonction de connection (=> creation du cookie : authCookie)
+   * Fonction de connexion (=> création du cookie : authCookie)
    */
   @POST
   @Produces( MediaType.APPLICATION_JSON)
