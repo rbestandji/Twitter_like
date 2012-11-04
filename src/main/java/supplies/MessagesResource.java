@@ -42,6 +42,7 @@ public class MessagesResource {
       return Response.status(ex.getStatus()).build();
     }
   }
+  
 
   /*
    * Retourne la liste des messages de l'utilisateur connecté.
@@ -113,6 +114,27 @@ public class MessagesResource {
      return Response.ok(commentaire).status(Status.OK).build();
     } catch (DAOExceptionUser ex) {
     return Response.status(ex.getStatus()).build();
+    }
+  }
+  
+      /*
+   * Permet à l'utilisateur connecté de supprimer un commentaire (d'un de ses propres messages: à faire)
+   */
+  @POST
+  @Produces( MediaType.APPLICATION_JSON)
+  @Path( "/supprimer/commentaire/{idMsg}/{idComment}")
+  public Response supprimerCommentaire(@CookieParam("authCookie") Cookie authenciateCookie,
+          @PathParam("idMsg") String idMsg,
+          @PathParam("idComment") String idComment) {
+    if (authenciateCookie == null) {
+      return Response.status(new Status(Status.UTILISATEUR_PAS_CONNECTE)).build();
+    }
+    
+    try {
+      CommentaireDAO.supprimerCommentaire(Long.parseLong(authenciateCookie.getValue()), Long.parseLong(idMsg), Long.parseLong(idComment));
+      return Response.status(new Status(Status.OK)).build();
+    } catch (DAOExceptionUser ex) {
+      return Response.status(ex.getStatus()).build();
     }
   }
 }
