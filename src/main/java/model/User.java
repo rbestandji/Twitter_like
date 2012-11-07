@@ -4,11 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -19,6 +22,7 @@ public class User implements Serializable {
 
   private static final long serialVersionUID = 1L;
   @Id
+  @Column(name = "USER_ID")
   @GeneratedValue( strategy = GenerationType.SEQUENCE)
   private Long id;
   @Column( length = 50)
@@ -35,6 +39,8 @@ public class User implements Serializable {
   private Date date_derniere_connection = new Date();
   @OneToMany
   private List<Message> listeMessage = new ArrayList<Message>();
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "createur")
+  private List<Groupe> listeDesGroupes = new ArrayList<Groupe>();
 
   /* Constructeurs */
   public User() {
@@ -51,12 +57,18 @@ public class User implements Serializable {
     this.setEmail(email);
   }
 
-
   /**
    * *************************************************
-   * Getters et Setters 
-   **************************************************
+   * Getters et Setters ************************************************
    */
+  public List<Groupe> getListeDesGroupe() {
+    return listeDesGroupes;
+  }
+
+  public void setListeDesGroupe(List<Groupe> listeDesGroupe) {
+    this.listeDesGroupes = listeDesGroupe;
+  }
+
   public List<Message> getListeMessage() {
     return listeMessage;
   }
@@ -119,5 +131,11 @@ public class User implements Serializable {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public void enleverProblemeRecursivite() {
+    for (int i = 0; i < this.listeDesGroupes.size(); i++) {
+      this.listeDesGroupes.get(i).setCreateur(null);
+    }
   }
 }

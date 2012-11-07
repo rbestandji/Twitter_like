@@ -43,6 +43,8 @@ public class UserConnection {
 
   }
 
+  
+  /* POUR DES TESTS !!! */
   @PUT
   @Produces( MediaType.APPLICATION_JSON)
   @Consumes(MediaType.APPLICATION_JSON)

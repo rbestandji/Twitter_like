@@ -316,11 +316,35 @@ public class WebappIT extends TestCase {
     result.close();
   }
 
-  /*Fonction test Put */
+  /*Fonction test Put  INUTILE*/
   @Test
   public void testPut() throws Exception {
     System.out.println("****************** Tests des PUT ! ******************");
-    WebResource webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
-    System.out.println(webResource.type(MediaType.APPLICATION_JSON).put(String.class, new Message("Hello ", new Date())));
+    // WebResource webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
+    // System.out.println(webResource.type(MediaType.APPLICATION_JSON).put(String.class, new Message("Hello ", new Date())));
+
+    Form f = new Form();
+    WebResource webResource;
+    ClientResponse result;
+
+    /* Connexion de l'utilisateur 1 */
+    f.add("email", "le.jitou@gmail.com");
+    f.add("mdp", "mdp");
+    webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+    Assert.assertEquals(result.getStatus(), Status.OK);
+    result.close();
+
+
+    webResource = client.resource(new URL(this.baseUrl + "/groupe/creer/new_group").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+    System.out.println("Nouveau groupe : " + result.getStatus());
+    result.close();
+
+    webResource = client.resource(new URL(this.baseUrl + "/users/get/1").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+    System.out.println(result.getEntity(String.class));
+    result.close();
+
   }
 }

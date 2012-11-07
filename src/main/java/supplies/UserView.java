@@ -3,6 +3,7 @@ package supplies;
 import core.DAOExceptionUser;
 import core.Status;
 import core.UserDAO;
+import java.util.List;
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.GET;
 
@@ -31,6 +32,7 @@ public class UserView {
     User user;
     try {
       user = UserDAO.getUser(Long.parseLong(id));
+      user.enleverProblemeRecursivite();
       return Response.ok(user, MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
     } catch (DAOExceptionUser ex) {
       return Response.status(ex.getStatus()).build();
@@ -47,7 +49,9 @@ public class UserView {
     Long id;
     try {
       id = UserDAO.getId(email);
-      return Response.ok(UserDAO.getUser(id), MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
+      User user = UserDAO.getUser(id);
+      user.enleverProblemeRecursivite();
+      return Response.ok(user, MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
     } catch (DAOExceptionUser ex) {
       return Response.status(ex.getStatus()).build();
     }
@@ -62,7 +66,11 @@ public class UserView {
       return Response.status(new Status(Status.UTILISATEUR_PAS_CONNECTE)).build();
     }
     try {
-      return Response.ok(UserDAO.searchUser(nom), MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
+      List<User> u = UserDAO.searchUser(nom);
+      for (int i = 0; i < u.size(); i++) {
+        u.get(i).enleverProblemeRecursivite();
+      }
+      return Response.ok(u, MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
     } catch (DAOExceptionUser ex) {
       return Response.status(ex.getStatus()).build();
     }

@@ -5,6 +5,7 @@ import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.transaction.UserTransaction;
+import model.Groupe;
 import model.User;
 
 public class UserDAO {
@@ -58,9 +59,10 @@ public class UserDAO {
       // Transaciton begin
       utx.begin();
       em.joinTransaction();
+
       user = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + id + "").getSingleResult();
       utx.commit();
-
+      
     } catch (Exception ex) {
       try {
         if (utx != null) {
