@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 public class UserDisconnect {
 
   /*
-   * Fonction de deconnection => destruction de authCookie
+   * Fonction de déconnexion => destruction de authCookie
    */
   @GET
   @Produces( MediaType.APPLICATION_JSON)

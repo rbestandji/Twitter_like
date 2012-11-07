@@ -11,7 +11,7 @@ import model.User;
 public class UserDAO {
 
   /*
-   * Fonction permettant de creer un compte.
+   * Fonction permettant de créer un compte.
    */
   public static void createUser(User user) throws DAOExceptionUser {
     UserTransaction utx = null;
@@ -46,9 +46,7 @@ public class UserDAO {
     }
   }
 
-  /*
-   * Retourne l'utilisateur correspondant à l'id.
-   */
+  /*Retourne l'utilisateur correspondant à l'id */
   public static User getUser(Long id) throws DAOExceptionUser {
     User user = null;
     UserTransaction utx = null;
@@ -56,7 +54,7 @@ public class UserDAO {
       InitialContext ic = new InitialContext();
       utx = (UserTransaction) ic.lookup("java:comp/UserTransaction");
       EntityManager em = (EntityManager) ic.lookup("java:comp/env/persistence/EntityManager");
-      // Transaciton begin
+      // Transaction begin
       utx.begin();
       em.joinTransaction();
 
@@ -81,9 +79,7 @@ public class UserDAO {
     return user;
   }
 
-  /*
-   * Retourne l'id correspondant au mail.
-   */
+  /*Retourne l'id correspondant au mail*/
   public static Long getId(String email) throws DAOExceptionUser {
     Long id = null;
     UserTransaction utx = null;
@@ -92,7 +88,7 @@ public class UserDAO {
       utx = (UserTransaction) ic.lookup("java:comp/UserTransaction");
       EntityManager em = (EntityManager) ic.lookup("java:comp/env/persistence/EntityManager");
 
-      // Transaciton begin
+      // Transaction begin
       utx.begin();
       em.joinTransaction();
       List<User> lu = em.createQuery("SELECT x FROM User x WHERE x.email='" + email + "'").getResultList();
@@ -118,9 +114,7 @@ public class UserDAO {
     return id;
   }
 
-  /*
-   * Retourne la liste des utilisateurs dont le nom contient la chaine 'nom' en paramètre.
-   */
+  /*Retourne la liste des utilisateurs dont le nom contient la chaine 'nom' en paramètre*/
   public static List<User> searchUser(String nom) throws DAOExceptionUser {
     List<User> users = null;
     UserTransaction utx = null;
@@ -128,7 +122,7 @@ public class UserDAO {
       InitialContext ic = new InitialContext();
       utx = (UserTransaction) ic.lookup("java:comp/UserTransaction");
       EntityManager em = (EntityManager) ic.lookup("java:comp/env/persistence/EntityManager");
-      // Transaciton begin
+      // Transaction begin
       utx.begin();
       em.joinTransaction();
       Query query = em.createQuery("SELECT x FROM User x WHERE UPPER(x.nom) LIKE :nom");
@@ -152,7 +146,7 @@ public class UserDAO {
     return users;
   }
 
-  /* Connection */
+  /* Connexion */
   public static User connection(String email, String mdp) throws DAOExceptionUser {
     User utilisateur = null;
     Status sta = null;

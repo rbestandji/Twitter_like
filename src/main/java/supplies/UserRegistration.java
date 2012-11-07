@@ -17,7 +17,7 @@ import model.User;
 public class UserRegistration {
 
   /*
-   * Fonction permettant de creer un compte.
+   * Fonction permettant de créer un compte.
    */
   @POST
   @Produces( MediaType.APPLICATION_JSON)

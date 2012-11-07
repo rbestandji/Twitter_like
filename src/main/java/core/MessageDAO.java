@@ -46,7 +46,7 @@ public class MessageDAO {
   }
 
   /*
-   * Fonction cherchant tout les messages pour un identifiant donné
+   * Fonction cherchant tous les messages pour un identifiant donné
    */
   public static List<Message> getMessages(Long id) throws DAOExceptionUser {
     List<Message> liste = new ArrayList<Message>();

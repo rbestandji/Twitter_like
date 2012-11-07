@@ -42,7 +42,7 @@ public class WebappIT extends TestCase {
     //Jersey configuration
     config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 
-    //Client apache :)
+    //Client apache 
     client = ApacheHttpClient.create(config);
     client.setFollowRedirects(Boolean.TRUE);/* Plus utilisé */
 
@@ -104,7 +104,7 @@ public class WebappIT extends TestCase {
 
   }
 
-  /* Cette fonction test qu'un utilisateur peut se connecter avec (qu'avec) son compte.*/
+  /* Cette fonction test qu'un utilisateur ne peut se connecter (qu') avec son compte.*/
   @Test
   public void testConnectionCompte() throws Exception {
     Form f = new Form();
@@ -122,7 +122,7 @@ public class WebappIT extends TestCase {
     result.close();
 
 
-    /* L'utilisateur 1 est encore connecté tentative de connexion de l'utilisateur 2 */
+    /* L'utilisateur 1 est encore connecté, tentative de connexion de l'utilisateur 2 */
     f.clear();
     f.add("email", "lavalber02@gmail.com");
     f.add("mdp", "monMDP");
@@ -132,14 +132,14 @@ public class WebappIT extends TestCase {
     result.close();
 
 
-    /* L'utilisateur 1 se deconnecte */
+    /* L'utilisateur 1 se déconnecte */
     webResource = client.resource(new URL(this.baseUrl + "/bye").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
 
-    /* L'utilisateur 2  veut se reconnecter avec le mauvais mdp */
+    /* L'utilisateur 2 tente de se reconnecter avec un mauvais mdp */
     f.clear();
     f.add("email", "lavalber02@gmail.com");
     f.add("mdp", "mdp");
@@ -148,7 +148,7 @@ public class WebappIT extends TestCase {
     Assert.assertEquals(result.getStatus(), Status.UTILISATEUR_MAUVAIS_MOT_PASS);
     result.close();
 
-    /* L'utilisateur 1  veut se reconnecter avec le mauvais identifiant */
+    /* L'utilisateur 1 tente de se reconnecter avec un mauvais identifiant */
     f.clear();
     f.add("email", "le.jidtouu@gmail.com");
     f.add("mdp", "mdp");
@@ -159,7 +159,7 @@ public class WebappIT extends TestCase {
 
   }
 
-  /* Cette fonction va tester l'envoie de Twitte ainsi que leur lecture */
+  /* Cette fonction va tester l'envoie de Tweet ainsi que leur lecture */
   @Test
   public void testEnvoieMsg() throws Exception {
     Form f = new Form();
@@ -183,7 +183,7 @@ public class WebappIT extends TestCase {
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
-    /* Envoie d'un message sur Twitter !!!*/
+    /* Envoie d'un message sur Twitter-like*/
     f.clear();
     f.add("msg", "Hello World");
     webResource = client.resource(new URL(this.baseUrl + "/messages/envoie").toURI());
@@ -191,7 +191,7 @@ public class WebappIT extends TestCase {
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
-    /* Envoie d'un deuxieme message sur Twitter !!!*/
+    /* Envoie d'un deuxième message sur Twitter-like*/
     f.clear();
     f.add("msg", "Je sui un Twitte de Twitter like !");
     webResource = client.resource(new URL(this.baseUrl + "/messages/envoie").toURI());
@@ -199,13 +199,13 @@ public class WebappIT extends TestCase {
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
-    /* L'utilisateur 1 se deconnecte */
+    /* L'utilisateur 1 se déconnecte */
     webResource = client.resource(new URL(this.baseUrl + "/bye").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
-    /* L'utilisateur 2  se connecter */
+    /* L'utilisateur 2 se connecter */
     f.clear();
     f.add("email", "lavalber02@gmail.com");
     f.add("mdp", "monMDP");
@@ -214,7 +214,7 @@ public class WebappIT extends TestCase {
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
-    /* Envoie d'un trooisieme message sur Twitter avec le compte de bernard !!!*/
+    /* Envoie d'un troisième message sur Twitter-like avec le compte de Bernard*/
     f.clear();
     f.add("msg", " Moi je suis un message");
     webResource = client.resource(new URL(this.baseUrl + "/messages/envoie").toURI());
@@ -222,26 +222,26 @@ public class WebappIT extends TestCase {
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
-    /* Benard veut lire son message !*/
+    /* Bernard veut lire son message*/
     webResource = client.resource(new URL(this.baseUrl + "/messages/my").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(result.getEntity(List.class).size(), 1);
     result.close();
 
-    /* Benard veut lire les messages de 1 !*/
+    /* Bernard veut lire les messages de l'utilisateur 1*/
     webResource = client.resource(new URL(this.baseUrl + "/messages/get/1").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(result.getEntity(List.class).size(), 2); //Jitou à posté deux messages.
     result.close();
 
-    /* Lecture des messages à partir du mail. */
+    /* Lecture des messages à partir du mail */
     webResource = client.resource(new URL(this.baseUrl + "/messages/getuser/lavalber02@gmail.com").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(((LinkedHashMap) (result.getEntity(List.class).get(0))).get("text"), " Moi je suis un message");
     //System.out.println(result.getEntity(List.class));
     result.close();
 
-    /* Lecture des messages à partir d'un mauvais mail. */
+    /* Lecture des messages à partir d'un mauvais mail */
     webResource = client.resource(new URL(this.baseUrl + "/messages/getuser/lavalber03@gmail.com").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.UTILISATEUR_PAS_DE_COMPTE, result.getStatus());
@@ -249,7 +249,7 @@ public class WebappIT extends TestCase {
 
   }
 
-  /* Cette fonction va tester la lecture d'un profile */
+  /* Cette fonction va tester la lecture d'un profil */
   @Test
   public void testViewUser() throws Exception {
     Form f = new Form();
@@ -271,20 +271,20 @@ public class WebappIT extends TestCase {
     Assert.assertEquals(result.getEntity(User.class).getEmail(), "le.jitou@gmail.com");
     result.close();
 
-    /* Lecture de l'utilisateur 3 à partir du mail ! */
+    /* Lecture de l'utilisateur 3 à partir du mail */
     webResource = client.resource(new URL(this.baseUrl + "/users/getuser/lionel.muller.34@gmail.com").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(result.getEntity(User.class).getEmail(), "lionel.muller.34@gmail.com");
     result.close();
 
-    /* Test la fonction de recherche de tout les utilisateurs avec un 'l' */
+    /* Test la fonction de recherche de tous les utilisateurs avec un 'l' */
     webResource = client.resource(new URL(this.baseUrl + "/users/search/l").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(result.getEntity(List.class).size(), 2);
     result.close();
   }
 
-  /* Cette fonction va tester la lecture d'un profile */
+  /* Cette fonction va tester la lecture d'un profil */
   @Test
   public void testCommentaire() throws Exception {
     Form f = new Form();
@@ -311,7 +311,7 @@ public class WebappIT extends TestCase {
     webResource = client.resource(new URL(this.baseUrl + "/messages/get/1").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     List<Map<String, ?>> r = result.getEntity(List.class);
-    //Pas trés propre mais va être amélioré.
+    //Pas très propre mais ça va être amélioré.
     Assert.assertEquals(((List<Map<String, ?>>) r.get(0).get("commentaires")).get(0).get("text"), "Commentaire");
     result.close();
   }
