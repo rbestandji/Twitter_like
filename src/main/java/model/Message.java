@@ -4,15 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "Message")
@@ -27,11 +19,11 @@ public class Message implements Serializable {
   @Column( length = 500)
   private String text = "";
   @Temporal( javax.persistence.TemporalType.DATE)
-  private Date date_envoie = new Date();
+  private Date date_envoie = null;
   @Column
   private Long estUnCommentaire = null;
   
-  @OneToMany
+  @OneToMany(cascade = CascadeType.ALL)
   private Collection<Message> commentaires = new ArrayList<Message>();
 
   public Message() {
