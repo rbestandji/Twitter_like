@@ -16,7 +16,7 @@ public class UserDisconnect {
    */
   @GET
   @Produces( MediaType.APPLICATION_JSON)
-  public Response deconnection() {
+  public Response disconnection() {
     NewCookie cookie = new NewCookie("authCookie", "-1", "/", "localhost", "", 0, false);
     return Response.status(new Status(Status.OK)).cookie(cookie).build();
   }

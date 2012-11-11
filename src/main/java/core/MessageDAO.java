@@ -11,10 +11,10 @@ import model.Message;
 
 public class MessageDAO {
 
-  public static void envoieMessage(Long id, Message message) throws DAOExceptionUser {
+  public static void sendMessage(Long id, Message message) throws DAOExceptionUser {
 
     UserTransaction utx = null;
-    boolean erreurId = false;
+    boolean errorId = false;
     try {
       InitialContext ic = new InitialContext();
       utx = (UserTransaction) ic.lookup("java:comp/UserTransaction");
@@ -23,10 +23,10 @@ public class MessageDAO {
       em.joinTransaction();
       User u_tmp = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + id + "").getSingleResult();
       if (u_tmp != null) {
-        message.setAuteur(u_tmp);
+        message.setAuthor(u_tmp);
         em.persist(message);
       } else {
-        erreurId = true;
+        errorId = true;
       }
       utx.commit();
 
@@ -37,11 +37,11 @@ public class MessageDAO {
         }
       } catch (Exception rollbackEx) {
       }
-      throw new DAOExceptionUser(new Status(Status.ERREUR_BDD), ex.getMessage());
+      throw new DAOExceptionUser(new Status(Status.ERROR_DB), ex.getMessage());
     }
 
-    if (erreurId) {
-      throw new DAOExceptionUser(new Status(Status.UTILISATEUR_PAS_DE_COMPTE));
+    if (errorId) {
+      throw new DAOExceptionUser(new Status(Status.USER_NO_ACCOUNT));
     }
   }
 
@@ -49,9 +49,9 @@ public class MessageDAO {
    * Fonction cherchant tous les messages pour un identifiant donné
    */
   public static List<Message> getMessages(Long id) throws DAOExceptionUser {
-    List<Message> liste = new ArrayList<Message>();
+    List<Message> list = new ArrayList<Message>();
     UserTransaction utx = null;
-    boolean erreurId = false;
+    boolean errorId = false;
     try {
       InitialContext ic = new InitialContext();
       utx = (UserTransaction) ic.lookup("java:comp/UserTransaction");
@@ -60,11 +60,11 @@ public class MessageDAO {
       em.joinTransaction();
       User user = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + id + "").getSingleResult();
       if (user != null) {
-        Query q = em.createQuery("SELECT x FROM Message x WHERE x.auteur= :paraAuteur AND x.estUnCommentaire IS NULL");
-        q.setParameter("paraAuteur", user);
-        liste = (List<Message>) q.getResultList();
+        Query q = em.createQuery("SELECT x FROM Message x WHERE x.author= :paraAuthor AND x.isComment IS NULL");
+        q.setParameter("paraAuthor", user);
+        list = (List<Message>) q.getResultList();
       } else {
-        erreurId = true;
+        errorId = true;
       }
       utx.commit();
 
@@ -77,11 +77,11 @@ public class MessageDAO {
         // Impossible d'annuler les changements, vous devriez logguer une erreur,
         // voir envoyer un email à l'exploitant de l'application.
       }
-      throw new DAOExceptionUser(new Status(Status.ERREUR_BDD), ex.getMessage());
+      throw new DAOExceptionUser(new Status(Status.ERROR_DB), ex.getMessage());
     }
-    if (erreurId) {
-      throw new DAOExceptionUser(new Status(Status.UTILISATEUR_PAS_DE_COMPTE));
+    if (errorId) {
+      throw new DAOExceptionUser(new Status(Status.USER_NO_ACCOUNT));
     }
-    return liste;
+    return list;
   }
 }

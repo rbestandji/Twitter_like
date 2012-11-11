@@ -1,8 +1,8 @@
 package supplies;
 
-import core.CommentaireDAO;
+import core.CommentDAO;
 import core.DAOExceptionUser;
-import core.GroupeDAO;
+import core.GroupDAO;
 import core.MessageDAO;
 import core.Status;
 import core.UserDAO;
@@ -18,26 +18,26 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import model.Groupe;
+import model.Group;
 import model.Message;
 
-@Path( "/groupe")
-public class Group {
+@Path( "/group")
+public class GroupsResource {
 
   /*
    * Retourne la liste des messages de l'utilisateur avec l'identifiant en PathParam.
    */
-  @Path("/creer/{nom}")
+  @Path("/create/{name}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Response obtenirMessagesAvecID(@CookieParam("authCookie") Cookie authenciateCookie,
-          @PathParam("nom") String nom) throws IOException {
+  public Response getMessageWithID(@CookieParam("authCookie") Cookie authenciateCookie,
+          @PathParam("name") String name) throws IOException {
 
     if (authenciateCookie == null) {
-      return Response.status(new Status(Status.UTILISATEUR_PAS_CONNECTE)).build();
+      return Response.status(new Status(Status.USER_NO_LOGGED)).build();
     }
     try {
-      GroupeDAO.creerUnGroupe(Long.parseLong(authenciateCookie.getValue()), new Groupe(nom));
+      GroupDAO.createGroup(Long.parseLong(authenciateCookie.getValue()), new Group(name));
       return Response.status(Status.OK).build();
     } catch (DAOExceptionUser ex) {
       return Response.status(ex.getStatus()).build();

@@ -13,7 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import model.User;
 
-@Path( "/inscription")
+@Path( "/registration")
 public class UserRegistration {
 
   /*
@@ -21,17 +21,17 @@ public class UserRegistration {
    */
   @POST
   @Produces( MediaType.APPLICATION_JSON)
-  public Response inscription(@CookieParam("authCookie") Cookie authenciateCookie,
+  public Response registration(@CookieParam("authCookie") Cookie authenciateCookie,
           @FormParam("email") String email,
-          @FormParam("mdp") String mdp,
-          @FormParam("nom") String nom,
-          @FormParam("prenom") String prenom) {
+          @FormParam("password") String password,
+          @FormParam("name") String name,
+          @FormParam("firstname") String firstname) {
     if (authenciateCookie != null) {
-      return Response.status(new Status(Status.UTILISATEUR_CONNECTE)).build();
+      return Response.status(new Status(Status.USER_LOGGED)).build();
     }
 
     Status sta = null;
-    User newUser = new User(nom, prenom, email, mdp);
+    User newUser = new User(name, firstname, email, password);
     try {
       UserDAO.createUser(newUser);
       sta = new Status(Status.OK);

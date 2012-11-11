@@ -8,17 +8,17 @@ import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.transaction.UserTransaction;
-import model.Groupe;
+import model.Group;
 import model.User;
 
-public class GroupeDAO {
+public class GroupDAO {
   /*
-   * Permet à l'utilisateur connecté de creer un groupe
+   * Permet à l'utilisateur connecté de créer un groupe
    */
 
-  public static void creerUnGroupe(Long idUser, Groupe groupe) throws DAOExceptionUser, IOException {
+  public static void createGroup(Long idUser, Group group) throws DAOExceptionUser, IOException {
     UserTransaction utx = null;
-    boolean erreurId = false;
+    boolean errorId = false;
     try {
       InitialContext ic = new InitialContext();
       utx = (UserTransaction) ic.lookup("java:comp/UserTransaction");
@@ -28,15 +28,15 @@ public class GroupeDAO {
       em.joinTransaction();
       User u_tmp = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idUser + "").getSingleResult();
       if (u_tmp != null) {
-        Groupe g = new Groupe(groupe.getNom(), u_tmp);
+        Group g = new Group(group.getName(), u_tmp);
         //sg.setCreateur(u_tmp);
 
-        u_tmp.getListeDesGroupe().add(g);
-        //em.persist(groupe);
+        u_tmp.getGroups().add(g);
+        //em.persist(group);
 
 
       } else {
-        erreurId = true;
+        errorId = true;
       }
       utx.commit();
 
@@ -44,7 +44,7 @@ public class GroupeDAO {
       Logger logger = Logger.getLogger("logger");
       FileHandler fh = new FileHandler("monLog.txt");
       logger.addHandler(fh);
-      logger.log(Level.INFO, "Erreur BDD dans GroupeDAO : " + idUser
+      logger.log(Level.INFO, "Erreur BDD dans GroupDAO : " + idUser
               + "\n" + ex.getMessage()
               + "\n" + ex.getLocalizedMessage());
       try {
@@ -53,11 +53,11 @@ public class GroupeDAO {
         }
       } catch (Exception rollbackEx) {
       }
-      throw new DAOExceptionUser(new Status(Status.ERREUR_BDD), ex.getMessage());
+      throw new DAOExceptionUser(new Status(Status.ERROR_DB), ex.getMessage());
     }
 
-    if (erreurId) {
-      throw new DAOExceptionUser(new Status(Status.UTILISATEUR_PAS_DE_COMPTE));
+    if (errorId) {
+      throw new DAOExceptionUser(new Status(Status.USER_NO_ACCOUNT));
     }
   }
 }

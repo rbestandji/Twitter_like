@@ -5,14 +5,14 @@ import javax.ws.rs.core.Response.StatusType;
 
 public class Status implements StatusType {
 
-  public final static int UTILISATEUR_PAS_CONNECTE = 0;
-  public final static int UTILISATEUR_CONNECTE = 1;
-  public final static int UTILISATEUR_PAS_DE_COMPTE = 2;
-  public final static int UTILISATEUR_MAUVAIS_MOT_PASS = 3;
-  public final static int ERREUR_BDD = 4;
+  public final static int USER_NO_LOGGED = 0;
+  public final static int USER_LOGGED = 1;
+  public final static int USER_NO_ACCOUNT = 2;
+  public final static int USER_BAD_PASSWORD = 3;
+  public final static int ERROR_DB = 4;
   public final static int OK = 200;
-  public final static int EMAIL_PRISE = 5;
-  public final static int PAS_ID_MESSAGE = 6;
+  public final static int EMAIL_TAKEN = 5;
+  public final static int NOT_ID_MESSAGE = 6;
   private int code;
 
   public Status(int code) {

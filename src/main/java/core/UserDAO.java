@@ -5,7 +5,7 @@ import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.transaction.UserTransaction;
-import model.Groupe;
+import model.Group;
 import model.User;
 
 public class UserDAO {
@@ -15,7 +15,7 @@ public class UserDAO {
    */
   public static void createUser(User user) throws DAOExceptionUser {
     UserTransaction utx = null;
-    boolean estPrise = false;
+    boolean isTaken = false;
     try {
       InitialContext ic = new InitialContext();
       utx = (UserTransaction) ic.lookup("java:comp/UserTransaction");
@@ -26,7 +26,7 @@ public class UserDAO {
       if (lu.isEmpty()) {
         em.persist(user);
       } else {
-        estPrise = true;
+        isTaken = true;
       }
 
       utx.commit();
@@ -39,14 +39,14 @@ public class UserDAO {
         // Impossible d'annuler les changements, vous devriez logguer une erreur,
         // voir envoyer un email à l'exploitant de l'application.
       }
-      throw new DAOExceptionUser(new Status(Status.ERREUR_BDD), ex.getMessage());
+      throw new DAOExceptionUser(new Status(Status.ERROR_DB), ex.getMessage());
     }
-    if (estPrise) {
-      throw new DAOExceptionUser(new Status(Status.EMAIL_PRISE));
+    if (isTaken) {
+      throw new DAOExceptionUser(new Status(Status.EMAIL_TAKEN));
     }
   }
 
-  /*Retourne l'utilisateur correspondant à l'id */
+  /*Retourne l'user correspondant à l'id */
   public static User getUser(Long id) throws DAOExceptionUser {
     User user = null;
     UserTransaction utx = null;
@@ -70,10 +70,10 @@ public class UserDAO {
         // Impossible d'annuler les changements, vous devriez logguer une erreur,
         // voir envoyer un email à l'exploitant de l'application.
       }
-      throw new DAOExceptionUser(new Status(Status.ERREUR_BDD), ex.getMessage());
+      throw new DAOExceptionUser(new Status(Status.ERROR_DB), ex.getMessage());
     }
     if (user == null) {
-      throw new DAOExceptionUser(new Status(Status.UTILISATEUR_PAS_DE_COMPTE));
+      throw new DAOExceptionUser(new Status(Status.USER_NO_ACCOUNT));
     }
 
     return user;
@@ -103,18 +103,18 @@ public class UserDAO {
         }
       } catch (Exception rollbackEx) {
       }
-      throw new DAOExceptionUser(new Status(Status.ERREUR_BDD), ex.getMessage());
+      throw new DAOExceptionUser(new Status(Status.ERROR_DB), ex.getMessage());
     }
 
     if (id == null) {
-      throw new DAOExceptionUser(new Status(Status.UTILISATEUR_PAS_DE_COMPTE));
+      throw new DAOExceptionUser(new Status(Status.USER_NO_ACCOUNT));
     }
 
 
     return id;
   }
 
-  /*Retourne la liste des utilisateurs dont le nom contient la chaine 'nom' en paramètre*/
+  /*Retourne la liste des users dont le nom contient la chaine 'nom' en paramètre*/
   public static List<User> searchUser(String nom) throws DAOExceptionUser {
     List<User> users = null;
     UserTransaction utx = null;
@@ -140,15 +140,15 @@ public class UserDAO {
         // voir envoyer un email à l'exploitant de l'application.
       }
 
-      throw new DAOExceptionUser(new Status(Status.ERREUR_BDD), ex.getMessage());
+      throw new DAOExceptionUser(new Status(Status.ERROR_DB), ex.getMessage());
     }
 
     return users;
   }
 
   /* Connexion */
-  public static User connection(String email, String mdp) throws DAOExceptionUser {
-    User utilisateur = null;
+  public static User connection(String email, String password) throws DAOExceptionUser {
+    User user = null;
     Status sta = null;
 
     UserTransaction utx = null;
@@ -161,12 +161,12 @@ public class UserDAO {
       em.joinTransaction();
       List<User> lu = em.createQuery("SELECT x FROM User x WHERE x.email='" + email + "'").getResultList();
       if (lu.isEmpty()) {
-        sta = new Status(Status.UTILISATEUR_PAS_DE_COMPTE);
+        sta = new Status(Status.USER_NO_ACCOUNT);
       } else {
-        if (((User) lu.get(0)).getMdp().equals(mdp)) {
-          utilisateur = lu.get(0);
+        if (((User) lu.get(0)).getPassword().equals(password)) {
+          user = lu.get(0);
         } else {
-          sta = new Status(Status.UTILISATEUR_MAUVAIS_MOT_PASS);
+          sta = new Status(Status.USER_BAD_PASSWORD);
         }
       }
       utx.commit();
@@ -179,12 +179,12 @@ public class UserDAO {
         // Impossible d'annuler les changements, vous devriez logguer une erreur,
         // voir envoyer un email à l'exploitant de l'application.
       }
-      throw new DAOExceptionUser(new Status(Status.ERREUR_BDD), ex.getMessage());
+      throw new DAOExceptionUser(new Status(Status.ERROR_DB), ex.getMessage());
     }
     if (sta != null) {
       throw new DAOExceptionUser(sta);
     }
 
-    return utilisateur;
+    return user;
   }
 }

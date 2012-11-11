@@ -24,15 +24,15 @@ public class UserView {
   @Path("/get/{id}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Response obtenirUserAvecID(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("id") String id) {
+  public Response getUserWithID(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("id") String id) {
     if (authenciateCookie == null) {
-      return Response.status(new Status(Status.UTILISATEUR_PAS_CONNECTE)).build();
+      return Response.status(new Status(Status.USER_NO_LOGGED)).build();
     }
 
     User user;
     try {
       user = UserDAO.getUser(Long.parseLong(id));
-      user.enleverProblemeRecursivite();
+      user.removeRecursionProblem();
       return Response.ok(user, MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
     } catch (DAOExceptionUser ex) {
       return Response.status(ex.getStatus()).build();
@@ -42,15 +42,15 @@ public class UserView {
   @Path("/getuser/{email}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Response obtenirUserAvecMail(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("email") String email) {
+  public Response getUserWithEmail(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("email") String email) {
     if (authenciateCookie == null) {
-      return Response.status(new Status(Status.UTILISATEUR_PAS_CONNECTE)).build();
+      return Response.status(new Status(Status.USER_NO_LOGGED)).build();
     }
     Long id;
     try {
       id = UserDAO.getId(email);
       User user = UserDAO.getUser(id);
-      user.enleverProblemeRecursivite();
+      user.removeRecursionProblem();
       return Response.ok(user, MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
     } catch (DAOExceptionUser ex) {
       return Response.status(ex.getStatus()).build();
@@ -58,17 +58,17 @@ public class UserView {
 
   }
 
-  @Path("/search/{nom}")
+  @Path("/search/{name}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Response obtenirUsersAvecNom(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("nom") String nom) {
+  public Response getUsersWithName(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("name") String name) {
     if (authenciateCookie == null) {
-      return Response.status(new Status(Status.UTILISATEUR_PAS_CONNECTE)).build();
+      return Response.status(new Status(Status.USER_NO_LOGGED)).build();
     }
     try {
-      List<User> u = UserDAO.searchUser(nom);
+      List<User> u = UserDAO.searchUser(name);
       for (int i = 0; i < u.size(); i++) {
-        u.get(i).enleverProblemeRecursivite();
+        u.get(i).removeRecursionProblem();
       }
       return Response.ok(u, MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
     } catch (DAOExceptionUser ex) {

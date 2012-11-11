@@ -7,15 +7,15 @@ import javax.transaction.UserTransaction;
 import model.User;
 import model.Message;
 
-public class CommentaireDAO {
+public class CommentDAO {
   /*
    * Permet à l'utilisateur connecté de commenter un message
    */
-  public static void envoieCommentaire(Long idUser, Long idMessage, Message commentaire) throws DAOExceptionUser {
+  public static void sendComment(Long idUser, Long idMessage, Message comment) throws DAOExceptionUser {
 
     UserTransaction utx = null;
     User u_tmp = null;
-    boolean problemIdAuteur = false;
+    boolean problemIdAuthor = false;
     boolean problemIdMessage = false;
 
     try {
@@ -26,19 +26,19 @@ public class CommentaireDAO {
       em.joinTransaction();
       u_tmp = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idUser + "").getSingleResult();
       if (u_tmp != null) {
-        commentaire.setAuteur(u_tmp);
+        comment.setAuthor(u_tmp);
         Message m = (Message) em.createQuery("SELECT x FROM Message x WHERE x.id=" + idMessage + "").getSingleResult();
         if (m != null) {
-          Collection<Message> liste = m.getCommentaires();
-          liste.add(commentaire);
-          m.setCommentaires(liste);
-          commentaire.setEstUnCommentaire(m.getId());
-          em.persist(commentaire);
+          Collection<Message> list = m.getComments();
+          list.add(comment);
+          m.setComments(list);
+          comment.setIsComment(m.getId());
+          em.persist(comment);
         } else {
           problemIdMessage = true;
         }
       } else {
-        problemIdAuteur = true;
+        problemIdAuthor = true;
       }
       utx.commit();
 
@@ -51,24 +51,24 @@ public class CommentaireDAO {
         // Impossible d'annuler les changements, vous devriez logguer une erreur,
         // voir envoyer un email à l'exploitant de l'application.
       }
-      throw new DAOExceptionUser(new Status(Status.ERREUR_BDD), ex.getMessage());
+      throw new DAOExceptionUser(new Status(Status.ERROR_DB), ex.getMessage());
     }
 
-    if (problemIdAuteur) {
-      throw new DAOExceptionUser(new Status(Status.UTILISATEUR_PAS_DE_COMPTE));
+    if (problemIdAuthor) {
+      throw new DAOExceptionUser(new Status(Status.USER_NO_ACCOUNT));
     } else if (problemIdMessage) {
-      throw new DAOExceptionUser(new Status(Status.PAS_ID_MESSAGE));
+      throw new DAOExceptionUser(new Status(Status.NOT_ID_MESSAGE));
     }
   }
   
    /*
    * Permet à l'utilisateur connecté de supprimer un commentaire (Ne fonctionne pas encore!!!!)
    */
-  public static void supprimerCommentaire(Long idUser, Long idMsg, Long idComment) throws DAOExceptionUser {
+  public static void deleteComment(Long idUser, Long idMsg, Long idComment) throws DAOExceptionUser {
 
     UserTransaction utx = null;
     User u_tmp = null;
-    boolean problemIdAuteur = false;
+    boolean problemIdAuthor = false;
     boolean problemIdMessage = false;
 
     try {
@@ -79,20 +79,20 @@ public class CommentaireDAO {
       em.joinTransaction();
       u_tmp = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idUser + "").getSingleResult();
       if (u_tmp != null) {
-        //commentaire.setAuteur(u_tmp);
+        //comment.setAuthor(u_tmp);
         em.createQuery("DELETE FROM Message x WHERE x.id=" + idComment + "").executeUpdate();            
         /*Message m = (Message) em.createQuery("SELECT x FROM Message x WHERE x.id=" + idMsg + "").getSingleResult();
         if (m != null) {
-          //Collection<Message> liste = m.getCommentaires();
-          //liste.add(commentaire);
-          //m.setCommentaires(liste);
-          //commentaire.setEstUnCommentaire(m.getId());
-          //em.persist(commentaire);
+          //Collection<Message> list = m.getComments();
+          //list.add(comment);
+          //m.setComments(list);
+          //comment.setEstUnComment(m.getId());
+          //em.persist(comment);
         } else {
           problemIdMessage = true;
         }*/
       } else {
-        problemIdAuteur = true;
+        problemIdAuthor = true;
       }
       utx.commit();
 
@@ -105,13 +105,13 @@ public class CommentaireDAO {
         // Impossible d'annuler les changements, vous devriez logguer une erreur,
         // voir envoyer un email à l'exploitant de l'application.
       }
-      throw new DAOExceptionUser(new Status(Status.ERREUR_BDD), ex.getMessage());
+      throw new DAOExceptionUser(new Status(Status.ERROR_DB), ex.getMessage());
     }
 
-    if (problemIdAuteur) {
-      throw new DAOExceptionUser(new Status(Status.UTILISATEUR_PAS_DE_COMPTE));
+    if (problemIdAuthor) {
+      throw new DAOExceptionUser(new Status(Status.USER_NO_ACCOUNT));
     } else if (problemIdMessage) {
-      throw new DAOExceptionUser(new Status(Status.PAS_ID_MESSAGE));
+      throw new DAOExceptionUser(new Status(Status.NOT_ID_MESSAGE));
     }
   }
 }

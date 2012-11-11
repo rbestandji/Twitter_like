@@ -44,212 +44,213 @@ public class WebappIT extends TestCase {
 
     //Client apache 
     client = ApacheHttpClient.create(config);
-    client.setFollowRedirects(Boolean.TRUE);/* Plus utilisé */
+    client.setFollowRedirects(Boolean.TRUE);// Plus utilisé 
 
   }
 
-  /* Dans cette fonction nous allons creer des utilisateurs */
+  // Dans cette fonction nous allons créer des utilisateurs 
   @Before
-  public void testCreationDesUsers() throws Exception {
+  public void testCreateUsers() throws Exception {
 
     Form f = new Form();
     WebResource webResource = null;
     ClientResponse result = null;
     System.out.println("****************** Creation des comptes ! ******************");
 
-    /* Utilisateur 1 */
+    // Utilisateur 1 
     f.add("email", "le.jitou@gmail.com");
-    f.add("mdp", "mdp");
-    f.add("nom", "Pasquet");
-    f.add("prenom", "Jerome");
-    webResource = client.resource(new URL(this.baseUrl + "/inscription").toURI());
+    f.add("password", "password");
+    f.add("name", "Pasquet");
+    f.add("firstname", "Jerome");
+    webResource = client.resource(new URL(this.baseUrl + "/registration").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
 
-    /* Utilisateur 2 */
+    // Utilisateur 2 
     f.clear();
     f.add("email", "lavalber02@gmail.com");
-    f.add("mdp", "monMDP");
-    f.add("nom", "Laval");
-    f.add("prenom", "Bernard");
-    webResource = client.resource(new URL(this.baseUrl + "/inscription").toURI());
+    f.add("password", "monMDP");
+    f.add("name", "Laval");
+    f.add("firstname", "Bernard");
+    webResource = client.resource(new URL(this.baseUrl + "/registration").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
 
-    /* Utilisateur 3 */
+    // Utilisateur 3 
     f.clear();
     f.add("email", "lionel.muller.34@gmail.com");
-    f.add("mdp", "monMDP");
-    f.add("nom", "Muller");
-    f.add("prenom", "Lionel");
-    webResource = client.resource(new URL(this.baseUrl + "/inscription").toURI());
+    f.add("password", "monMDP");
+    f.add("name", "Muller");
+    f.add("firstname", "Lionel");
+    webResource = client.resource(new URL(this.baseUrl + "/registration").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
-    /* Utilisateur 4 */
+    // Utilisateur 4 
     f.clear();
     f.add("email", "lionel.muller.34@gmail.com");
-    f.add("mdp", "dfdfs");
-    f.add("nom", "castorPirate");
-    f.add("prenom", "Waza");
-    webResource = client.resource(new URL(this.baseUrl + "/inscription").toURI());
+    f.add("password", "dfdfs");
+    f.add("name", "castorPirate");
+    f.add("firstname", "Waza");
+    webResource = client.resource(new URL(this.baseUrl + "/registration").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-    Assert.assertEquals(result.getStatus(), Status.EMAIL_PRISE);
+    Assert.assertEquals(result.getStatus(), Status.EMAIL_TAKEN);
     result.close();
 
   }
 
-  /* Cette fonction test qu'un utilisateur ne peut se connecter (qu') avec son compte.*/
+  // Cette fonction test qu'un utilisateur ne peut se connecter (qu') avec son compte.
   @Test
-  public void testConnectionCompte() throws Exception {
+  public void testConnectionAccount() throws Exception {
     Form f = new Form();
     WebResource webResource;
     ClientResponse result;
     System.out.println("****************** Tests des connexions! ******************");
 
 
-    /* Connexion de l'utilisateur 1 */
+    // Connexion de l'utilisateur 1 
     f.add("email", "le.jitou@gmail.com");
-    f.add("mdp", "mdp");
+    f.add("password", "password");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
 
-    /* L'utilisateur 1 est encore connecté, tentative de connexion de l'utilisateur 2 */
+    // L'utilisateur 1 est encore connecté, tentative de connexion de l'utilisateur 2 
     f.clear();
     f.add("email", "lavalber02@gmail.com");
-    f.add("mdp", "monMDP");
+    f.add("password", "monMDP");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-    Assert.assertEquals(result.getStatus(), Status.UTILISATEUR_CONNECTE);
+    Assert.assertEquals(result.getStatus(), Status.USER_LOGGED);
     result.close();
 
 
-    /* L'utilisateur 1 se déconnecte */
+    // L'utilisateur 1 se déconnecte 
     webResource = client.resource(new URL(this.baseUrl + "/bye").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
 
-    /* L'utilisateur 2 tente de se reconnecter avec un mauvais mdp */
+    // L'utilisateur 2 tente de se reconnecter avec un mauvais password 
     f.clear();
     f.add("email", "lavalber02@gmail.com");
-    f.add("mdp", "mdp");
+    f.add("password", "password");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-    Assert.assertEquals(result.getStatus(), Status.UTILISATEUR_MAUVAIS_MOT_PASS);
+    Assert.assertEquals(result.getStatus(), Status.USER_BAD_PASSWORD);
     result.close();
 
-    /* L'utilisateur 1 tente de se reconnecter avec un mauvais identifiant */
+    // L'utilisateur 1 tente de se reconnecter avec un mauvais identifiant 
     f.clear();
     f.add("email", "le.jidtouu@gmail.com");
-    f.add("mdp", "mdp");
+    f.add("password", "password");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-    Assert.assertEquals(result.getStatus(), Status.UTILISATEUR_PAS_DE_COMPTE);
+    Assert.assertEquals(result.getStatus(), Status.USER_NO_ACCOUNT);
     result.close();
 
   }
 
-  /* Cette fonction va tester l'envoie de Tweet ainsi que leur lecture */
+  // Cette fonction va tester l'envoi de Tweet ainsi que leur lecture 
   @Test
-  public void testEnvoieMsg() throws Exception {
+  public void testSendMsg() throws Exception {
     Form f = new Form();
     WebResource webResource;
     ClientResponse result;
     System.out.println("****************** Tests des messages ! ******************");
 
-    /* Tentative d'envoie d'un message sans connection*/
+    // Tentative d'envoi d'un message sans connection
     f.add("msg", "Hello tout le monde");
-    webResource = client.resource(new URL(this.baseUrl + "/messages/envoie").toURI());
+    webResource = client.resource(new URL(this.baseUrl + "/messages/send").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-    Assert.assertEquals(result.getStatus(), Status.UTILISATEUR_PAS_CONNECTE);
+    Assert.assertEquals(result.getStatus(), Status.USER_NO_LOGGED);
     result.close();
 
-    /* Connexion de l'utilisateur 1 */
+    // Connexion de l'utilisateur 1 
     f.clear();
     f.add("email", "le.jitou@gmail.com");
-    f.add("mdp", "mdp");
+    f.add("password", "password");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
-    /* Envoie d'un message sur Twitter-like*/
+    // envoie d'un message sur Twitter-like
     f.clear();
     f.add("msg", "Hello World");
-    webResource = client.resource(new URL(this.baseUrl + "/messages/envoie").toURI());
+    webResource = client.resource(new URL(this.baseUrl + "/messages/send").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
-    /* Envoie d'un deuxième message sur Twitter-like*/
+    // envoie d'un deuxième message sur Twitter-like
     f.clear();
-    f.add("msg", "Je sui un Twitte de Twitter like !");
-    webResource = client.resource(new URL(this.baseUrl + "/messages/envoie").toURI());
+    f.add("msg", "Je suis un Twitte de Twitter like !");
+    webResource = client.resource(new URL(this.baseUrl + "/messages/send").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
-    /* L'utilisateur 1 se déconnecte */
+    // L'utilisateur 1 se déconnecte 
     webResource = client.resource(new URL(this.baseUrl + "/bye").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
-    /* L'utilisateur 2 se connecter */
+    // L'utilisateur 2 se connecte 
     f.clear();
     f.add("email", "lavalber02@gmail.com");
-    f.add("mdp", "monMDP");
+    f.add("password", "monMDP");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
-    /* Envoie d'un troisième message sur Twitter-like avec le compte de Bernard*/
+    // Envoie d'un troisième message sur Twitter-like avec le compte de Bernard
     f.clear();
     f.add("msg", " Moi je suis un message");
-    webResource = client.resource(new URL(this.baseUrl + "/messages/envoie").toURI());
+    webResource = client.resource(new URL(this.baseUrl + "/messages/send").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
-    /* Bernard veut lire son message*/
+    // Bernard veut lire son message
     webResource = client.resource(new URL(this.baseUrl + "/messages/my").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(result.getEntity(List.class).size(), 1);
     result.close();
 
-    /* Bernard veut lire les messages de l'utilisateur 1*/
+    // Bernard veut lire les messages de l'utilisateur 1
     webResource = client.resource(new URL(this.baseUrl + "/messages/get/1").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(result.getEntity(List.class).size(), 2); //Jitou à posté deux messages.
     result.close();
 
-    /* Lecture des messages à partir du mail */
+    // Lecture des messages à partir du mail 
     webResource = client.resource(new URL(this.baseUrl + "/messages/getuser/lavalber02@gmail.com").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    Assert.assertEquals(((LinkedHashMap) (result.getEntity(List.class).get(0))).get("text"), " Moi je suis un message");
+    Assert.assertEquals(((LinkedHashMap) (result.getEntity(List.class).get(0))).get("text"),
+                                                             " Moi je suis un message");
     //System.out.println(result.getEntity(List.class));
     result.close();
 
-    /* Lecture des messages à partir d'un mauvais mail */
+    // Lecture des messages à partir d'un mauvais mail 
     webResource = client.resource(new URL(this.baseUrl + "/messages/getuser/lavalber03@gmail.com").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    Assert.assertEquals(Status.UTILISATEUR_PAS_DE_COMPTE, result.getStatus());
+    Assert.assertEquals(Status.USER_NO_ACCOUNT, result.getStatus());
     result.close();
 
   }
 
-  /* Cette fonction va tester la lecture d'un profil */
+  // Cette fonction va tester la lecture d'un profil 
   @Test
   public void testViewUser() throws Exception {
     Form f = new Form();
@@ -257,71 +258,72 @@ public class WebappIT extends TestCase {
     ClientResponse result;
     System.out.println("****************** Tests lecture profil ! ******************");
 
-    /* Connexion de l'utilisateur 1 */
+    // Connexion de l'utilisateur 1 
     f.add("email", "le.jitou@gmail.com");
-    f.add("mdp", "mdp");
+    f.add("password", "password");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
-    /*Lecture de l'utilisateur 1*/
+    //Lecture de l'utilisateur 1
     webResource = client.resource(new URL(this.baseUrl + "/users/get/1").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(result.getEntity(User.class).getEmail(), "le.jitou@gmail.com");
     result.close();
-
-    /* Lecture de l'utilisateur 3 à partir du mail */
+    // Lecture de l'utilisateur 3 à partir du mail 
     webResource = client.resource(new URL(this.baseUrl + "/users/getuser/lionel.muller.34@gmail.com").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(result.getEntity(User.class).getEmail(), "lionel.muller.34@gmail.com");
     result.close();
-
-    /* Test la fonction de recherche de tous les utilisateurs avec un 'l' */
+    /*
+    // Test la fonction de recherche de tous les utilisateurs avec un 'l' 
     webResource = client.resource(new URL(this.baseUrl + "/users/search/l").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(result.getEntity(List.class).size(), 2);
-    result.close();
+    result.close();*/
   }
 
-  /* Cette fonction va tester la lecture d'un profil */
+  // Cette fonction va tester la lecture d'un profil 
   @Test
-  public void testCommentaire() throws Exception {
+  public void testComment() throws Exception {
     Form f = new Form();
     WebResource webResource;
     ClientResponse result;
-    System.out.println("****************** Tests des commentaires ! ******************");
+    System.out.println("****************** Tests des comments ! ******************");
 
-    /* Connexion de l'utilisateur 1 */
+    // Connexion de l'utilisateur 1 
     f.add("email", "le.jitou@gmail.com");
-    f.add("mdp", "mdp");
+    f.add("password", "password");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
 
-    /* Commentaires */
-    f.add("msg", "Commentaire");
-    webResource = client.resource(new URL(this.baseUrl + "/messages/envoie/commentaire/4").toURI());
+    // Commentaires 
+    f.add("msg", "Comment");
+    webResource = client.resource(new URL(this.baseUrl + "/messages/send/comment/4").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     result.close();
 
-    /* Lecture des messages à partir du mail. */
+    // Lecture des messages à partir du mail. 
     webResource = client.resource(new URL(this.baseUrl + "/messages/get/1").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     List<Map<String, ?>> r = result.getEntity(List.class);
-    //Pas très propre mais ça va être amélioré.
-    Assert.assertEquals(((List<Map<String, ?>>) r.get(0).get("commentaires")).get(0).get("text"), "Commentaire");
+    //Pas très profirst mais ça va être amélioré.
+    Assert.assertEquals(((List<Map<String, ?>>) r.get(0).get("comments")).get(0).get("text"), "Comment");
     result.close();
   }
 
-  /*Fonction test Put  INUTILE*/
-  /*@Test
+  //Fonction test Put  INUTILE
+  /*
+  @Test
   public void testPut() throws Exception {
     System.out.println("****************** Tests des PUT ! ******************");
     // WebResource webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
-    // System.out.println(webResource.type(MediaType.APPLICATION_JSON).put(String.class, new Message("Hello ", new Date())));
+    // System.out.println(webResource.type(MediaType.APPLICATION_JSON).
+    //                                        put(String.class, new Message("Hello ", new Date())));
 
     Form f = new Form();
     WebResource webResource;
@@ -329,22 +331,20 @@ public class WebappIT extends TestCase {
 
     // Connexion de l'utilisateur 1
     f.add("email", "le.jitou@gmail.com");
-    f.add("mdp", "mdp");
+    f.add("password", "password");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
-
-    webResource = client.resource(new URL(this.baseUrl + "/groupe/creer/new_group").toURI());
+    webResource = client.resource(new URL(this.baseUrl + "/group/create/new_group").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    System.out.println("Nouveau groupe : " + result.getStatus());
+    System.out.println("Nouveau group : " + result.getStatus());
     result.close();
 
     webResource = client.resource(new URL(this.baseUrl + "/users/get/1").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     System.out.println(result.getEntity(String.class));
     result.close();
-
   }*/
 }

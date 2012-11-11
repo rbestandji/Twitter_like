@@ -26,17 +26,17 @@ public class UserConnection {
   @Produces( MediaType.APPLICATION_JSON)
   public Response connection(@CookieParam("authCookie") Cookie authenciateCookie,
           @FormParam("email") String email,
-          @FormParam("mdp") String mdp) {
+          @FormParam("password") String password) {
 
 
     if (authenciateCookie != null) {
-      return Response.status(new Status(Status.UTILISATEUR_CONNECTE)).build();
+      return Response.status(new Status(Status.USER_LOGGED)).build();
     }
 
     try {
-      User utilisateur = UserDAO.connection(email, mdp);
-      NewCookie cookie = new NewCookie("authCookie", String.valueOf(utilisateur.getId()), "/", "localhost", "", 1000, false);
-      return Response.ok(utilisateur, MediaType.APPLICATION_JSON).status(Status.OK).cookie(cookie).build();
+      User user = UserDAO.connection(email, password);
+      NewCookie cookie = new NewCookie("authCookie", String.valueOf(user.getId()), "/", "localhost", "", 1000, false);
+      return Response.ok(user, MediaType.APPLICATION_JSON).status(Status.OK).cookie(cookie).build();
     } catch (DAOExceptionUser ex) {
       return Response.status(ex.getStatus()).build();
     }

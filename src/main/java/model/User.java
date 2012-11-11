@@ -18,7 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 
 @Entity
-@Table(name = "Utilisateur")
+@Table(name = "tUser")
 public class User implements Serializable {
 
   private static final long serialVersionUID = 1L;
@@ -27,34 +27,34 @@ public class User implements Serializable {
   @GeneratedValue( strategy = GenerationType.SEQUENCE)
   private Long id;
   @Column( length = 50)
-  private String nom = "";
+  private String name = "";
   @Column( length = 50)
-  private String prenom = "";
+  private String firstname = "";
   @Column( length = 50)
-  private String mdp = "";
+  private String password = "";
   @Column( length = 100)
   private String email = "";
   @Temporal( javax.persistence.TemporalType.DATE)
-  private Date date_inscription = new Date();
+  private Date registration_date = new Date();
   @Temporal( javax.persistence.TemporalType.DATE)
-  private Date date_derniere_connection = new Date();
+  private Date last_login_date = new Date();
   @OneToMany
-  private List<Message> listeMessage = new ArrayList<Message>();
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "createur")
-  private List<Groupe> listeDesGroupes = new ArrayList<Groupe>();
+  private List<Message> messages = new ArrayList<Message>();
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "creator")
+  private List<Group> groups = new ArrayList<Group>();
 
   /* Constructeurs */
   public User() {
   }
 
-  public User(String nom, String prenom) {
-    this(nom, prenom, "", "");
+  public User(String name, String firstname) {
+    this(name, firstname, "", "");
   }
 
-  public User(String nom, String prenom, String email, String mdp) {
-    this.setNom(nom);
-    this.setPrenom(prenom);
-    this.setMdp(mdp);
+  public User(String name, String firstname, String email, String password) {
+    this.setName(name);
+    this.setFirstname(firstname);
+    this.setPassword(password);
     this.setEmail(email);
   }
 
@@ -62,68 +62,68 @@ public class User implements Serializable {
    * *************************************************
    * Getters et Setters ************************************************
    */
-  public List<Groupe> getListeDesGroupe() {
-    return listeDesGroupes;
+  public List<Group> getGroups() {
+    return groups;
   }
 
-  public void setListeDesGroupe(List<Groupe> listeDesGroupe) {
-    this.listeDesGroupes = listeDesGroupe;
+  public void setGroups(List<Group> groups) {
+    this.groups = groups;
   }
 
-  public List<Message> getListeMessage() {
-    return listeMessage;
+  public List<Message> getMessages() {
+    return messages;
   }
 
-  public void setListeMessage(List<Message> listeMessage) {
-    this.listeMessage = listeMessage;
+  public void setMessages(List<Message> messages) {
+    this.messages = messages;
   }
 
-  public String getMdp() {
-    return mdp;
+  public String getPassword() {
+    return password;
   }
 
-  public void setMdp(String mdp) {
-    this.mdp = mdp;
+  public void setPassword(String password) {
+    this.password = password;
   }
 
-  public void setNom(String nom) {
-    this.nom = nom;
+  public void setName(String name) {
+    this.name = name;
   }
 
-  public void setPrenom(String prenom) {
-    this.prenom = prenom;
+  public void setFirstname(String firstname) {
+    this.firstname = firstname;
   }
 
   public void setEmail(String email) {
     this.email = email;
   }
 
-  public void setDate_inscription(Date date_inscription) {
-    this.date_inscription = date_inscription;
+  public void setRegistration_date(Date registration_date) {
+    this.registration_date = registration_date;
   }
 
-  public void setDate_derniere_connection(Date date_derniere_connection) {
-    this.date_derniere_connection = date_derniere_connection;
+  public void setLast_login_date(Date last_login_date) {
+    this.last_login_date = last_login_date;
   }
 
-  public String getNom() {
-    return nom;
+  public String getName() {
+    return name;
   }
 
-  public String getPrenom() {
-    return prenom;
+  public String getFirstname() {
+    return firstname;
   }
 
   public String getEmail() {
     return email;
   }
 
-  public Date getDate_inscription() {
-    return date_inscription;
+  public Date getRegistration_date() {
+    return registration_date;
   }
 
-  public Date getDate_derniere_connection() {
-    return date_derniere_connection;
+  public Date getLast_login_date() {
+    return last_login_date;
   }
 
   public Long getId() {
@@ -134,9 +134,9 @@ public class User implements Serializable {
     this.id = id;
   }
 
-  public void enleverProblemeRecursivite() {
-    for (int i = 0; i < this.listeDesGroupes.size(); i++) {
-      this.listeDesGroupes.get(i).setCreateur(null);
+  public void removeRecursionProblem() {
+    for (int i = 0; i < this.groups.size(); i++) {
+      this.groups.get(i).setCreator(null);
     }
   }
 }

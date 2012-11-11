@@ -13,32 +13,32 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Groupe")
-public class Groupe implements Serializable {
+@Table(name = "tGroup")
+public class Group implements Serializable {
 
   private static final long serialVersionUID = 1L;
   @Id
   @GeneratedValue( strategy = GenerationType.SEQUENCE)
-  @Column(name = "GROUPE_ID")
+  @Column(name = "GROUP_ID")
   private Long id;
   
   @ManyToOne
   @JoinColumn(name = "USER_ID")
-  private User createur = null;
+  private User creator = null;
   
   @Column( length = 500)
-  private String nom = "";
+  private String name = "";
 
-  public Groupe() {
+  public Group() {
   }
 
-  public Groupe(String nom) {
-    this.nom = nom;
+  public Group(String name) {
+    this.name = name;
   }
 
-  public Groupe(String nom, User createur) {
-    this.nom = nom;
-    this.createur = createur;
+  public Group(String name, User creator) {
+    this.name = name;
+    this.creator = creator;
   }
 
   /**
@@ -53,19 +53,19 @@ public class Groupe implements Serializable {
     this.id = id;
   }
 
-  public User getCreateur() {
-    return createur;
+  public User getCreator() {
+    return creator;
   }
 
-  public void setCreateur(User createur) {
-    this.createur = createur;
+  public void setCreator(User creator) {
+    this.creator = creator;
   }
 
-  public String getNom() {
-    return nom;
+  public String getName() {
+    return name;
   }
 
-  public void setNom(String nom) {
-    this.nom = nom;
+  public void setName(String name) {
+    this.name = name;
   }
 }

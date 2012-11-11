@@ -1,6 +1,6 @@
 package supplies;
 
-import core.CommentaireDAO;
+import core.CommentDAO;
 import core.DAOExceptionUser;
 import core.MessageDAO;
 import core.Status;
@@ -28,15 +28,15 @@ public class MessagesResource {
    */
   @POST
   @Produces( MediaType.APPLICATION_JSON)
-  @Path( "/envoie")
-  public Response envoieMessage(@CookieParam("authCookie") Cookie authenciateCookie,
+  @Path( "/send")
+  public Response sendMessage(@CookieParam("authCookie") Cookie authenciateCookie,
           @FormParam("msg") String msg) {
     if (authenciateCookie == null) {
-      return Response.status(new Status(Status.UTILISATEUR_PAS_CONNECTE)).build();
+      return Response.status(new Status(Status.USER_NO_LOGGED)).build();
     }
     Message message = new Message(msg, new Date());
     try {
-      MessageDAO.envoieMessage(Long.parseLong(authenciateCookie.getValue()), message);
+      MessageDAO.sendMessage(Long.parseLong(authenciateCookie.getValue()), message);
       return Response.status(new Status(Status.OK)).build();
     } catch (DAOExceptionUser ex) {
       return Response.status(ex.getStatus()).build();
@@ -50,9 +50,9 @@ public class MessagesResource {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   @Path( "/my")
-  public Response obtenirMesMessages(@CookieParam("authCookie") Cookie authenciateCookie) {
+  public Response getMesMessages(@CookieParam("authCookie") Cookie authenciateCookie) {
     if (authenciateCookie == null) {
-      return Response.status(new Status(Status.UTILISATEUR_PAS_CONNECTE)).build();
+      return Response.status(new Status(Status.USER_NO_LOGGED)).build();
     }
     try {
       return Response.ok(MessageDAO.getMessages(Long.parseLong(authenciateCookie.getValue())), MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
@@ -67,9 +67,9 @@ public class MessagesResource {
   @Path("/get/{id}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Response obtenirMessagesAvecID(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("id") String id) {
+  public Response getMessageWithID(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("id") String id) {
     if (authenciateCookie == null) {
-      return Response.status(new Status(Status.UTILISATEUR_PAS_CONNECTE)).build();
+      return Response.status(new Status(Status.USER_NO_LOGGED)).build();
     }
     try {
       return Response.ok(MessageDAO.getMessages(Long.parseLong(id)), MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
@@ -84,9 +84,9 @@ public class MessagesResource {
   @Path("/getuser/{email}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Response obtenirMessagesAvecEmail(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("email") String email) {
+  public Response getMessagesWithEmail(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("email") String email) {
     if (authenciateCookie == null) {
-      return Response.status(new Status(Status.UTILISATEUR_PAS_CONNECTE)).build();
+      return Response.status(new Status(Status.USER_NO_LOGGED)).build();
     }
     Long id;
     try {
@@ -102,36 +102,36 @@ public class MessagesResource {
    */
   @POST
   @Produces( MediaType.APPLICATION_JSON)
-  @Path( "/envoie/commentaire/{id}")
-  public Response envoieCommentaire(@CookieParam("authCookie") Cookie authenciateCookie,
+  @Path( "/send/comment/{id}")
+  public Response sendComment(@CookieParam("authCookie") Cookie authenciateCookie,
           @FormParam("msg") String msg, @PathParam("id") String id) {
     if (authenciateCookie == null) {
-      return Response.status(new Status(Status.UTILISATEUR_PAS_CONNECTE)).build();
+      return Response.status(new Status(Status.USER_NO_LOGGED)).build();
     }
-    Message commentaire = new Message(msg, new Date());
+    Message comment = new Message(msg, new Date());
     try {
-      CommentaireDAO.envoieCommentaire(Long.parseLong(authenciateCookie.getValue()), Long.parseLong(id), commentaire);
-     return Response.ok(commentaire).status(Status.OK).build();
+      CommentDAO.sendComment(Long.parseLong(authenciateCookie.getValue()), Long.parseLong(id), comment);
+     return Response.ok(comment).status(Status.OK).build();
     } catch (DAOExceptionUser ex) {
     return Response.status(ex.getStatus()).build();
     }
   }
   
       /*
-   * Permet à l'utilisateur connecté de supprimer un commentaire (d'un de ses propres messages: à faire)
+   * Permet à l'utilisateur connecté de supprimer un comment (d'un de ses profirsts messages: à faire)
    */
   @POST
   @Produces( MediaType.APPLICATION_JSON)
-  @Path( "/supprimer/commentaire/{idMsg}/{idComment}")
-  public Response supprimerCommentaire(@CookieParam("authCookie") Cookie authenciateCookie,
+  @Path( "/supprimer/comment/{idMsg}/{idComment}")
+  public Response supprimerComment(@CookieParam("authCookie") Cookie authenciateCookie,
           @PathParam("idMsg") String idMsg,
           @PathParam("idComment") String idComment) {
     if (authenciateCookie == null) {
-      return Response.status(new Status(Status.UTILISATEUR_PAS_CONNECTE)).build();
+      return Response.status(new Status(Status.USER_NO_LOGGED)).build();
     }
     
     try {
-      CommentaireDAO.supprimerCommentaire(Long.parseLong(authenciateCookie.getValue()), Long.parseLong(idMsg), Long.parseLong(idComment));
+      CommentDAO.deleteComment(Long.parseLong(authenciateCookie.getValue()), Long.parseLong(idMsg), Long.parseLong(idComment));
       return Response.status(new Status(Status.OK)).build();
     } catch (DAOExceptionUser ex) {
       return Response.status(ex.getStatus()).build();
