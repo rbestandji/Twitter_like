@@ -125,8 +125,8 @@ public class UserDAO {
       // Transaction begin
       utx.begin();
       em.joinTransaction();
-      Query query = em.createQuery("SELECT x FROM User x WHERE UPPER(x.nom) LIKE :nom");
-      query.setParameter("nom", "%" + nom.toUpperCase() + "%");
+      Query query = em.createQuery("SELECT x FROM User x WHERE UPPER(x.name) LIKE :name");
+      query.setParameter("name", "%" + nom.toUpperCase() + "%");
       users = query.getResultList();
       utx.commit();
 

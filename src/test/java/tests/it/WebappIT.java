@@ -276,13 +276,15 @@ public class WebappIT extends TestCase {
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(result.getEntity(User.class).getEmail(), "lionel.muller.34@gmail.com");
     result.close();
-    /*
+    
     // Test la fonction de recherche de tous les utilisateurs avec un 'l' 
+   
     webResource = client.resource(new URL(this.baseUrl + "/users/search/l").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(result.getEntity(List.class).size(), 2);
-    result.close();*/
-  }
+    result.close(); 
+    
+   }
 
   // Cette fonction va tester la lecture d'un profil 
   @Test
