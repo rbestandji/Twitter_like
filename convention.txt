@@ -1,17 +1,19 @@
 Liste des règles à respecter : 
 
 Langue :
-Anglais pour les nom de variables, fonctions, classes, fichiers, dossiers.
-Français pour les commentaires, exemples, l'affichage.
+Anglais pour les noms de variables, fonctions, classes, fichiers, dossiers.
+Français pour les commentaires, les exemples, l'affichage.
 
 Casse :
-Majuscule pour les noms de classes, les constantes d'erreur tout en majuscule.
-Minuscule pour les fonctions, variables.
-Rq: Les "_" sont autorisés que pour les noms tout en majuscules.
+Majuscule pour la première lettre des noms de classes.
+Les constantes d'erreur sont tout en majuscule.
+Minuscule pour la première lettre des fonctions et des variables.
+Une majuscule doit être placée pour séparer les mots dans les noms utilisés, ex: unefonctionlongue() => uneFonctionLongue()
+Rq: Les "_" ne sont autorisés que pour les noms tout en majuscule.
 
 Tabulation : 2 espaces.
 
-Max caractères par lignes : 120.
+Max caractères par ligne : 120.
 
 Commentaires :
 Faire les petits commentaires (1 ou 2 lignes) avec //, c'est bien pratique lorsque l'on veut commenter
