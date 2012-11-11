@@ -117,26 +117,25 @@ public class MessagesResource {
     }
   }
   
-  /*
+  
       /*
-   * Permet à l'utilisateur connecté de supprimer un comment (d'un de ses profirsts messages: à faire)
-   *
+   * Permet à l'utilisateur connecté de supprimer l'un de ses messages
+   */
   @POST
   @Produces( MediaType.APPLICATION_JSON)
-  @Path( "/supprimer/comment/{idMsg}/{idComment}")
-  public Response supprimerComment(@CookieParam("authCookie") Cookie authenciateCookie,
-          @PathParam("idMsg") String idMsg,
-          @PathParam("idComment") String idComment) {
+  @Path( "/delete/{idMsg}")
+  public Response deleteIdMessage(@CookieParam("authCookie") Cookie authenciateCookie,
+          @PathParam("idMsg") String idMsg) {
     if (authenciateCookie == null) {
       return Response.status(new Status(Status.USER_NOT_LOGGED_IN)).build();
     }
     
     try {
-      CommentDAO.deleteComment(Long.parseLong(authenciateCookie.getValue()), Long.parseLong(idMsg), Long.parseLong(idComment));
+      MessageDAO.deleteMessage(Long.parseLong(authenciateCookie.getValue()), Long.parseLong(idMsg));
       return Response.status(new Status(Status.OK)).build();
     } catch (DAOExceptionUser ex) {
       return Response.status(ex.getStatus()).build();
     }
   }
-  */
+  
 }

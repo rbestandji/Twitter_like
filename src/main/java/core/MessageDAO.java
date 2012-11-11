@@ -45,6 +45,47 @@ public class MessageDAO {
     }
   }
 
+  public static void deleteMessage(Long authorId, Long msgId) throws DAOExceptionUser {
+
+    UserTransaction utx = null;
+    boolean msgIdError = false;
+    boolean authorIdError = false;
+    try {
+      InitialContext ic = new InitialContext();
+      utx = (UserTransaction) ic.lookup("java:comp/UserTransaction");
+      EntityManager em = (EntityManager) ic.lookup("java:comp/env/persistence/EntityManager");
+      utx.begin();
+      em.joinTransaction();
+      Message msg = (Message) em.createQuery("SELECT x FROM Message x WHERE x.id=" + msgId + "").getSingleResult();
+      if (msg != null) {
+        if(msg.getAuthor().getId()==authorId){//vérifie si on est bien le créateur du msg
+          em.remove(msg);
+        } else {
+          authorIdError = true;
+        }
+      } else {
+        msgIdError = true;
+      }
+      utx.commit();
+
+    } catch (Exception ex) {
+      try {
+        if (utx != null) {
+          utx.setRollbackOnly();
+        }
+      } catch (Exception rollbackEx) {
+      }
+      throw new DAOExceptionUser(new Status(Status.DB_ERROR), ex.getMessage());
+    }
+
+    if (msgIdError) {
+      throw new DAOExceptionUser(new Status(Status.USER_NO_ACCOUNT));
+    }
+    if (authorIdError) {
+      throw new DAOExceptionUser(new Status(Status.WRONG_USER));
+    }
+  }
+
   /*
    * Fonction cherchant tous les messages pour un identifiant donné
    */
