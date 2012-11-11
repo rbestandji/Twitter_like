@@ -337,9 +337,9 @@ public class WebappIT extends TestCase {
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
-    webResource = client.resource(new URL(this.baseUrl + "/group/create/new_group").toURI());
+    webResource = client.resource(new URL(this.baseUrl + "/group/create/newgroup").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    System.out.println("Nouveau group : " + result.getStatus());
+    System.out.println("Nouveau groupe : " + result.getStatus());
     result.close();
 
     webResource = client.resource(new URL(this.baseUrl + "/users/get/1").toURI());

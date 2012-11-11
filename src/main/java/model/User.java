@@ -35,9 +35,9 @@ public class User implements Serializable {
   @Column( length = 100)
   private String email = "";
   @Temporal( javax.persistence.TemporalType.DATE)
-  private Date registration_date = new Date();
+  private Date registrationDate = new Date();
   @Temporal( javax.persistence.TemporalType.DATE)
-  private Date last_login_date = new Date();
+  private Date lastLoginDate = new Date();
   @OneToMany
   private List<Message> messages = new ArrayList<Message>();
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "creator")
@@ -98,12 +98,12 @@ public class User implements Serializable {
     this.email = email;
   }
 
-  public void setRegistration_date(Date registration_date) {
-    this.registration_date = registration_date;
+  public void setRegistrationDate(Date registrationDate) {
+    this.registrationDate = registrationDate;
   }
 
-  public void setLast_login_date(Date last_login_date) {
-    this.last_login_date = last_login_date;
+  public void setLastLoginDate(Date lastLoginDate) {
+    this.lastLoginDate = lastLoginDate;
   }
 
   public String getName() {
@@ -118,12 +118,12 @@ public class User implements Serializable {
     return email;
   }
 
-  public Date getRegistration_date() {
-    return registration_date;
+  public Date getRegistrationDate() {
+    return registrationDate;
   }
 
-  public Date getLast_login_date() {
-    return last_login_date;
+  public Date getLastLoginDate() {
+    return lastLoginDate;
   }
 
   public Long getId() {

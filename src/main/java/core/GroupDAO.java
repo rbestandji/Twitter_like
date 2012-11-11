@@ -26,12 +26,12 @@ public class GroupDAO {
       em.setFlushMode(FlushModeType.COMMIT);
       utx.begin();
       em.joinTransaction();
-      User u_tmp = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idUser + "").getSingleResult();
-      if (u_tmp != null) {
-        Group g = new Group(group.getName(), u_tmp);
-        //sg.setCreateur(u_tmp);
+      User uTmp = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idUser + "").getSingleResult();
+      if (uTmp != null) {
+        Group g = new Group(group.getName(), uTmp);
+        //sg.setCreateur(uTmp);
 
-        u_tmp.getGroups().add(g);
+        uTmp.getGroups().add(g);
         //em.persist(group);
 
 

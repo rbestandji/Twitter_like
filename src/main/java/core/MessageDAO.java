@@ -21,9 +21,9 @@ public class MessageDAO {
       EntityManager em = (EntityManager) ic.lookup("java:comp/env/persistence/EntityManager");
       utx.begin();
       em.joinTransaction();
-      User u_tmp = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + id + "").getSingleResult();
-      if (u_tmp != null) {
-        message.setAuthor(u_tmp);
+      User uTmp = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + id + "").getSingleResult();
+      if (uTmp != null) {
+        message.setAuthor(uTmp);
         em.persist(message);
       } else {
         errorId = true;

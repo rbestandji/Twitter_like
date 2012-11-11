@@ -1,0 +1,19 @@
+Liste des règles à respecter : 
+
+Langue :
+Anglais pour les nom de variables, fonctions, classes, fichiers, dossiers.
+Français pour les commentaires, exemples, l'affichage.
+
+Casse :
+Majuscule pour les noms de classes, les constantes d'erreur tout en majuscule.
+Minuscule pour les fonctions, variables.
+Rq: Les "_" sont autorisés que pour les noms tout en majuscules.
+
+Tabulation : 2 espaces.
+
+Max caractères par lignes : 120.
+
+Commentaires :
+Faire les petits commentaires (1 ou 2 lignes) avec //, c'est bien pratique lorsque l'on veut commenter
+une grosse partie du code avec /* */ qui contient des petits commentaires.
+

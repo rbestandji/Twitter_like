@@ -14,7 +14,7 @@ public class CommentDAO {
   public static void sendComment(Long idUser, Long idMessage, Message comment) throws DAOExceptionUser {
 
     UserTransaction utx = null;
-    User u_tmp = null;
+    User uTmp = null;
     boolean problemIdAuthor = false;
     boolean problemIdMessage = false;
 
@@ -24,9 +24,9 @@ public class CommentDAO {
       EntityManager em = (EntityManager) ic.lookup("java:comp/env/persistence/EntityManager");
       utx.begin();
       em.joinTransaction();
-      u_tmp = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idUser + "").getSingleResult();
-      if (u_tmp != null) {
-        comment.setAuthor(u_tmp);
+      uTmp = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idUser + "").getSingleResult();
+      if (uTmp != null) {
+        comment.setAuthor(uTmp);
         Message m = (Message) em.createQuery("SELECT x FROM Message x WHERE x.id=" + idMessage + "").getSingleResult();
         if (m != null) {
           Collection<Message> list = m.getComments();
@@ -67,7 +67,7 @@ public class CommentDAO {
   public static void deleteComment(Long idUser, Long idMsg, Long idComment) throws DAOExceptionUser {
 
     UserTransaction utx = null;
-    User u_tmp = null;
+    User uTmp = null;
     boolean problemIdAuthor = false;
     boolean problemIdMessage = false;
 
@@ -77,9 +77,9 @@ public class CommentDAO {
       EntityManager em = (EntityManager) ic.lookup("java:comp/env/persistence/EntityManager");
       utx.begin();
       em.joinTransaction();
-      u_tmp = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idUser + "").getSingleResult();
-      if (u_tmp != null) {
-        //comment.setAuthor(u_tmp);
+      uTmp = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idUser + "").getSingleResult();
+      if (uTmp != null) {
+        //comment.setAuthor(uTmp);
         em.createQuery("DELETE FROM Message x WHERE x.id=" + idComment + "").executeUpdate();            
         /*Message m = (Message) em.createQuery("SELECT x FROM Message x WHERE x.id=" + idMsg + "").getSingleResult();
         if (m != null) {
