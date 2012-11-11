@@ -317,7 +317,7 @@ public class WebappIT extends TestCase {
   }
 
   /*Fonction test Put  INUTILE*/
-  @Test
+  /*@Test
   public void testPut() throws Exception {
     System.out.println("****************** Tests des PUT ! ******************");
     // WebResource webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
@@ -327,7 +327,7 @@ public class WebappIT extends TestCase {
     WebResource webResource;
     ClientResponse result;
 
-    /* Connexion de l'utilisateur 1 */
+    // Connexion de l'utilisateur 1
     f.add("email", "le.jitou@gmail.com");
     f.add("mdp", "mdp");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
@@ -346,5 +346,5 @@ public class WebappIT extends TestCase {
     System.out.println(result.getEntity(String.class));
     result.close();
 
-  }
+  }*/
 }
