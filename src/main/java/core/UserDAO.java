@@ -39,10 +39,10 @@ public class UserDAO {
         // Impossible d'annuler les changements, vous devriez logguer une erreur,
         // voir envoyer un email à l'exploitant de l'application.
       }
-      throw new DAOExceptionUser(new Status(Status.ERROR_DB), ex.getMessage());
+      throw new DAOExceptionUser(new Status(Status.DB_ERROR), ex.getMessage());
     }
     if (isTaken) {
-      throw new DAOExceptionUser(new Status(Status.EMAIL_TAKEN));
+      throw new DAOExceptionUser(new Status(Status.EMAIL_VALIDATED));
     }
   }
 
@@ -70,7 +70,7 @@ public class UserDAO {
         // Impossible d'annuler les changements, vous devriez logguer une erreur,
         // voir envoyer un email à l'exploitant de l'application.
       }
-      throw new DAOExceptionUser(new Status(Status.ERROR_DB), ex.getMessage());
+      throw new DAOExceptionUser(new Status(Status.DB_ERROR), ex.getMessage());
     }
     if (user == null) {
       throw new DAOExceptionUser(new Status(Status.USER_NO_ACCOUNT));
@@ -103,7 +103,7 @@ public class UserDAO {
         }
       } catch (Exception rollbackEx) {
       }
-      throw new DAOExceptionUser(new Status(Status.ERROR_DB), ex.getMessage());
+      throw new DAOExceptionUser(new Status(Status.DB_ERROR), ex.getMessage());
     }
 
     if (id == null) {
@@ -140,7 +140,7 @@ public class UserDAO {
         // voir envoyer un email à l'exploitant de l'application.
       }
 
-      throw new DAOExceptionUser(new Status(Status.ERROR_DB), ex.getMessage());
+      throw new DAOExceptionUser(new Status(Status.DB_ERROR), ex.getMessage());
     }
 
     return users;
@@ -166,7 +166,7 @@ public class UserDAO {
         if (((User) lu.get(0)).getPassword().equals(password)) {
           user = lu.get(0);
         } else {
-          sta = new Status(Status.USER_BAD_PASSWORD);
+          sta = new Status(Status.USER_WRONG_PASSWORD);
         }
       }
       utx.commit();
@@ -179,7 +179,7 @@ public class UserDAO {
         // Impossible d'annuler les changements, vous devriez logguer une erreur,
         // voir envoyer un email à l'exploitant de l'application.
       }
-      throw new DAOExceptionUser(new Status(Status.ERROR_DB), ex.getMessage());
+      throw new DAOExceptionUser(new Status(Status.DB_ERROR), ex.getMessage());
     }
     if (sta != null) {
       throw new DAOExceptionUser(sta);

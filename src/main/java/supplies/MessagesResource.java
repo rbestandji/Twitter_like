@@ -32,7 +32,7 @@ public class MessagesResource {
   public Response sendMessage(@CookieParam("authCookie") Cookie authenciateCookie,
           @FormParam("msg") String msg) {
     if (authenciateCookie == null) {
-      return Response.status(new Status(Status.USER_NO_LOGGED)).build();
+      return Response.status(new Status(Status.USER_NOT_LOGGED_IN)).build();
     }
     Message message = new Message(msg, new Date());
     try {
@@ -52,7 +52,7 @@ public class MessagesResource {
   @Path( "/my")
   public Response getMesMessages(@CookieParam("authCookie") Cookie authenciateCookie) {
     if (authenciateCookie == null) {
-      return Response.status(new Status(Status.USER_NO_LOGGED)).build();
+      return Response.status(new Status(Status.USER_NOT_LOGGED_IN)).build();
     }
     try {
       return Response.ok(MessageDAO.getMessages(Long.parseLong(authenciateCookie.getValue())), MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
@@ -69,7 +69,7 @@ public class MessagesResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Response getMessageWithID(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("id") String id) {
     if (authenciateCookie == null) {
-      return Response.status(new Status(Status.USER_NO_LOGGED)).build();
+      return Response.status(new Status(Status.USER_NOT_LOGGED_IN)).build();
     }
     try {
       return Response.ok(MessageDAO.getMessages(Long.parseLong(id)), MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
@@ -86,7 +86,7 @@ public class MessagesResource {
   @Produces(MediaType.APPLICATION_JSON)
   public Response getMessagesWithEmail(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("email") String email) {
     if (authenciateCookie == null) {
-      return Response.status(new Status(Status.USER_NO_LOGGED)).build();
+      return Response.status(new Status(Status.USER_NOT_LOGGED_IN)).build();
     }
     Long id;
     try {
@@ -106,7 +106,7 @@ public class MessagesResource {
   public Response sendComment(@CookieParam("authCookie") Cookie authenciateCookie,
           @FormParam("msg") String msg, @PathParam("id") String id) {
     if (authenciateCookie == null) {
-      return Response.status(new Status(Status.USER_NO_LOGGED)).build();
+      return Response.status(new Status(Status.USER_NOT_LOGGED_IN)).build();
     }
     Message comment = new Message(msg, new Date());
     try {
@@ -127,7 +127,7 @@ public class MessagesResource {
           @PathParam("idMsg") String idMsg,
           @PathParam("idComment") String idComment) {
     if (authenciateCookie == null) {
-      return Response.status(new Status(Status.USER_NO_LOGGED)).build();
+      return Response.status(new Status(Status.USER_NOT_LOGGED_IN)).build();
     }
     
     try {

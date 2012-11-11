@@ -26,7 +26,7 @@ public class UserView {
   @Produces(MediaType.APPLICATION_JSON)
   public Response getUserWithID(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("id") String id) {
     if (authenciateCookie == null) {
-      return Response.status(new Status(Status.USER_NO_LOGGED)).build();
+      return Response.status(new Status(Status.USER_NOT_LOGGED_IN)).build();
     }
 
     User user;
@@ -44,7 +44,7 @@ public class UserView {
   @Produces(MediaType.APPLICATION_JSON)
   public Response getUserWithEmail(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("email") String email) {
     if (authenciateCookie == null) {
-      return Response.status(new Status(Status.USER_NO_LOGGED)).build();
+      return Response.status(new Status(Status.USER_NOT_LOGGED_IN)).build();
     }
     Long id;
     try {
@@ -63,7 +63,7 @@ public class UserView {
   @Produces(MediaType.APPLICATION_JSON)
   public Response getUsersWithName(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("name") String name) {
     if (authenciateCookie == null) {
-      return Response.status(new Status(Status.USER_NO_LOGGED)).build();
+      return Response.status(new Status(Status.USER_NOT_LOGGED_IN)).build();
     }
     try {
       List<User> u = UserDAO.searchUser(name);

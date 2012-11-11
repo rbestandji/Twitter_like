@@ -27,7 +27,7 @@ public class UserRegistration {
           @FormParam("name") String name,
           @FormParam("firstname") String firstname) {
     if (authenciateCookie != null) {
-      return Response.status(new Status(Status.USER_LOGGED)).build();
+      return Response.status(new Status(Status.USER_LOGGED_IN)).build();
     }
 
     Status sta = null;
