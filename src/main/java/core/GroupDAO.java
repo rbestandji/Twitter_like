@@ -18,7 +18,7 @@ public class GroupDAO {
 
   public static void createGroup(Long idUser, Group group) throws DAOExceptionUser, IOException {
     UserTransaction utx = null;
-    boolean errorId = false;
+    boolean idError = false;
     try {
       InitialContext ic = new InitialContext();
       utx = (UserTransaction) ic.lookup("java:comp/UserTransaction");
@@ -36,7 +36,7 @@ public class GroupDAO {
 
 
       } else {
-        errorId = true;
+        idError = true;
       }
       utx.commit();
 
@@ -56,7 +56,7 @@ public class GroupDAO {
       throw new DAOExceptionUser(new Status(Status.DB_ERROR), ex.getMessage());
     }
 
-    if (errorId) {
+    if (idError) {
       throw new DAOExceptionUser(new Status(Status.USER_NO_ACCOUNT));
     }
   }

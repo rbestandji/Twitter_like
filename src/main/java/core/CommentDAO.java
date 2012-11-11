@@ -15,8 +15,8 @@ public class CommentDAO {
 
     UserTransaction utx = null;
     User uTmp = null;
-    boolean problemIdAuthor = false;
-    boolean problemIdMessage = false;
+    boolean problemAuthorId = false;
+    boolean problemMessageId = false;
 
     try {
       InitialContext ic = new InitialContext();
@@ -35,10 +35,10 @@ public class CommentDAO {
           comment.setIsComment(m.getId());
           em.persist(comment);
         } else {
-          problemIdMessage = true;
+          problemMessageId = true;
         }
       } else {
-        problemIdAuthor = true;
+        problemAuthorId = true;
       }
       utx.commit();
 
@@ -54,63 +54,9 @@ public class CommentDAO {
       throw new DAOExceptionUser(new Status(Status.DB_ERROR), ex.getMessage());
     }
 
-    if (problemIdAuthor) {
+    if (problemAuthorId) {
       throw new DAOExceptionUser(new Status(Status.USER_NO_ACCOUNT));
-    } else if (problemIdMessage) {
-      throw new DAOExceptionUser(new Status(Status.NO_MESSAGE_ID));
-    }
-  }
-  
-   /*
-   * Permet à l'utilisateur connecté de supprimer un commentaire (Ne fonctionne pas encore!!!!)
-   */
-  public static void deleteComment(Long idUser, Long idMsg, Long idComment) throws DAOExceptionUser {
-
-    UserTransaction utx = null;
-    User uTmp = null;
-    boolean problemIdAuthor = false;
-    boolean problemIdMessage = false;
-
-    try {
-      InitialContext ic = new InitialContext();
-      utx = (UserTransaction) ic.lookup("java:comp/UserTransaction");
-      EntityManager em = (EntityManager) ic.lookup("java:comp/env/persistence/EntityManager");
-      utx.begin();
-      em.joinTransaction();
-      uTmp = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idUser + "").getSingleResult();
-      if (uTmp != null) {
-        //comment.setAuthor(uTmp);
-        em.createQuery("DELETE FROM Message x WHERE x.id=" + idComment + "").executeUpdate();            
-        /*Message m = (Message) em.createQuery("SELECT x FROM Message x WHERE x.id=" + idMsg + "").getSingleResult();
-        if (m != null) {
-          //Collection<Message> list = m.getComments();
-          //list.add(comment);
-          //m.setComments(list);
-          //comment.setEstUnComment(m.getId());
-          //em.persist(comment);
-        } else {
-          problemIdMessage = true;
-        }*/
-      } else {
-        problemIdAuthor = true;
-      }
-      utx.commit();
-
-    } catch (Exception ex) {
-      try {
-        if (utx != null) {
-          utx.setRollbackOnly();
-        }
-      } catch (Exception rollbackEx) {
-        // Impossible d'annuler les changements, vous devriez logguer une erreur,
-        // voir envoyer un email à l'exploitant de l'application.
-      }
-      throw new DAOExceptionUser(new Status(Status.DB_ERROR), ex.getMessage());
-    }
-
-    if (problemIdAuthor) {
-      throw new DAOExceptionUser(new Status(Status.USER_NO_ACCOUNT));
-    } else if (problemIdMessage) {
+    } else if (problemMessageId) {
       throw new DAOExceptionUser(new Status(Status.NO_MESSAGE_ID));
     }
   }

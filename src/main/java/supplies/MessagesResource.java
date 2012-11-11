@@ -117,9 +117,10 @@ public class MessagesResource {
     }
   }
   
+  /*
       /*
    * Permet à l'utilisateur connecté de supprimer un comment (d'un de ses profirsts messages: à faire)
-   */
+   *
   @POST
   @Produces( MediaType.APPLICATION_JSON)
   @Path( "/supprimer/comment/{idMsg}/{idComment}")
@@ -137,4 +138,5 @@ public class MessagesResource {
       return Response.status(ex.getStatus()).build();
     }
   }
+  */
 }

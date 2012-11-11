@@ -15,7 +15,7 @@ public class UserDAO {
    */
   public static void createUser(User user) throws DAOExceptionUser {
     UserTransaction utx = null;
-    boolean isTaken = false;
+    boolean isValidated = false;
     try {
       InitialContext ic = new InitialContext();
       utx = (UserTransaction) ic.lookup("java:comp/UserTransaction");
@@ -26,7 +26,7 @@ public class UserDAO {
       if (lu.isEmpty()) {
         em.persist(user);
       } else {
-        isTaken = true;
+        isValidated = true;
       }
 
       utx.commit();
@@ -41,7 +41,7 @@ public class UserDAO {
       }
       throw new DAOExceptionUser(new Status(Status.DB_ERROR), ex.getMessage());
     }
-    if (isTaken) {
+    if (isValidated) {
       throw new DAOExceptionUser(new Status(Status.EMAIL_VALIDATED));
     }
   }

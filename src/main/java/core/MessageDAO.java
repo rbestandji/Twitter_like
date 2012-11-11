@@ -14,7 +14,7 @@ public class MessageDAO {
   public static void sendMessage(Long id, Message message) throws DAOExceptionUser {
 
     UserTransaction utx = null;
-    boolean errorId = false;
+    boolean idError = false;
     try {
       InitialContext ic = new InitialContext();
       utx = (UserTransaction) ic.lookup("java:comp/UserTransaction");
@@ -26,7 +26,7 @@ public class MessageDAO {
         message.setAuthor(uTmp);
         em.persist(message);
       } else {
-        errorId = true;
+        idError = true;
       }
       utx.commit();
 
@@ -40,7 +40,7 @@ public class MessageDAO {
       throw new DAOExceptionUser(new Status(Status.DB_ERROR), ex.getMessage());
     }
 
-    if (errorId) {
+    if (idError) {
       throw new DAOExceptionUser(new Status(Status.USER_NO_ACCOUNT));
     }
   }
@@ -51,7 +51,7 @@ public class MessageDAO {
   public static List<Message> getMessages(Long id) throws DAOExceptionUser {
     List<Message> list = new ArrayList<Message>();
     UserTransaction utx = null;
-    boolean errorId = false;
+    boolean idError = false;
     try {
       InitialContext ic = new InitialContext();
       utx = (UserTransaction) ic.lookup("java:comp/UserTransaction");
@@ -64,7 +64,7 @@ public class MessageDAO {
         q.setParameter("paraAuthor", user);
         list = (List<Message>) q.getResultList();
       } else {
-        errorId = true;
+        idError = true;
       }
       utx.commit();
 
@@ -79,7 +79,7 @@ public class MessageDAO {
       }
       throw new DAOExceptionUser(new Status(Status.DB_ERROR), ex.getMessage());
     }
-    if (errorId) {
+    if (idError) {
       throw new DAOExceptionUser(new Status(Status.USER_NO_ACCOUNT));
     }
     return list;

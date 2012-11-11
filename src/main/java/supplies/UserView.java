@@ -61,7 +61,7 @@ public class UserView {
   @Path("/search/{name}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getUsersWithName(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("name") String name) {
+  public Response getUsersByName(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("name") String name) {
     if (authenciateCookie == null) {
       return Response.status(new Status(Status.USER_NOT_LOGGED_IN)).build();
     }
