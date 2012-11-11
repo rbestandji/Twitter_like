@@ -30,7 +30,7 @@ public class UserConnection {
 
 
     if (authenciateCookie != null) {
-      return Response.status(new Status(Status.USER_LOGGED)).build();
+      return Response.status(new Status(Status.USER_LOGGED_IN)).build();
     }
 
     try {

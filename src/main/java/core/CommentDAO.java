@@ -51,13 +51,13 @@ public class CommentDAO {
         // Impossible d'annuler les changements, vous devriez logguer une erreur,
         // voir envoyer un email à l'exploitant de l'application.
       }
-      throw new DAOExceptionUser(new Status(Status.ERROR_DB), ex.getMessage());
+      throw new DAOExceptionUser(new Status(Status.DB_ERROR), ex.getMessage());
     }
 
     if (problemIdAuthor) {
       throw new DAOExceptionUser(new Status(Status.USER_NO_ACCOUNT));
     } else if (problemIdMessage) {
-      throw new DAOExceptionUser(new Status(Status.NOT_ID_MESSAGE));
+      throw new DAOExceptionUser(new Status(Status.NO_MESSAGE_ID));
     }
   }
   
@@ -105,13 +105,13 @@ public class CommentDAO {
         // Impossible d'annuler les changements, vous devriez logguer une erreur,
         // voir envoyer un email à l'exploitant de l'application.
       }
-      throw new DAOExceptionUser(new Status(Status.ERROR_DB), ex.getMessage());
+      throw new DAOExceptionUser(new Status(Status.DB_ERROR), ex.getMessage());
     }
 
     if (problemIdAuthor) {
       throw new DAOExceptionUser(new Status(Status.USER_NO_ACCOUNT));
     } else if (problemIdMessage) {
-      throw new DAOExceptionUser(new Status(Status.NOT_ID_MESSAGE));
+      throw new DAOExceptionUser(new Status(Status.NO_MESSAGE_ID));
     }
   }
 }

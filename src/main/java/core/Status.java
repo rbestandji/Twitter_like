@@ -5,14 +5,14 @@ import javax.ws.rs.core.Response.StatusType;
 
 public class Status implements StatusType {
 
-  public final static int USER_NO_LOGGED = 0;
-  public final static int USER_LOGGED = 1;
-  public final static int USER_NO_ACCOUNT = 2;
-  public final static int USER_BAD_PASSWORD = 3;
-  public final static int ERROR_DB = 4;
+  public final static int USER_NOT_LOGGED_IN = 0;//utilisateur non connecté
+  public final static int USER_LOGGED_IN = 1;//utilisateur connecté
+  public final static int USER_NO_ACCOUNT = 2;//L'utilisateur n'a pas de compte
+  public final static int USER_WRONG_PASSWORD = 3;//mauvais mot de passe utilisateur
+  public final static int DB_ERROR = 4;// problème de base de données
   public final static int OK = 200;
-  public final static int EMAIL_TAKEN = 5;
-  public final static int NOT_ID_MESSAGE = 6;
+  public final static int EMAIL_VALIDATED = 5;//validation de l'email
+  public final static int NO_MESSAGE_ID = 6;//pas d'identifiant pour le message
   private int code;
 
   public Status(int code) {

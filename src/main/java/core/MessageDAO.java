@@ -37,7 +37,7 @@ public class MessageDAO {
         }
       } catch (Exception rollbackEx) {
       }
-      throw new DAOExceptionUser(new Status(Status.ERROR_DB), ex.getMessage());
+      throw new DAOExceptionUser(new Status(Status.DB_ERROR), ex.getMessage());
     }
 
     if (errorId) {
@@ -77,7 +77,7 @@ public class MessageDAO {
         // Impossible d'annuler les changements, vous devriez logguer une erreur,
         // voir envoyer un email à l'exploitant de l'application.
       }
-      throw new DAOExceptionUser(new Status(Status.ERROR_DB), ex.getMessage());
+      throw new DAOExceptionUser(new Status(Status.DB_ERROR), ex.getMessage());
     }
     if (errorId) {
       throw new DAOExceptionUser(new Status(Status.USER_NO_ACCOUNT));

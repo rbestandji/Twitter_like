@@ -53,7 +53,7 @@ public class GroupDAO {
         }
       } catch (Exception rollbackEx) {
       }
-      throw new DAOExceptionUser(new Status(Status.ERROR_DB), ex.getMessage());
+      throw new DAOExceptionUser(new Status(Status.DB_ERROR), ex.getMessage());
     }
 
     if (errorId) {

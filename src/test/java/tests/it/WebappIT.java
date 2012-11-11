@@ -99,7 +99,7 @@ public class WebappIT extends TestCase {
     f.add("firstname", "Waza");
     webResource = client.resource(new URL(this.baseUrl + "/registration").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-    Assert.assertEquals(result.getStatus(), Status.EMAIL_TAKEN);
+    Assert.assertEquals(result.getStatus(), Status.EMAIL_VALIDATED);
     result.close();
 
   }
@@ -128,7 +128,7 @@ public class WebappIT extends TestCase {
     f.add("password", "monMDP");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-    Assert.assertEquals(result.getStatus(), Status.USER_LOGGED);
+    Assert.assertEquals(result.getStatus(), Status.USER_LOGGED_IN);
     result.close();
 
 
@@ -145,7 +145,7 @@ public class WebappIT extends TestCase {
     f.add("password", "password");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-    Assert.assertEquals(result.getStatus(), Status.USER_BAD_PASSWORD);
+    Assert.assertEquals(result.getStatus(), Status.USER_WRONG_PASSWORD);
     result.close();
 
     // L'utilisateur 1 tente de se reconnecter avec un mauvais identifiant 
@@ -171,7 +171,7 @@ public class WebappIT extends TestCase {
     f.add("msg", "Hello tout le monde");
     webResource = client.resource(new URL(this.baseUrl + "/messages/send").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-    Assert.assertEquals(result.getStatus(), Status.USER_NO_LOGGED);
+    Assert.assertEquals(result.getStatus(), Status.USER_NOT_LOGGED_IN);
     result.close();
 
     // Connexion de l'utilisateur 1 
