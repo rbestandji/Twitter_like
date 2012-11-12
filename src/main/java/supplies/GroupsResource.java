@@ -34,7 +34,7 @@ public class GroupsResource {
           @PathParam("name") String name) throws IOException {
 
     if (authenciateCookie == null) {
-      return Response.status(new Status(Status.USER_NOT_LOGGED_IN)).build();
+      return Response.status(new Status(Status.USER_OFFLINE)).build();
     }
     try {
       GroupDAO.createGroup(Long.parseLong(authenciateCookie.getValue()), new Group(name));

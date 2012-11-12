@@ -27,12 +27,12 @@ public class UserRegistration {
           @FormParam("name") String name,
           @FormParam("firstname") String firstname) {
     if (authenciateCookie != null) {
-      return Response.status(new Status(Status.USER_LOGGED_IN)).build();
+      return Response.status(new Status(Status.USER_ONLINE)).build();
     }
 
     Status sta = null;
-    User newUser = new User(name, firstname, email, password);
     try {
+      User newUser = new User(name, firstname, email, password);
       UserDAO.createUser(newUser);
       sta = new Status(Status.OK);
     } catch (DAOExceptionUser ex) {

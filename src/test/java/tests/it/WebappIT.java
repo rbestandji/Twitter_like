@@ -51,7 +51,6 @@ public class WebappIT extends TestCase {
   // Dans cette fonction nous allons créer des utilisateurs 
   @Before
   public void testCreateUsers() throws Exception {
-
     Form f = new Form();
     WebResource webResource = null;
     ClientResponse result = null;
@@ -67,11 +66,10 @@ public class WebappIT extends TestCase {
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
-
     // Utilisateur 2 
     f.clear();
     f.add("email", "lavalber02@gmail.com");
-    f.add("password", "monMDP");
+    f.add("password", "motdepasse");
     f.add("name", "Laval");
     f.add("firstname", "Bernard");
     webResource = client.resource(new URL(this.baseUrl + "/registration").toURI());
@@ -79,11 +77,10 @@ public class WebappIT extends TestCase {
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
-
     // Utilisateur 3 
     f.clear();
     f.add("email", "lionel.muller.34@gmail.com");
-    f.add("password", "monMDP");
+    f.add("password", "motdepasse");
     f.add("name", "Muller");
     f.add("firstname", "Lionel");
     webResource = client.resource(new URL(this.baseUrl + "/registration").toURI());
@@ -94,7 +91,7 @@ public class WebappIT extends TestCase {
     // Utilisateur 4 
     f.clear();
     f.add("email", "lionel.muller.34@gmail.com");
-    f.add("password", "dfdfs");
+    f.add("password", "password");
     f.add("name", "castorPirate");
     f.add("firstname", "Waza");
     webResource = client.resource(new URL(this.baseUrl + "/registration").toURI());
@@ -102,6 +99,16 @@ public class WebappIT extends TestCase {
     Assert.assertEquals(result.getStatus(), Status.EMAIL_VALIDATED);
     result.close();
 
+    // Utilisateur 5
+    f.clear();
+    f.add("email", "lmuller34@hotmail.c om");
+    f.add("password", "password");
+    f.add("name", "castorPirate");
+    f.add("firstname", "Waza");
+    webResource = client.resource(new URL(this.baseUrl + "/registration").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+    Assert.assertEquals(result.getStatus(), Status.INVALID_EMAIL);
+    result.close();
   }
 
   // Cette fonction test qu'un utilisateur ne peut se connecter (qu') avec son compte.
@@ -125,10 +132,10 @@ public class WebappIT extends TestCase {
     // L'utilisateur 1 est encore connecté, tentative de connexion de l'utilisateur 2 
     f.clear();
     f.add("email", "lavalber02@gmail.com");
-    f.add("password", "monMDP");
+    f.add("password", "motdepasse");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-    Assert.assertEquals(result.getStatus(), Status.USER_LOGGED_IN);
+    Assert.assertEquals(result.getStatus(), Status.USER_ONLINE);
     result.close();
 
 
@@ -171,7 +178,7 @@ public class WebappIT extends TestCase {
     f.add("msg", "Hello tout le monde");
     webResource = client.resource(new URL(this.baseUrl + "/messages/send").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-    Assert.assertEquals(result.getStatus(), Status.USER_NOT_LOGGED_IN);
+    Assert.assertEquals(result.getStatus(), Status.USER_OFFLINE);
     result.close();
 
     // Connexion de l'utilisateur 1 
@@ -208,7 +215,7 @@ public class WebappIT extends TestCase {
     // L'utilisateur 2 se connecte 
     f.clear();
     f.add("email", "lavalber02@gmail.com");
-    f.add("password", "monMDP");
+    f.add("password", "motdepasse");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(result.getStatus(), Status.OK);

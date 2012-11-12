@@ -10,9 +10,8 @@ import model.User;
 
 public class UserDAO {
 
-  /*
-   * Fonction permettant de créer un compte.
-   */
+  //Fonction permettant de créer un compte.
+   
   public static void createUser(User user) throws DAOExceptionUser {
     UserTransaction utx = null;
     boolean isValidated = false;
@@ -46,7 +45,7 @@ public class UserDAO {
     }
   }
 
-  /*Retourne l'user correspondant à l'id */
+  //Retourne l'user correspondant à l'id 
   public static User getUser(Long id) throws DAOExceptionUser {
     User user = null;
     UserTransaction utx = null;
@@ -79,7 +78,7 @@ public class UserDAO {
     return user;
   }
 
-  /*Retourne l'id correspondant au mail*/
+  //Retourne l'id correspondant au mail
   public static Long getId(String email) throws DAOExceptionUser {
     Long id = null;
     UserTransaction utx = null;
@@ -114,8 +113,8 @@ public class UserDAO {
     return id;
   }
 
-  /*Retourne la liste des users dont le nom contient la chaine 'nom' en paramètre*/
-  public static List<User> searchUser(String nom) throws DAOExceptionUser {
+  //Retourne la liste des users dont le nom contient la chaine 'name' en paramètre
+  public static List<User> searchUser(String name) throws DAOExceptionUser {
     List<User> users = null;
     UserTransaction utx = null;
     try {
@@ -126,7 +125,7 @@ public class UserDAO {
       utx.begin();
       em.joinTransaction();
       Query query = em.createQuery("SELECT x FROM User x WHERE UPPER(x.name) LIKE :name");
-      query.setParameter("name", "%" + nom.toUpperCase() + "%");
+      query.setParameter("name", "%" + name.toUpperCase() + "%");
       users = query.getResultList();
       utx.commit();
 
@@ -146,7 +145,7 @@ public class UserDAO {
     return users;
   }
 
-  /* Connexion */
+  // Connexion 
   public static User connection(String email, String password) throws DAOExceptionUser {
     User user = null;
     Status sta = null;
