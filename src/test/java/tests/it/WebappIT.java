@@ -128,7 +128,7 @@ public class WebappIT extends TestCase {
     f.add("password", "monMDP");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-    Assert.assertEquals(result.getStatus(), Status.USER_LOGGED_IN);
+    Assert.assertEquals(result.getStatus(), Status.USER_ONLINE);
     result.close();
 
 
@@ -171,7 +171,7 @@ public class WebappIT extends TestCase {
     f.add("msg", "Hello tout le monde");
     webResource = client.resource(new URL(this.baseUrl + "/messages/send").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-    Assert.assertEquals(result.getStatus(), Status.USER_NOT_LOGGED_IN);
+    Assert.assertEquals(result.getStatus(), Status.USER_OFFLINE);
     result.close();
 
     // Connexion de l'utilisateur 1 
