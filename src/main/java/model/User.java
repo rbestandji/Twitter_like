@@ -16,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import core.DAOExceptionUser;
+import core.Status;
 
 @Entity
 @Table(name = "tUser")
@@ -47,14 +49,18 @@ public class User implements Serializable {
   public User() {
   }
 
-  public User(String name, String firstname) {
+  public User(String name, String firstname) throws DAOExceptionUser {
     this(name, firstname, "", "");
   }
 
-  public User(String name, String firstname, String email, String password) {
+  public User(String name, String firstname, String email, String password) throws DAOExceptionUser {
     this.setName(name);
     this.setFirstname(firstname);
-    this.setPassword(password);
+    try {
+      this.setPassword(password);
+    } catch (DAOExceptionUser ex) {
+      throw ex;
+    }
     this.setEmail(email);
   }
 
@@ -82,8 +88,11 @@ public class User implements Serializable {
     return password;
   }
 
-  public void setPassword(String password) {
-    this.password = password;
+  public void setPassword(String password) throws DAOExceptionUser {
+    if (password.length()<8) 
+      throw new DAOExceptionUser(new Status(Status.PASSWORD_TOO_SHORT));
+    else
+      this.password = password;
   }
 
   public void setName(String name) {

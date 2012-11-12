@@ -31,8 +31,8 @@ public class UserRegistration {
     }
 
     Status sta = null;
-    User newUser = new User(name, firstname, email, password);
     try {
+      User newUser = new User(name, firstname, email, password);
       UserDAO.createUser(newUser);
       sta = new Status(Status.OK);
     } catch (DAOExceptionUser ex) {
