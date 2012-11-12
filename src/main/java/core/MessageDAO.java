@@ -56,6 +56,8 @@ public class MessageDAO {
       EntityManager em = (EntityManager) ic.lookup("java:comp/env/persistence/EntityManager");
       utx.begin();
       em.joinTransaction();
+      
+      //System.out.println("je passe dans deleteMessage\n AuthoId: "+authorId+"\n msgId: "+msgId+"\n ");
       Message msg = (Message) em.createQuery("SELECT x FROM Message x WHERE x.id=" + msgId + "").getSingleResult();
       if (msg != null) {
         if(msg.getAuthor().getId()==authorId){//vérifie si on est bien le créateur du msg
@@ -79,7 +81,7 @@ public class MessageDAO {
     }
 
     if (msgIdError) {
-      throw new DAOExceptionUser(new Status(Status.USER_NO_ACCOUNT));
+      throw new DAOExceptionUser(new Status(Status.ID_NOT_EXIST));
     }
     if (authorIdError) {
       throw new DAOExceptionUser(new Status(Status.WRONG_USER));

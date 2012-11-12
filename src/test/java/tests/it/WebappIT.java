@@ -286,7 +286,7 @@ public class WebappIT extends TestCase {
     
    }
 
-  // Cette fonction va tester la lecture d'un profil 
+  // Cette fonction va tester l'écriture et la lecture de commentaires
   @Test
   public void testComment() throws Exception {
     Form f = new Form();
@@ -318,6 +318,34 @@ public class WebappIT extends TestCase {
     result.close();
   }
 
+  // Cette fonction va tester la suppression de messages
+  @Test
+  public void testDeleteMessage() throws Exception {
+    Form f = new Form();
+    WebResource webResource;
+    ClientResponse result;
+    System.out.println("****************** Tests des suppressions ! ******************");
+
+    // Connexion de l'utilisateur 1 
+    f.add("email", "le.jitou@gmail.com");
+    f.add("password", "password");
+    webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+    Assert.assertEquals(result.getStatus(), Status.OK);
+    result.close();
+
+    // Lecture des messages à partir du mail. 
+    webResource = client.resource(new URL(this.baseUrl + "/messages/get/1").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);    
+    result.close();
+    
+    //Suppression du message ayant l'id 4
+    webResource = client.resource(new URL(this.baseUrl + "/messages/delete/4").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+    Assert.assertEquals(result.getStatus(),Status.OK);
+    result.close();
+  }
+  
   //Fonction test Put  INUTILE
   /*
   @Test

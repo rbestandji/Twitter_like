@@ -117,8 +117,7 @@ public class MessagesResource {
     }
   }
   
-  
-      /*
+   /*
    * Permet à l'utilisateur connecté de supprimer l'un de ses messages
    */
   @POST
@@ -137,5 +136,4 @@ public class MessagesResource {
       return Response.status(ex.getStatus()).build();
     }
   }
-  
 }

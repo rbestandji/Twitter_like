@@ -14,6 +14,7 @@ public class Status implements StatusType {
   public final static int EMAIL_VALIDATED = 5;//validation de l'email
   public final static int NO_MESSAGE_ID = 6;//pas d'identifiant pour le message
   public final static int WRONG_USER = 7;//l'utilisateur n'est pas celui attendu
+  public final static int ID_NOT_EXIST = 8;//L'identifiant n'existe pas
   private int code;
 
   public Status(int code) {
