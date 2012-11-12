@@ -29,7 +29,7 @@ public class GroupDAO {
       User uTmp = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idUser + "").getSingleResult();
       if (uTmp != null) {
         Group g = new Group(group.getName(), uTmp);
-        //sg.setCreateur(uTmp);
+        //sg.setCreator(uTmp);
 
         uTmp.getGroups().add(g);
         //em.persist(group);
