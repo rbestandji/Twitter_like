@@ -101,13 +101,13 @@ public class WebappIT extends TestCase {
 
     // Utilisateur 5
     f.clear();
-    f.add("email", "lmuller34@hotmail.com");
-    f.add("password", "dfdfs");
+    f.add("email", "lmuller34@hotmail.c om");
+    f.add("password", "password");
     f.add("name", "castorPirate");
     f.add("firstname", "Waza");
     webResource = client.resource(new URL(this.baseUrl + "/registration").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-    Assert.assertEquals(result.getStatus(), Status.PASSWORD_TOO_SHORT);
+    Assert.assertEquals(result.getStatus(), Status.INVALID_EMAIL);
     result.close();
   }
 

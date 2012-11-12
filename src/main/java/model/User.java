@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import core.DAOExceptionUser;
 import core.Status;
+import java.lang.Character;
 
 @Entity
 @Table(name = "tUser")
@@ -45,7 +46,7 @@ public class User implements Serializable {
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "creator")
   private List<Group> groups = new ArrayList<Group>();
 
-  /* Constructeurs */
+  // Constructeurs
   public User() {
   }
 
@@ -54,20 +55,17 @@ public class User implements Serializable {
   }
 
   public User(String name, String firstname, String email, String password) throws DAOExceptionUser {
-    this.setName(name);
-    this.setFirstname(firstname);
     try {
       this.setPassword(password);
+      this.setEmail(email);
     } catch (DAOExceptionUser ex) {
       throw ex;
     }
-    this.setEmail(email);
+    this.setName(name);
+    this.setFirstname(firstname);
   }
 
-  /**
-   * *************************************************
-   * Getters et Setters ************************************************
-   */
+   // Getters et Setters
   public List<Group> getGroups() {
     return groups;
   }
@@ -103,8 +101,24 @@ public class User implements Serializable {
     this.firstname = firstname;
   }
 
-  public void setEmail(String email) {
-    this.email = email;
+  public void setEmail(String email) throws DAOExceptionUser {
+    int isValid=0;
+    int i=0;
+    char c;
+    while (i<email.length()) {
+      c = email.charAt(i);
+      if (Character.isSpaceChar(c)) {
+        isValid=0;
+        break;
+      }
+      if (c == '@')
+        isValid++;
+      i++;
+    }
+    if (isValid == 1)
+      this.email = email;
+    else
+      throw new DAOExceptionUser(new Status(Status.INVALID_EMAIL));
   }
 
   public void setRegistrationDate(Date registrationDate) {
