@@ -64,15 +64,15 @@ public class MessagesResource {
   /*
    * Retourne la liste des messages de l'utilisateur avec l'identifiant en PathParam.
    */
-  @Path("/get/{id}")
+  @Path("/get/{idUser}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getMessageWithID(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("id") String id) {
+  public Response getMessageWithID(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("idUser") String idUser) {
     if (authenciateCookie == null) {
       return Response.status(new Status(Status.USER_OFFLINE)).build();
     }
     try {
-      return Response.ok(MessageDAO.getMessages(Long.parseLong(id)), MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
+      return Response.ok(MessageDAO.getMessages(Long.parseLong(idUser)), MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
     } catch (DAOExceptionUser ex) {
       return Response.status(ex.getStatus()).build();
     }
@@ -102,15 +102,15 @@ public class MessagesResource {
    */
   @POST
   @Produces( MediaType.APPLICATION_JSON)
-  @Path( "/send/comment/{id}")
+  @Path( "/send/comment/{idMsg}")
   public Response sendComment(@CookieParam("authCookie") Cookie authenciateCookie,
-          @FormParam("msg") String msg, @PathParam("id") String id) {
+          @FormParam("msg") String msg, @PathParam("idMsg") String idMsg) {
     if (authenciateCookie == null) {
       return Response.status(new Status(Status.USER_OFFLINE)).build();
     }
     Message comment = new Message(msg, new Date());
     try {
-      CommentDAO.sendComment(Long.parseLong(authenciateCookie.getValue()), Long.parseLong(id), comment);
+      CommentDAO.sendComment(Long.parseLong(authenciateCookie.getValue()), Long.parseLong(idMsg), comment);
      return Response.ok(comment).status(Status.OK).build();
     } catch (DAOExceptionUser ex) {
     return Response.status(ex.getStatus()).build();

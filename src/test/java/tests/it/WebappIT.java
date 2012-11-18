@@ -341,15 +341,20 @@ public class WebappIT extends TestCase {
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
-    // Lecture des messages à partir du mail. 
+    // Lecture de tous les messages de l'utilisateur 1. 
     webResource = client.resource(new URL(this.baseUrl + "/messages/get/1").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);    
     result.close();
     
-    //Suppression du message ayant l'id 4
+    //Suppression du message ayant l'id 4 (rattaché à l'utilisateur 1)
     webResource = client.resource(new URL(this.baseUrl + "/messages/delete/4").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(result.getStatus(),Status.OK);
+    result.close();
+    
+    // Lecture des tous les messages de l'utilisateur 1. 
+    webResource = client.resource(new URL(this.baseUrl + "/messages/get/1").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);    
     result.close();
   }
   

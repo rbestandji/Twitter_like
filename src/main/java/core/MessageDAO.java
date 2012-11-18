@@ -91,23 +91,23 @@ public class MessageDAO {
   /*
    * Fonction cherchant tous les messages pour un identifiant donné
    */
-  public static List<Message> getMessages(Long id) throws DAOExceptionUser {
+  public static List<Message> getMessages(Long idUser) throws DAOExceptionUser {
     List<Message> list = new ArrayList<Message>();
     UserTransaction utx = null;
-    boolean idError = false;
+    boolean idUserError = false;
     try {
       InitialContext ic = new InitialContext();
       utx = (UserTransaction) ic.lookup("java:comp/UserTransaction");
       EntityManager em = (EntityManager) ic.lookup("java:comp/env/persistence/EntityManager");
       utx.begin();
       em.joinTransaction();
-      User user = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + id + "").getSingleResult();
+      User user = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idUser + "").getSingleResult();
       if (user != null) {
         Query q = em.createQuery("SELECT x FROM Message x WHERE x.author= :paraAuthor AND x.isComment IS NULL");
         q.setParameter("paraAuthor", user);
         list = (List<Message>) q.getResultList();
       } else {
-        idError = true;
+        idUserError = true;
       }
       utx.commit();
 
@@ -122,7 +122,7 @@ public class MessageDAO {
       }
       throw new DAOExceptionUser(new Status(Status.DB_ERROR), ex.getMessage());
     }
-    if (idError) {
+    if (idUserError) {
       throw new DAOExceptionUser(new Status(Status.USER_NO_ACCOUNT));
     }
     return list;
