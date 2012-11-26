@@ -5,7 +5,6 @@ import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.transaction.UserTransaction;
-import model.Group;
 import model.User;
 
 public class UserDAO {

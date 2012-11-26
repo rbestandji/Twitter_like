@@ -19,6 +19,8 @@ import javax.persistence.Temporal;
 import core.DAOExceptionUser;
 import core.Status;
 import java.lang.Character;
+import org.codehaus.jackson.annotate.JsonBackReference;
+import org.codehaus.jackson.annotate.JsonManagedReference;
 
 @Entity
 @Table(name = "tUser")
@@ -43,8 +45,17 @@ public class User implements Serializable {
   private Date lastLoginDate = new Date();
   @OneToMany
   private List<Message> messages = new ArrayList<Message>();
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "creator")
-  private List<Group> groups = new ArrayList<Group>();
+
+  @OneToMany( mappedBy="following")  
+      @JsonManagedReference("ing")  
+  private List<UserAssignment> usersFollowing = new ArrayList<UserAssignment>();
+  
+  @OneToMany( mappedBy="follower")
+        @JsonManagedReference("er")  
+  private List<UserAssignment> usersFollowers = new ArrayList<UserAssignment>();
+
+
+
 
   // Constructeurs
   public User() {
@@ -65,13 +76,20 @@ public class User implements Serializable {
     this.setFirstname(firstname);
   }
 
-   // Getters et Setters
-  public List<Group> getGroups() {
-    return groups;
+  public List<UserAssignment> getUsersFollowing() {
+    return usersFollowing;
   }
 
-  public void setGroups(List<Group> groups) {
-    this.groups = groups;
+  public void setUsersFollowing(List<UserAssignment> usersFollowing) {
+    this.usersFollowing = usersFollowing;
+  }
+  
+  public List<UserAssignment> getUsersFollowers() {
+    return usersFollowers;
+  }
+
+  public void setUsersFollowers(List<UserAssignment> usersFollowers) {
+    this.usersFollowers = usersFollowers;
   }
 
   public List<Message> getMessages() {
@@ -157,9 +175,6 @@ public class User implements Serializable {
     this.id = id;
   }
 
-  public void removeRecursionProblem() {
-    for (int i = 0; i < this.groups.size(); i++) {
-      this.groups.get(i).setCreator(null);
-    }
-  }
+
+  
 }

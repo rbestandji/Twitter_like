@@ -32,7 +32,6 @@ public class UserView {
     User user;
     try {
       user = UserDAO.getUser(Long.parseLong(id));
-      user.removeRecursionProblem();
       return Response.ok(user, MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
     } catch (DAOExceptionUser ex) {
       return Response.status(ex.getStatus()).build();
@@ -50,7 +49,6 @@ public class UserView {
     try {
       id = UserDAO.getId(email);
       User user = UserDAO.getUser(id);
-      user.removeRecursionProblem();
       return Response.ok(user, MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
     } catch (DAOExceptionUser ex) {
       return Response.status(ex.getStatus()).build();
@@ -67,9 +65,6 @@ public class UserView {
     }
     try {
       List<User> u = UserDAO.searchUser(name);
-      for (int i = 0; i < u.size(); i++) {
-        u.get(i).removeRecursionProblem();
-      }
       return Response.ok(u, MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
     } catch (DAOExceptionUser ex) {
       return Response.status(ex.getStatus()).build();

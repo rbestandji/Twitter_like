@@ -16,6 +16,7 @@ import model.User;
 @Path( "/registration")
 public class UserRegistration {
 
+  
   /*
    * Fonction permettant de créer un compte.
    */

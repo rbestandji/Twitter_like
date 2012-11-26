@@ -125,9 +125,29 @@ public class WebappIT extends TestCase {
     f.add("password", "password");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+    System.out.println(result.getEntity(String.class));
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
+    webResource = client.resource(new URL(this.baseUrl + "/follow/following/2").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+    System.out.println("OK /: "+result.getStatus());
+    result.close();
+      webResource = client.resource(new URL(this.baseUrl + "/follow/following/3").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+    System.out.println("OK /: "+result.getStatus());
+    result.close();
+    webResource = client.resource(new URL(this.baseUrl + "/users/get/1").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+    System.out.println("OK /: "+result.getEntity(String.class));
+    result.close();
+        webResource = client.resource(new URL(this.baseUrl + "/users/get/2").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+    System.out.println("OK /: "+result.getEntity(String.class));
+    result.close();
+    
+    
+    
 
     // L'utilisateur 1 est encore connecté, tentative de connexion de l'utilisateur 2 
     f.clear();
@@ -358,35 +378,4 @@ public class WebappIT extends TestCase {
     result.close();
   }
   
-  //Fonction test Put  INUTILE
-  /*
-  @Test
-  public void testPut() throws Exception {
-    System.out.println("****************** Tests des PUT ! ******************");
-    // WebResource webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
-    // System.out.println(webResource.type(MediaType.APPLICATION_JSON).
-    //                                        put(String.class, new Message("Hello ", new Date())));
-
-    Form f = new Form();
-    WebResource webResource;
-    ClientResponse result;
-
-    // Connexion de l'utilisateur 1
-    f.add("email", "le.jitou@gmail.com");
-    f.add("password", "password");
-    webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
-    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-    Assert.assertEquals(result.getStatus(), Status.OK);
-    result.close();
-
-    webResource = client.resource(new URL(this.baseUrl + "/group/create/newgroup").toURI());
-    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    System.out.println("Nouveau groupe : " + result.getStatus());
-    result.close();
-
-    webResource = client.resource(new URL(this.baseUrl + "/users/get/1").toURI());
-    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    System.out.println(result.getEntity(String.class));
-    result.close();
-  }*/
 }
