@@ -131,23 +131,23 @@ public class WebappIT extends TestCase {
 
     webResource = client.resource(new URL(this.baseUrl + "/follow/following/2").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    System.out.println("OK /: "+result.getStatus());
+    System.out.println("OK /: " + result.getStatus());
     result.close();
-      webResource = client.resource(new URL(this.baseUrl + "/follow/following/3").toURI());
+    webResource = client.resource(new URL(this.baseUrl + "/follow/following/3").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    System.out.println("OK /: "+result.getStatus());
+    System.out.println("OK /: " + result.getStatus());
     result.close();
     webResource = client.resource(new URL(this.baseUrl + "/users/get/1").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    System.out.println("OK /: "+result.getEntity(String.class));
+    System.out.println("OK /: " + result.getEntity(String.class));
     result.close();
-        webResource = client.resource(new URL(this.baseUrl + "/users/get/2").toURI());
+    webResource = client.resource(new URL(this.baseUrl + "/users/get/2").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    System.out.println("OK /: "+result.getEntity(String.class));
+    System.out.println("OK /: " + result.getEntity(String.class));
     result.close();
-    
-    
-    
+
+
+
 
     // L'utilisateur 1 est encore connecté, tentative de connexion de l'utilisateur 2 
     f.clear();
@@ -265,7 +265,7 @@ public class WebappIT extends TestCase {
     webResource = client.resource(new URL(this.baseUrl + "/messages/getuser/lavalber02@gmail.com").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(((LinkedHashMap) (result.getEntity(List.class).get(0))).get("text"),
-                                                             " Moi je suis un message");
+            " Moi je suis un message");
     //System.out.println(result.getEntity(List.class));
     result.close();
 
@@ -303,15 +303,15 @@ public class WebappIT extends TestCase {
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(result.getEntity(User.class).getEmail(), "lionel.muller.34@gmail.com");
     result.close();
-    
+
     // Test la fonction de recherche de tous les utilisateurs avec un 'l' 
-   
+
     webResource = client.resource(new URL(this.baseUrl + "/users/search/l").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(result.getEntity(List.class).size(), 2);
-    result.close(); 
-    
-   }
+    result.close();
+
+  }
 
   // Cette fonction va tester l'écriture et la lecture de commentaires
   @Test
@@ -363,19 +363,18 @@ public class WebappIT extends TestCase {
 
     // Lecture de tous les messages de l'utilisateur 1. 
     webResource = client.resource(new URL(this.baseUrl + "/messages/get/1").toURI());
-    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);    
+    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     result.close();
-    
+
     //Suppression du message ayant l'id 4 (rattaché à l'utilisateur 1)
     webResource = client.resource(new URL(this.baseUrl + "/messages/delete/4").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-    Assert.assertEquals(result.getStatus(),Status.OK);
+    Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
-    
+
     // Lecture des tous les messages de l'utilisateur 1. 
     webResource = client.resource(new URL(this.baseUrl + "/messages/get/1").toURI());
-    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);    
+    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     result.close();
   }
-  
 }

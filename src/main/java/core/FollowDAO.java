@@ -17,7 +17,7 @@ public class FollowDAO {
       InitialContext ic = new InitialContext();
       utx = (UserTransaction) ic.lookup("java:comp/UserTransaction");
       EntityManager em = (EntityManager) ic.lookup("java:comp/env/persistence/EntityManager");
-      
+
       utx.begin();
       em.joinTransaction();
       User userFollower = (User) em.createQuery("SELECT x FROM User x WHERE x.id='" + idFollower + "'").getSingleResult();
@@ -26,7 +26,7 @@ public class FollowDAO {
       userFollower.getUsersFollowing().add(ass);
       userFollowing.getUsersFollowers().add(ass);
       em.persist(ass);
-      
+
       utx.commit();
     } catch (Exception ex) {
       try {

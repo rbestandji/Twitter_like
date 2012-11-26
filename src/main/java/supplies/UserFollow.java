@@ -20,12 +20,12 @@ import javax.ws.rs.core.Response;
  *
  * @author jitou
  */
-
 @Path("/follow/")
 public class UserFollow {
-     /*
+  /*
    * Retourne juste un code d'erreur
    */
+
   @Path("following/{id}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
@@ -35,11 +35,10 @@ public class UserFollow {
     }
 
     try {
-      FollowDAO.followUser(Long.parseLong(authenciateCookie.getValue()),Long.parseLong(id));
+      FollowDAO.followUser(Long.parseLong(authenciateCookie.getValue()), Long.parseLong(id));
       return Response.status(new Status(Status.OK)).build();
     } catch (DAOExceptionUser ex) {
       return Response.status(ex.getStatus()).build();
     }
   }
-  
 }

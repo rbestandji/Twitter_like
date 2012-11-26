@@ -1,4 +1,3 @@
-
 package model;
 
 import java.io.Serializable;
@@ -45,17 +44,12 @@ public class User implements Serializable {
   private Date lastLoginDate = new Date();
   @OneToMany
   private List<Message> messages = new ArrayList<Message>();
-
-  @OneToMany( mappedBy="following")  
-      @JsonManagedReference("ing")  
+  @OneToMany( mappedBy = "following")
+  @JsonManagedReference("ing")
   private List<UserAssignment> usersFollowing = new ArrayList<UserAssignment>();
-  
-  @OneToMany( mappedBy="follower")
-        @JsonManagedReference("er")  
+  @OneToMany( mappedBy = "follower")
+  @JsonManagedReference("er")
   private List<UserAssignment> usersFollowers = new ArrayList<UserAssignment>();
-
-
-
 
   // Constructeurs
   public User() {
@@ -83,7 +77,7 @@ public class User implements Serializable {
   public void setUsersFollowing(List<UserAssignment> usersFollowing) {
     this.usersFollowing = usersFollowing;
   }
-  
+
   public List<UserAssignment> getUsersFollowers() {
     return usersFollowers;
   }
@@ -105,10 +99,11 @@ public class User implements Serializable {
   }
 
   public void setPassword(String password) throws DAOExceptionUser {
-    if (password.length()<8) 
+    if (password.length() < 8) {
       throw new DAOExceptionUser(new Status(Status.PASSWORD_TOO_SHORT));
-    else
+    } else {
       this.password = password;
+    }
   }
 
   public void setName(String name) {
@@ -120,23 +115,25 @@ public class User implements Serializable {
   }
 
   public void setEmail(String email) throws DAOExceptionUser {
-    int isValid=0;
-    int i=0;
+    int isValid = 0;
+    int i = 0;
     char c;
-    while (i<email.length()) {
+    while (i < email.length()) {
       c = email.charAt(i);
       if (Character.isSpaceChar(c)) {
-        isValid=0;
+        isValid = 0;
         break;
       }
-      if (c == '@')
+      if (c == '@') {
         isValid++;
+      }
       i++;
     }
-    if (isValid == 1)
+    if (isValid == 1) {
       this.email = email;
-    else
+    } else {
       throw new DAOExceptionUser(new Status(Status.INVALID_EMAIL));
+    }
   }
 
   public void setRegistrationDate(Date registrationDate) {
@@ -174,7 +171,4 @@ public class User implements Serializable {
   public void setId(Long id) {
     this.id = id;
   }
-
-
-  
 }

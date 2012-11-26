@@ -22,7 +22,6 @@ public class Message implements Serializable {
   private Date date = null;
   @Column
   private Long isComment = null;
-  
   @OneToMany(cascade = CascadeType.ALL)
   private Collection<Message> comments = new ArrayList<Message>();
 
