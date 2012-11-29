@@ -48,7 +48,6 @@ public class MessageIT extends TestCase {
 
   }
 
-
   // Cette fonction va tester l'envoi de Tweet ainsi que leur lecture 
   @Test
   public void testSendMsg() throws Exception {
@@ -117,12 +116,15 @@ public class MessageIT extends TestCase {
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     List<LinkedHashMap<String, ?>> listeMsg = result.getEntity(List.class);
     boolean ff = false;
-    for(LinkedHashMap<String, ?> m: listeMsg)
-      if(((String)m.get("text")).compareTo("Moi je suis un message")==0)
-        ff=true;
-    Assert.assertEquals(ff,true);
+    for (LinkedHashMap<String, ?> m : listeMsg) {
+      if (((String) m.get("text")).compareTo("Moi je suis un message") == 0) {
+        ff = true;
+      }
+    }
+    Assert.assertEquals(ff, true);
     result.close();
-/*
+
+    /*
     // Bernard veut lire les messages de l'utilisateur 1
     webResource = client.resource(new URL(this.baseUrl + "/messages/get/1").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
@@ -141,10 +143,6 @@ public class MessageIT extends TestCase {
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.USER_NO_ACCOUNT, result.getStatus());
     result.close();
-*/
+     */
   }
-
-
-
-
 }

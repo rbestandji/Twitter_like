@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.*;
+import org.codehaus.jackson.annotate.JsonBackReference;
 
 @Entity
 @Table(name = "tMessage")
@@ -15,6 +16,7 @@ public class Message implements Serializable {
   @GeneratedValue( strategy = GenerationType.SEQUENCE)
   private Long id;
   @ManyToOne
+  @JsonBackReference("msg_e")
   private User author = new User();
   @Column( length = 500)
   private String text = "";

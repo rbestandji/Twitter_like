@@ -17,10 +17,8 @@ public class UserAssignment implements Serializable {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
   @ManyToOne
-  @JsonBackReference("er")
   private User following = new User();
   @ManyToOne
-  @JsonBackReference("ing")
   private User follower = new User();
 
   public UserAssignment() {
@@ -39,6 +37,7 @@ public class UserAssignment implements Serializable {
     this.id = id;
   }
 
+  @JsonBackReference("er")
   public User getFollowing() {
     return following;
   }
@@ -47,6 +46,7 @@ public class UserAssignment implements Serializable {
     this.following = following;
   }
 
+  @JsonBackReference("ing")
   public User getFollower() {
     return follower;
   }

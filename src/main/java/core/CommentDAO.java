@@ -11,6 +11,7 @@ public class CommentDAO {
   /*
    * Permet à l'utilisateur connecté de commenter un message
    */
+
   public static void sendComment(Long idUser, Long idMessage, Message comment) throws DAOExceptionUser {
 
     UserTransaction utx = null;

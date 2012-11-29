@@ -43,6 +43,7 @@ public class User implements Serializable {
   @Temporal( javax.persistence.TemporalType.DATE)
   private Date lastLoginDate = new Date();
   @OneToMany
+  @JsonManagedReference("msg_e")
   private List<Message> messages = new ArrayList<Message>();
   @OneToMany( mappedBy = "following")
   @JsonManagedReference("ing")
