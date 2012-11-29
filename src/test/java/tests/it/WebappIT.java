@@ -145,8 +145,18 @@ public class WebappIT extends TestCase {
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     System.out.println("OK /: " + result.getEntity(String.class));
     result.close();
-
-
+     webResource = client.resource(new URL(this.baseUrl + "/follow/stop/2").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+    System.out.println("STOP /: " + result.getStatus());
+    result.close();
+    webResource = client.resource(new URL(this.baseUrl + "/users/get/1").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+    System.out.println("OK /: " + result.getEntity(String.class));
+    result.close();
+    webResource = client.resource(new URL(this.baseUrl + "/users/get/2").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+    System.out.println("OK /: " + result.getEntity(String.class));
+    result.close();
 
 
     // L'utilisateur 1 est encore connecté, tentative de connexion de l'utilisateur 2 

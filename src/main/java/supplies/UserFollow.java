@@ -22,10 +22,10 @@ import javax.ws.rs.core.Response;
  */
 @Path("/follow/")
 public class UserFollow {
-  /*
+
+   /*
    * Retourne juste un code d'erreur
    */
-
   @Path("following/{id}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
@@ -41,4 +41,25 @@ public class UserFollow {
       return Response.status(ex.getStatus()).build();
     }
   }
+
+
+     /*
+   * Retourne juste un code d'erreur
+   */
+  @Path("stop/{id}")
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response stopAFollowing(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("id") String id) {
+    if (authenciateCookie == null) {
+      return Response.status(new Status(Status.USER_OFFLINE)).build();
+    }
+
+    try {
+      FollowDAO.stopFollowUser(Long.parseLong(authenciateCookie.getValue()), Long.parseLong(id));
+      return Response.status(new Status(Status.OK)).build();
+    } catch (DAOExceptionUser ex) {
+      return Response.ok(ex.getMsg()).status(ex.getStatus()).build();
+    }
+  }
+
 }
