@@ -11,7 +11,10 @@
     <persistence-unit-name>FMIN362_PU</persistence-unit-name>
   </persistence-context-ref>
 
-
+    <listener>
+        <display-name>Lifecycle</display-name>
+        <listener-class>core.Lifecycle</listener-class>
+    </listener>
 
   <servlet>
     <servlet-name>JerseyServletName</servlet-name>
