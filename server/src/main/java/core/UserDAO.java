@@ -1,5 +1,6 @@
 package core;
 
+import java.util.Date;
 import java.util.List;
 import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
@@ -162,6 +163,7 @@ public class UserDAO {
         sta = new Status(Status.USER_NO_ACCOUNT);
       } else {
         if (((User) lu.get(0)).getPassword().equals(password)) {
+          lu.get(0).setLastLoginDate(new Date());
           user = lu.get(0);
         } else {
           sta = new Status(Status.USER_WRONG_PASSWORD);
