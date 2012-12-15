@@ -70,31 +70,52 @@ public class WebappIT extends TestCase {
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     System.out.println("OK /: " + result.getStatus());
     result.close();
+
     webResource = client.resource(new URL(this.baseUrl + "/follow/following/3").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     System.out.println("OK /: " + result.getStatus());
     result.close();
-    webResource = client.resource(new URL(this.baseUrl + "/users/get/1").toURI());
+
+    webResource = client.resource(new URL(this.baseUrl + "/follow/following/my").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    System.out.println("OK /: " + result.getEntity(String.class));
+    List<LinkedHashMap<String, ?>> listUser = result.getEntity(List.class);
+    String res = "Liste des abonnements de 'le.jitou@gmail.com': ";
+    for (LinkedHashMap<String, ?> u : listUser) 
+      res+=u.get("email")+"  ";
+    System.out.println(res);
     result.close();
-    webResource = client.resource(new URL(this.baseUrl + "/users/get/2").toURI());
+
+    webResource = client.resource(new URL(this.baseUrl + "/follow/follower/get/2").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    System.out.println("OK /: " + result.getEntity(String.class));
+    listUser = result.getEntity(List.class);
+    res = "Liste des abonnés de 'lavalber02@gmail.com': ";
+    for (LinkedHashMap<String, ?> u : listUser) 
+      res+=u.get("email")+"  ";
+    System.out.println(res);
     result.close();
+
     webResource = client.resource(new URL(this.baseUrl + "/follow/stop/2").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     System.out.println("STOP /: " + result.getStatus());
     result.close();
-    webResource = client.resource(new URL(this.baseUrl + "/users/get/1").toURI());
+
+    webResource = client.resource(new URL(this.baseUrl + "/follow/following/get/1").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    System.out.println("OK /: " + result.getEntity(String.class));
-    result.close();
-    webResource = client.resource(new URL(this.baseUrl + "/users/get/2").toURI());
-    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    System.out.println("OK /: " + result.getEntity(String.class));
+    listUser = result.getEntity(List.class);
+    res = "Liste des abonnements de 'le.jitou@gmail.com': ";
+    for (LinkedHashMap<String, ?> u : listUser) 
+      res+=u.get("email")+"  ";
+    System.out.println(res);
     result.close();
 
+    webResource = client.resource(new URL(this.baseUrl + "/follow/follower/get/2").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+    listUser = result.getEntity(List.class);
+    res = "Liste des abonnés de 'lavalber02@gmail.com': ";
+    for (LinkedHashMap<String, ?> u : listUser) 
+      res+=u.get("email")+"  ";
+    System.out.println(res);
+    result.close();
 
     // L'utilisateur 1 est encore connecté, tentative de connexion de l'utilisateur 2 
     f.clear();

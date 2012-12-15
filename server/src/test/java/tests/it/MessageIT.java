@@ -114,9 +114,9 @@ public class MessageIT extends TestCase {
     // Bernard veut lire son message
     webResource = client.resource(new URL(this.baseUrl + "/messages/my").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    List<LinkedHashMap<String, ?>> listeMsg = result.getEntity(List.class);
+    List<LinkedHashMap<String, ?>> listMsg = result.getEntity(List.class);
     boolean ff = false;
-    for (LinkedHashMap<String, ?> m : listeMsg) {
+    for (LinkedHashMap<String, ?> m : listMsg) {
       if (((String) m.get("text")).compareTo("Moi je suis un message") == 0) {
         ff = true;
       }

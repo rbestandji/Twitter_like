@@ -50,7 +50,7 @@ public class MessagesResource {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   @Path( "/my")
-  public Response getMesMessages(@CookieParam("authCookie") Cookie authenciateCookie) {
+  public Response getMyMessages(@CookieParam("authCookie") Cookie authenciateCookie) {
     if (authenciateCookie == null) {
       return Response.status(new Status(Status.USER_OFFLINE)).build();
     }
@@ -67,7 +67,7 @@ public class MessagesResource {
   @Path("/get/{idUser}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getMessageWithID(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("idUser") String idUser) {
+  public Response getMessagesWithID(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("idUser") String idUser) {
     if (authenciateCookie == null) {
       return Response.status(new Status(Status.USER_OFFLINE)).build();
     }

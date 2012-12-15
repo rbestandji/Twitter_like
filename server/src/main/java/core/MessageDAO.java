@@ -110,7 +110,6 @@ public class MessageDAO {
         idUserError = true;
       }
       utx.commit();
-
     } catch (Exception ex) {
       try {
         if (utx != null) {

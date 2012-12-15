@@ -17,9 +17,9 @@ public class UserAssignment implements Serializable {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
   @ManyToOne
-  private User following = new User();
-  @ManyToOne
   private User follower = new User();
+  @ManyToOne
+  private User following = new User();
 
   public UserAssignment() {
   }
