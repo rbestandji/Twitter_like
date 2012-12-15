@@ -1,5 +1,7 @@
 package core;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
 import javax.naming.InitialContext;
@@ -162,7 +164,7 @@ public class UserDAO {
       if (lu.isEmpty()) {
         sta = new Status(Status.USER_NO_ACCOUNT);
       } else {
-        if (((User) lu.get(0)).getPassword().equals(password)) {
+        if (((User) lu.get(0)).getPassword().equals(sha1sum(password))) {
           lu.get(0).setLastLoginDate(new Date());
           user = lu.get(0);
         } else {
@@ -187,4 +189,26 @@ public class UserDAO {
 
     return user;
   }
+
+  private static final String salt = "my twitter-like salt";
+  
+  public static String sha1sum(String password) throws NoSuchAlgorithmException {
+    byte[] hash = null;
+    MessageDigest md = MessageDigest.getInstance("SHA1");
+    String text = password+salt;
+    hash = md.digest(text.getBytes());
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < hash.length; ++i) {
+      String hex = Integer.toHexString(hash[i]);
+      if (hex.length() == 1) {
+        sb.append(0);
+        sb.append(hex.charAt(hex.length() - 1));
+      } else {
+        sb.append(hex.substring(hex.length() - 2));
+      }
+    }
+    return sb.toString();
+  }
+
 }
+

@@ -1,5 +1,6 @@
 package core;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -73,7 +74,7 @@ public class Lifecycle implements ServletContextListener {
   public void contextDestroyed(ServletContextEvent sce) {
   }
 
-  private List<User> createUsers() {
+  private List<User> createUsers() throws NoSuchAlgorithmException {
     List<User> users = new ArrayList<User>();
     try {
       users.add(new User("Pasquet", "Jerome", "le.jitou@gmail.com", "password"));

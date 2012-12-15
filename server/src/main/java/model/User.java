@@ -17,7 +17,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import core.DAOExceptionUser;
 import core.Status;
+import core.UserDAO;
 import java.lang.Character;
+import java.security.NoSuchAlgorithmException;
 import org.codehaus.jackson.annotate.JsonBackReference;
 import org.codehaus.jackson.annotate.JsonManagedReference;
 
@@ -34,7 +36,7 @@ public class User implements Serializable {
   private String name = "";
   @Column( length = 50)
   private String firstname = "";
-  @Column( length = 50)
+  @Column( length = 40)
   private String password = "";
   @Column( length = 100)
   private String email = "";
@@ -56,11 +58,12 @@ public class User implements Serializable {
   public User() {
   }
 
-  public User(String name, String firstname) throws DAOExceptionUser {
+  public User(String name, String firstname) throws DAOExceptionUser, NoSuchAlgorithmException {
     this(name, firstname, "", "");
   }
 
-  public User(String name, String firstname, String email, String password) throws DAOExceptionUser {
+  public User(String name, String firstname, String email, String password)
+          throws DAOExceptionUser , NoSuchAlgorithmException {
     try {
       this.setPassword(password);
       this.setEmail(email);
@@ -99,11 +102,11 @@ public class User implements Serializable {
     return password;
   }
 
-  public void setPassword(String password) throws DAOExceptionUser {
+  public void setPassword(String password) throws DAOExceptionUser, NoSuchAlgorithmException{
     if (password.length() < 8) {
       throw new DAOExceptionUser(new Status(Status.PASSWORD_TOO_SHORT));
     } else {
-      this.password = password;
+      this.password = UserDAO.sha1sum(password);
     }
   }
 
@@ -172,4 +175,5 @@ public class User implements Serializable {
   public void setId(Long id) {
     this.id = id;
   }
+
 }

@@ -3,6 +3,7 @@ package supplies;
 import core.DAOExceptionUser;
 import core.Status;
 import core.UserDAO;
+import java.security.NoSuchAlgorithmException;
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -26,7 +27,7 @@ public class UserRegistration {
           @FormParam("email") String email,
           @FormParam("password") String password,
           @FormParam("name") String name,
-          @FormParam("firstname") String firstname) {
+          @FormParam("firstname") String firstname) throws NoSuchAlgorithmException {
     if (authenciateCookie != null) {
       return Response.status(new Status(Status.USER_ONLINE)).build();
     }
