@@ -41,7 +41,8 @@ public class UserView {
   @Path("/getuser/{email}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getUserWithEmail(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("email") String email) {
+  public Response getUserWithEmail(@CookieParam("authCookie") Cookie authenciateCookie,
+                                   @PathParam("email") String email) {
     if (authenciateCookie == null) {
       return Response.status(new Status(Status.USER_OFFLINE)).build();
     }

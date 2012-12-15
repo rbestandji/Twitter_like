@@ -71,7 +71,9 @@ public class UserFollow {
       return Response.status(new Status(Status.USER_OFFLINE)).build();
     }
     try {
-      return Response.ok(FollowDAO.getFollows(Long.parseLong(authenciateCookie.getValue()), "following"), MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
+      return Response.ok(FollowDAO.getFollows(Long.parseLong(authenciateCookie.getValue()), "following"),
+                         MediaType.APPLICATION_JSON)
+                     .status(new Status(Status.OK)).build();
     } catch (DAOExceptionUser ex) {
       return Response.status(ex.getStatus()).build();
     }
@@ -88,7 +90,9 @@ public class UserFollow {
       return Response.status(new Status(Status.USER_OFFLINE)).build();
     }
     try {
-      return Response.ok(FollowDAO.getFollows(Long.parseLong(authenciateCookie.getValue()), "follower"), MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
+      return Response.ok(FollowDAO.getFollows(Long.parseLong(authenciateCookie.getValue()), "follower"),
+                         MediaType.APPLICATION_JSON)
+                     .status(new Status(Status.OK)).build();
     } catch (DAOExceptionUser ex) {
       return Response.status(ex.getStatus()).build();
     }
@@ -105,7 +109,8 @@ public class UserFollow {
       return Response.status(new Status(Status.USER_OFFLINE)).build();
     }
     try {
-      return Response.ok(FollowDAO.getFollows(Long.parseLong(id), "following"), MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
+      return Response.ok(FollowDAO.getFollows(Long.parseLong(id), "following"), MediaType.APPLICATION_JSON)
+                     .status(new Status(Status.OK)).build();
     } catch (DAOExceptionUser ex) {
       return Response.status(ex.getStatus()).build();
     }
@@ -122,7 +127,8 @@ public class UserFollow {
       return Response.status(new Status(Status.USER_OFFLINE)).build();
     }
     try {
-      return Response.ok(FollowDAO.getFollows(Long.parseLong(id), "follower"), MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
+      return Response.ok(FollowDAO.getFollows(Long.parseLong(id), "follower"), MediaType.APPLICATION_JSON)
+                     .status(new Status(Status.OK)).build();
     } catch (DAOExceptionUser ex) {
       return Response.status(ex.getStatus()).build();
     }

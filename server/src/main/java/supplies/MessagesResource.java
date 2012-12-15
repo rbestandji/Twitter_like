@@ -55,7 +55,9 @@ public class MessagesResource {
       return Response.status(new Status(Status.USER_OFFLINE)).build();
     }
     try {
-      return Response.ok(MessageDAO.getMessages(Long.parseLong(authenciateCookie.getValue())), MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
+      return Response.ok(MessageDAO.getMessages(Long.parseLong(authenciateCookie.getValue())),
+                         MediaType.APPLICATION_JSON)
+                     .status(new Status(Status.OK)).build();
     } catch (DAOExceptionUser ex) {
       return Response.status(ex.getStatus()).build();
     }
@@ -67,12 +69,14 @@ public class MessagesResource {
   @Path("/get/{idUser}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getMessagesWithID(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("idUser") String idUser) {
+  public Response getMessagesWithID(@CookieParam("authCookie") Cookie authenciateCookie,
+                                    @PathParam("idUser") String idUser) {
     if (authenciateCookie == null) {
       return Response.status(new Status(Status.USER_OFFLINE)).build();
     }
     try {
-      return Response.ok(MessageDAO.getMessages(Long.parseLong(idUser)), MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
+      return Response.ok(MessageDAO.getMessages(Long.parseLong(idUser)), MediaType.APPLICATION_JSON)
+                     .status(new Status(Status.OK)).build();
     } catch (DAOExceptionUser ex) {
       return Response.status(ex.getStatus()).build();
     }
@@ -84,7 +88,8 @@ public class MessagesResource {
   @Path("/getuser/{email}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getMessagesWithEmail(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("email") String email) {
+  public Response getMessagesWithEmail(@CookieParam("authCookie") Cookie authenciateCookie, 
+                                       @PathParam("email") String email) {
     if (authenciateCookie == null) {
       return Response.status(new Status(Status.USER_OFFLINE)).build();
     }

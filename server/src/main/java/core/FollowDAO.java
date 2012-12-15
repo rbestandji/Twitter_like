@@ -22,8 +22,10 @@ public class FollowDAO {
 
       utx.begin();
       em.joinTransaction();
-      User userFollower = (User) em.createQuery("SELECT x FROM User x WHERE x.id='" + idFollower + "'").getSingleResult();
-      User userFollowing = (User) em.createQuery("SELECT x FROM User x WHERE x.id='" + idFollowing + "'").getSingleResult();
+      User userFollower = (User) em.createQuery("SELECT x FROM User x WHERE x.id='" + idFollower + "'")
+                                   .getSingleResult();
+      User userFollowing = (User) em.createQuery("SELECT x FROM User x WHERE x.id='" + idFollowing + "'")
+                                    .getSingleResult();
       if (userFollower == null || userFollowing == null) {
         idProblem = true;
       } else {
@@ -61,8 +63,10 @@ public class FollowDAO {
 
       utx.begin();
       em.joinTransaction();
-      User userFollower = (User) em.createQuery("SELECT x FROM User x WHERE x.id='" + idFollower + "'").getSingleResult();
-      User userFollowing = (User) em.createQuery("SELECT x FROM User x WHERE x.id='" + idFollowing + "'").getSingleResult();
+      User userFollower = (User) em.createQuery("SELECT x FROM User x WHERE x.id='" + idFollower + "'")
+                                   .getSingleResult();
+      User userFollowing = (User) em.createQuery("SELECT x FROM User x WHERE x.id='" + idFollowing + "'")
+                                    .getSingleResult();
       if (userFollower == null || userFollowing == null) {
         idProblem = true;
       } else {
