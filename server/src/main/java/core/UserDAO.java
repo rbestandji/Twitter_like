@@ -193,7 +193,7 @@ public class UserDAO {
   private static final String salt = "my twitter-like salt";
   
   public static String sha1sum(String password) throws NoSuchAlgorithmException {
-    byte[] hash = null;
+    byte[] hash;
     MessageDigest md = MessageDigest.getInstance("SHA1");
     String text = password+salt;
     hash = md.digest(text.getBytes());

@@ -6,11 +6,11 @@ import com.sun.jersey.api.json.JSONConfiguration;
 import com.sun.jersey.api.representation.Form;
 import com.sun.jersey.client.apache.ApacheHttpClient;
 import com.sun.jersey.client.apache.config.ApacheHttpClientConfig;
-import junit.framework.TestCase;
-import java.net.URL;
-import javax.ws.rs.core.MediaType;
 import com.sun.jersey.client.apache.config.DefaultApacheHttpClientConfig;
 import core.Status;
+import java.net.URL;
+import javax.ws.rs.core.MediaType;
+import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -20,6 +20,7 @@ public class CreateUsersIT extends TestCase {
   private DefaultApacheHttpClientConfig config;
   private ApacheHttpClient client;
 
+  @Override
   public void setUp() throws Exception {
     super.setUp();
     String port = System.getProperty("servlet.port");
@@ -43,8 +44,8 @@ public class CreateUsersIT extends TestCase {
   @Test
   public void testCreateUsers() throws Exception {
     Form f = new Form();
-    WebResource webResource = null;
-    ClientResponse result = null;
+    WebResource webResource;
+    ClientResponse result;
     System.out.println("****************** Creation des comptes ! ******************");
 
     // Utilisateur 1 : bug car deja existant

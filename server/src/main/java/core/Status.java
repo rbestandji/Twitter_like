@@ -25,14 +25,17 @@ public class Status implements StatusType {
     this.code = code;
   }
 
+  @Override
   public int getStatusCode() {
     return code;
   }
 
+  @Override
   public Family getFamily() {
     return Family.OTHER;
   }
 
+  @Override
   public String getReasonPhrase() {
     String str = "";
     switch (code) {

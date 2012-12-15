@@ -32,7 +32,7 @@ public class UserRegistration {
       return Response.status(new Status(Status.USER_ONLINE)).build();
     }
 
-    Status sta = null;
+    Status sta;
     try {
       User newUser = new User(name, firstname, email, password);
       UserDAO.createUser(newUser);

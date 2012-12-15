@@ -4,7 +4,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
 import org.codehaus.jackson.annotate.JsonBackReference;
 
 @Entity
@@ -21,7 +30,7 @@ public class Message implements Serializable {
   @Column( length = 500)
   private String text = "";
   @Temporal( javax.persistence.TemporalType.DATE)
-  private Date date = null;
+  private Date msgDate;
   @Column
   private Long isComment = null;
   @OneToMany(cascade = CascadeType.ALL)
@@ -30,9 +39,9 @@ public class Message implements Serializable {
   public Message() {
   }
 
-  public Message(String text, Date date) {
+  public Message(String text, Date msgDate) {
     setText(text);
-    setDate(date);
+    setMsgDate(msgDate);
   }
 
   /**
@@ -55,12 +64,12 @@ public class Message implements Serializable {
     this.comments = comments;
   }
 
-  public Date getDate() {
-    return date;
+  public Date getMsgDate() {
+    return msgDate;
   }
 
-  public void setDate(Date date) {
-    this.date = date;
+  public void setMsgDate(Date msgDate) {
+    this.msgDate = msgDate;
   }
 
   public User getAuthor() {

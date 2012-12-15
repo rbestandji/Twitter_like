@@ -109,10 +109,12 @@ public class FollowDAO {
    */
   public static List<User> getFollows(Long idUser, String follow) throws DAOExceptionUser {
     String followRes;
-    if (follow.equals("following"))
+    if (follow.equals("following")) {
       followRes="follower";
-    else
+    }
+    else {
       followRes="following";
+    }
 
     List<User> list = new ArrayList<User>();
     UserTransaction utx = null;

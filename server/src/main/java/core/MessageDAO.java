@@ -6,8 +6,8 @@ import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.transaction.UserTransaction;
-import model.User;
 import model.Message;
+import model.User;
 
 public class MessageDAO {
 

@@ -4,8 +4,8 @@ import java.util.Collection;
 import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.transaction.UserTransaction;
-import model.User;
 import model.Message;
+import model.User;
 
 public class CommentDAO {
   /*
@@ -15,7 +15,7 @@ public class CommentDAO {
   public static void sendComment(Long idUser, Long idMessage, Message comment) throws DAOExceptionUser {
 
     UserTransaction utx = null;
-    User uTmp = null;
+    User uTmp;
     boolean problemAuthorId = false;
     boolean problemMessageId = false;
 
