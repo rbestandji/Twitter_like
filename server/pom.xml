@@ -5,12 +5,20 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>fmin362</groupId>
   <artifactId>cargo-webapp</artifactId>
-  <version>1.2</version>
+  <version>1.0</version>
   <packaging>war</packaging>
   <name>${project.artifactId}</name>
 
   <dependencies>
-
+    <!-- Dependances Share -->
+    <dependency>
+      <groupId>fmin362.Share</groupId>
+      <artifactId>Share</artifactId>
+      <version>1.0</version>
+      <scope>compile</scope>
+      <type>jar</type>
+    </dependency>
+    
     <!-- Dependances conteneur -->
     <dependency>
       <groupId>javax.persistence</groupId>
@@ -61,6 +69,7 @@
       <version>1.14</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

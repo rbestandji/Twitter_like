@@ -1,13 +1,15 @@
 package core;
 
+import share.core.DAOExceptionUser;
 import java.util.ArrayList;
 import java.util.List;
-import javax.naming.InitialContext;
+import javax.naming.InitialContext; 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.transaction.UserTransaction;
-import model.Message;
-import model.User;
+import share.model.Message;
+import share.model.User;
+import share.core.Status;
 
 public class MessageDAO {
 

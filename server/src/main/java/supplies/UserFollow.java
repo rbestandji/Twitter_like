@@ -4,9 +4,9 @@
  */
 package supplies;
 
-import core.DAOExceptionUser;
+import share.core.DAOExceptionUser;
 import core.FollowDAO;
-import core.Status;
+import share.core.Status;
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

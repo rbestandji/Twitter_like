@@ -1,7 +1,7 @@
 package supplies;
 
-import core.DAOExceptionUser;
-import core.Status;
+import share.core.DAOExceptionUser; 
+import share.core.Status; 
 import core.UserDAO;
 import java.util.List;
 import javax.ws.rs.CookieParam;
@@ -12,7 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import model.User;
+import share.model.User; 
 
 @Path( "/users")
 public class UserView {

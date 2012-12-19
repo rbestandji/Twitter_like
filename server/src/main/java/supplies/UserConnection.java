@@ -1,8 +1,9 @@
 package supplies;
 
-import core.DAOExceptionUser;
-import core.Status;
+import share.core.DAOExceptionUser;
+import share.core.Status;
 import core.UserDAO;
+import java.security.NoSuchAlgorithmException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.FormParam;
@@ -14,7 +15,7 @@ import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
-import model.User;
+import share.model.User;
 
 @Path( "/connection")
 public class UserConnection {
@@ -26,7 +27,7 @@ public class UserConnection {
   @Produces( MediaType.APPLICATION_JSON)
   public Response connection(@CookieParam("authCookie") Cookie authenciateCookie,
           @FormParam("email") String email,
-          @FormParam("password") String password) {
+          @FormParam("password") String password) throws NoSuchAlgorithmException {
 
 
     if (authenciateCookie != null) {

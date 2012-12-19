@@ -1,5 +1,6 @@
 package core;
 
+import share.core.DAOExceptionUser; 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,9 +12,9 @@ import javax.persistence.PersistenceUnit;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.transaction.UserTransaction;
-import model.Message;
-import model.User;
-
+import share.model.Message;
+import share.model.User;
+ 
 public class Lifecycle implements ServletContextListener {
 
   @Resource
@@ -23,7 +24,7 @@ public class Lifecycle implements ServletContextListener {
 
   @Override
   public void contextInitialized(ServletContextEvent sce) {
-    if (emf == null) {
+   if (emf == null) {
       throw new RuntimeException("JPA Persistence Unit is not properly setup!");
     }
 
@@ -31,7 +32,9 @@ public class Lifecycle implements ServletContextListener {
     try {
       utx.begin();
       em.joinTransaction();
-      if (em.createQuery("select c from User c").getResultList().isEmpty()) {
+      
+      
+      //if (em.createQuery("select c from User c").getResultList().isEmpty()) {
         List<User> users = createUsers();
         for (User u : users) {
           em.persist(u);
@@ -47,7 +50,7 @@ public class Lifecycle implements ServletContextListener {
 
         
         utx.commit();
-      }
+      //}
 
 
 
@@ -75,16 +78,16 @@ public class Lifecycle implements ServletContextListener {
   private List<User> createUsers() throws NoSuchAlgorithmException {
     List<User> users = new ArrayList<User>();
     try {
-      users.add(new User("Pasquet", "Jerome", "le.jitou@gmail.com", "password"));
-      users.add(new User("Laval", "Benard", "lavalber02@gmail.com", "motdepasse"));
-      users.add(new User("Muller", "Lionel", "lionel.muller.34@gmail.com", "motdepasse"));
-      users.add(new User("Itam", "Johanna", "le.jojo@gmail.com", "motdepasse"));
-      users.add(new User("Nigon", "Julien", "le.julius@gmail.com", "motdepasse"));
-      users.add(new User("Froger", "Remi", "trefle4feuille@gmail.com", "motdepasse"));
-      users.add(new User("Hermione", "Granger", "hermione@poudlard.com", "motdepasse"));
-      users.add(new User("Potter", "Harry", "harry@poudlard.com", "motdepasse"));
-      users.add(new User("Gritch", "mechant", "gritch@hyperion.com", "motdepasse"));
-      users.add(new User("Ender", "str", "ender@strategie.com", "motdepasse"));
+      users.add(new User("Pasquet", "Jerome", "le.jitou@gmail.com", UserDAO.sha1sum("password")));
+      users.add(new User("Laval", "Benard", "lavalber02@gmail.com", UserDAO.sha1sum("motdepasse")));
+      users.add(new User("Muller", "Lionel", "lionel.muller.34@gmail.com",UserDAO.sha1sum( "motdepasse")));
+      users.add(new User("Itam", "Johanna", "le.jojo@gmail.com", UserDAO.sha1sum("motdepasse")));
+      users.add(new User("Nigon", "Julien", "le.julius@gmail.com", UserDAO.sha1sum("motdepasse")));
+      users.add(new User("Froger", "Remi", "trefle4feuille@gmail.com", UserDAO.sha1sum("motdepasse")));
+      users.add(new User("Hermione", "Granger", "hermione@poudlard.com", UserDAO.sha1sum("motdepasse")));
+      users.add(new User("Potter", "Harry", "harry@poudlard.com",UserDAO.sha1sum( "motdepasse")));
+      users.add(new User("Gritch", "mechant", "gritch@hyperion.com", UserDAO.sha1sum("motdepasse")));
+      users.add(new User("Ender", "str", "ender@strategie.com",UserDAO.sha1sum( "motdepasse")));
 
     } catch (DAOExceptionUser ex) {
       System.out.println("Probleme createUsers " + ex.getMsg());

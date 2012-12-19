@@ -1,11 +1,13 @@
 package core;
 
+import share.core.Status;
+import share.core.DAOExceptionUser;
 import java.util.Collection;
 import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
-import javax.transaction.UserTransaction;
-import model.Message;
-import model.User;
+import javax.transaction.UserTransaction; 
+import share.model.Message;
+import share.model.User;
 
 public class CommentDAO {
   /*

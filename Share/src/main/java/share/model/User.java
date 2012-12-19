@@ -1,8 +1,7 @@
-package model;
-
-import core.DAOExceptionUser;
-import core.Status;
-import core.UserDAO;
+package share.model;
+ 
+import share.core.DAOExceptionUser;
+import share.core.Status;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import org.codehaus.jackson.annotate.JsonManagedReference;
-
+ 
 @Entity
 @Table(name = "tUser")
 public class User implements Serializable {
@@ -97,11 +96,11 @@ public class User implements Serializable {
     return password;
   }
 
-  public void setPassword(String password) throws DAOExceptionUser, NoSuchAlgorithmException{
+  public void setPassword(String password) throws DAOExceptionUser{
     if (password.length() < 8) {
       throw new DAOExceptionUser(new Status(Status.PASSWORD_TOO_SHORT));
     } else {
-      this.password = UserDAO.sha1sum(password);
+      this.password = password;
     }
   }
 

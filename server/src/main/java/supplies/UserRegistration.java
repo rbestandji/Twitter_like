@@ -1,18 +1,18 @@
 package supplies;
 
-import core.DAOExceptionUser;
-import core.Status;
+import share.core.DAOExceptionUser; 
+import share.core.Status; 
 import core.UserDAO;
 import java.security.NoSuchAlgorithmException;
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import javax.ws.rs.Path; 
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Cookie;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MediaType; 
 import javax.ws.rs.core.Response;
-import model.User;
+import share.model.User; 
 
 @Path( "/registration")
 public class UserRegistration {
@@ -32,9 +32,9 @@ public class UserRegistration {
       return Response.status(new Status(Status.USER_ONLINE)).build();
     }
 
-    Status sta;
+    Status sta; 
     try {
-      User newUser = new User(name, firstname, email, password);
+      User newUser = new User(name, firstname, email, UserDAO.sha1sum(password));
       UserDAO.createUser(newUser);
       sta = new Status(Status.OK);
     } catch (DAOExceptionUser ex) {

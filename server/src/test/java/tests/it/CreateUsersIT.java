@@ -7,8 +7,8 @@ import com.sun.jersey.api.representation.Form;
 import com.sun.jersey.client.apache.ApacheHttpClient;
 import com.sun.jersey.client.apache.config.ApacheHttpClientConfig;
 import com.sun.jersey.client.apache.config.DefaultApacheHttpClientConfig;
-import core.Status;
-import java.net.URL;
+import share.core.Status; 
+import java.net.URL; 
 import javax.ws.rs.core.MediaType;
 import junit.framework.TestCase;
 import org.junit.Assert;
@@ -55,7 +55,7 @@ public class CreateUsersIT extends TestCase {
     f.add("firstname", "Jerome");
     webResource = client.resource(new URL(this.baseUrl + "/registration").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-    Assert.assertEquals(result.getStatus(), Status.EMAIL_VALIDATED);
+    Assert.assertEquals(result.getStatus(), Status.EMAIL_VALIDATED); 
     result.close();
 
     // Utilisateur 2 : Ok compte créé

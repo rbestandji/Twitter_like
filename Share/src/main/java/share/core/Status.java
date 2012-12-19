@@ -1,4 +1,4 @@
-package core;
+package share.core;
 
 import javax.ws.rs.core.Response.Status.Family;
 import javax.ws.rs.core.Response.StatusType;

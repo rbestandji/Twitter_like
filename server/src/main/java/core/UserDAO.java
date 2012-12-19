@@ -1,14 +1,16 @@
 package core;
 
+import share.core.DAOExceptionUser;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
-import javax.naming.InitialContext;
+import javax.naming.InitialContext; 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.transaction.UserTransaction;
-import model.User;
+import share.model.User;
+import share.core.Status;
 
 public class UserDAO {
 

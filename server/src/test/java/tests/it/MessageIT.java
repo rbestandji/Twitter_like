@@ -7,7 +7,7 @@ import com.sun.jersey.api.representation.Form;
 import com.sun.jersey.client.apache.ApacheHttpClient;
 import com.sun.jersey.client.apache.config.ApacheHttpClientConfig;
 import com.sun.jersey.client.apache.config.DefaultApacheHttpClientConfig;
-import core.Status;
+import share.core.Status;  
 import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.List;

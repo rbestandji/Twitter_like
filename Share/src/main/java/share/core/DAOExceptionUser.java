@@ -1,4 +1,6 @@
-package core;
+package share.core;
+
+import share.core.Status;
 
 public class DAOExceptionUser extends Exception {
 

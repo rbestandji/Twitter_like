@@ -1,9 +1,9 @@
 package supplies;
 
 import core.CommentDAO;
-import core.DAOExceptionUser;
+import share.core.DAOExceptionUser;
 import core.MessageDAO;
-import core.Status;
+import share.core.Status;
 import core.UserDAO;
 import java.util.Date;
 import javax.ws.rs.CookieParam;
@@ -16,7 +16,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import model.Message;
+import share.model.Message;
 
 @Path( "/messages")
 public class MessagesResource {
