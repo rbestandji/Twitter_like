@@ -9,7 +9,7 @@ import javax.persistence.Query;
 import javax.transaction.UserTransaction;
 import share.model.User;
 import share.model.UserAssignment;
- import share.core.Status;
+import share.core.Status;
 
 public class FollowDAO {
 
@@ -25,9 +25,9 @@ public class FollowDAO {
       utx.begin();
       em.joinTransaction();
       User userFollower = (User) em.createQuery("SELECT x FROM User x WHERE x.id='" + idFollower + "'")
-                                   .getSingleResult();
+              .getSingleResult();
       User userFollowing = (User) em.createQuery("SELECT x FROM User x WHERE x.id='" + idFollowing + "'")
-                                    .getSingleResult();
+              .getSingleResult();
       if (userFollower == null || userFollowing == null) {
         idProblem = true;
       } else {
@@ -66,9 +66,9 @@ public class FollowDAO {
       utx.begin();
       em.joinTransaction();
       User userFollower = (User) em.createQuery("SELECT x FROM User x WHERE x.id='" + idFollower + "'")
-                                   .getSingleResult();
+              .getSingleResult();
       User userFollowing = (User) em.createQuery("SELECT x FROM User x WHERE x.id='" + idFollowing + "'")
-                                    .getSingleResult();
+              .getSingleResult();
       if (userFollower == null || userFollowing == null) {
         idProblem = true;
       } else {
@@ -112,10 +112,9 @@ public class FollowDAO {
   public static List<User> getFollows(Long idUser, String follow) throws DAOExceptionUser {
     String followRes;
     if (follow.equals("following")) {
-      followRes="follower";
-    }
-    else {
-      followRes="following";
+      followRes = "follower";
+    } else {
+      followRes = "following";
     }
 
     List<User> list = new ArrayList<User>();
@@ -129,10 +128,10 @@ public class FollowDAO {
       em.joinTransaction();
       User user = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idUser + "").getSingleResult();
       if (user != null) {
-        Query q = em.createQuery("SELECT x."+ follow +" FROM UserAssignment x WHERE x." + followRes +"= :followres");
+        Query q = em.createQuery("SELECT x." + follow + " FROM UserAssignment x WHERE x." + followRes + "= :followres");
         q.setParameter("followres", user);
         list = (List<User>) q.getResultList();
-      }else {
+      } else {
         idUserError = true;
       }
       utx.commit();

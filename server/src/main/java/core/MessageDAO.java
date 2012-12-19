@@ -3,7 +3,7 @@ package core;
 import share.core.DAOExceptionUser;
 import java.util.ArrayList;
 import java.util.List;
-import javax.naming.InitialContext; 
+import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.transaction.UserTransaction;
@@ -58,11 +58,11 @@ public class MessageDAO {
       EntityManager em = (EntityManager) ic.lookup("java:comp/env/persistence/EntityManager");
       utx.begin();
       em.joinTransaction();
-      
+
       //System.out.println("je passe dans deleteMessage\n AuthoId: "+authorId+"\n msgId: "+msgId+"\n ");
       Message msg = (Message) em.createQuery("SELECT x FROM Message x WHERE x.id=" + msgId + "").getSingleResult();
       if (msg != null) {
-        if(msg.getAuthor().getId()==authorId){//vérifie si on est bien le créateur du msg
+        if (msg.getAuthor().getId() == authorId) {//vérifie si on est bien le créateur du msg
           em.remove(msg);
         } else {
           authorIdError = true;

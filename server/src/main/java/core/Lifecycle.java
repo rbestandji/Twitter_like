@@ -1,6 +1,6 @@
 package core;
 
-import share.core.DAOExceptionUser; 
+import share.core.DAOExceptionUser;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,7 +14,7 @@ import javax.servlet.ServletContextListener;
 import javax.transaction.UserTransaction;
 import share.model.Message;
 import share.model.User;
- 
+
 public class Lifecycle implements ServletContextListener {
 
   @Resource
@@ -24,7 +24,7 @@ public class Lifecycle implements ServletContextListener {
 
   @Override
   public void contextInitialized(ServletContextEvent sce) {
-   if (emf == null) {
+    if (emf == null) {
       throw new RuntimeException("JPA Persistence Unit is not properly setup!");
     }
 
@@ -32,28 +32,25 @@ public class Lifecycle implements ServletContextListener {
     try {
       utx.begin();
       em.joinTransaction();
-      
-      
+
+
       //if (em.createQuery("select c from User c").getResultList().isEmpty()) {
-        List<User> users = createUsers();
-        for (User u : users) {
-          em.persist(u);
-        }
+      List<User> users = createUsers();
+      for (User u : users) {
+        em.persist(u);
+      }
 
-        List<Message> msgs = createMessages();
-        for (Message u : msgs) {
-          User tmp = users.get((int)(Math.random()*(users.size()-1)));
-          u.setAuthor(tmp);
-          tmp.getMessages().add(u);
-          em.persist(u);
-        }
+      List<Message> msgs = createMessages();
+      for (Message u : msgs) {
+        User tmp = users.get((int) (Math.random() * (users.size() - 1)));
+        u.setAuthor(tmp);
+        tmp.getMessages().add(u);
+        em.persist(u);
+      }
 
-        
-        utx.commit();
+
+      utx.commit();
       //}
-
-
-
 
     } catch (Exception ex) {
       try {
@@ -80,14 +77,14 @@ public class Lifecycle implements ServletContextListener {
     try {
       users.add(new User("Pasquet", "Jerome", "le.jitou@gmail.com", UserDAO.sha1sum("password")));
       users.add(new User("Laval", "Benard", "lavalber02@gmail.com", UserDAO.sha1sum("motdepasse")));
-      users.add(new User("Muller", "Lionel", "lionel.muller.34@gmail.com",UserDAO.sha1sum( "motdepasse")));
+      users.add(new User("Muller", "Lionel", "lionel.muller.34@gmail.com", UserDAO.sha1sum("motdepasse")));
       users.add(new User("Itam", "Johanna", "le.jojo@gmail.com", UserDAO.sha1sum("motdepasse")));
       users.add(new User("Nigon", "Julien", "le.julius@gmail.com", UserDAO.sha1sum("motdepasse")));
       users.add(new User("Froger", "Remi", "trefle4feuille@gmail.com", UserDAO.sha1sum("motdepasse")));
       users.add(new User("Hermione", "Granger", "hermione@poudlard.com", UserDAO.sha1sum("motdepasse")));
-      users.add(new User("Potter", "Harry", "harry@poudlard.com",UserDAO.sha1sum( "motdepasse")));
+      users.add(new User("Potter", "Harry", "harry@poudlard.com", UserDAO.sha1sum("motdepasse")));
       users.add(new User("Gritch", "mechant", "gritch@hyperion.com", UserDAO.sha1sum("motdepasse")));
-      users.add(new User("Ender", "str", "ender@strategie.com",UserDAO.sha1sum( "motdepasse")));
+      users.add(new User("Ender", "str", "ender@strategie.com", UserDAO.sha1sum("motdepasse")));
 
     } catch (DAOExceptionUser ex) {
       System.out.println("Probleme createUsers " + ex.getMsg());
@@ -95,7 +92,7 @@ public class Lifecycle implements ServletContextListener {
     return users;
   }
 
-    private List<Message> createMessages() {
+  private List<Message> createMessages() {
     List<String> listText = new ArrayList<String>();
     listText.add("Dis bonjour à papa.");
     listText.add("J'ai de l'amour à revendre !");
@@ -106,19 +103,18 @@ public class Lifecycle implements ServletContextListener {
     listText.add("Your drone are under attacks");
     listText.add("Une fleche, un mort.");
     listText.add("Que voulez vous ?");
-    listText.add("I'm not the dryad you're looking for." );
+    listText.add("I'm not the dryad you're looking for.");
     listText.add("Fear the fearsome fury of the forest fawn!");
     listText.add("You communicate by clicking on me; I communicate by doing what you say.");
     listText.add("I'm not in season!");
     listText.add("Fall! Like leaves… in fall!");
     listText.add("I don't reveal much on the mini-map. It's all my fault!");
-    listText.add("I'll attract the enemy with my human call: 'I'm so wasted! I'm so wasted!'" );
-    
+    listText.add("I'll attract the enemy with my human call: 'I'm so wasted! I'm so wasted!'");
+
     List<Message> messages = new ArrayList<Message>();
-    for(String l : listText){
-          messages.add(new Message(l, new Date()));
+    for (String l : listText) {
+      messages.add(new Message(l, new Date()));
     }
     return messages;
   }
-
 }
