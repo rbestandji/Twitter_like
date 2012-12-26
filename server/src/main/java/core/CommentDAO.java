@@ -2,7 +2,6 @@ package core;
 
 import share.core.Status;
 import share.core.DAOExceptionUser;
-import java.util.Collection;
 import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.transaction.UserTransaction; 
@@ -33,8 +32,8 @@ public class CommentDAO {
         comment.setAuthor(uTmp);
         Message m = (Message) em.createQuery("SELECT x FROM Message x WHERE x.id=" + idMessage + "").getSingleResult();
         if (m != null) {
-          m.addComment(comment);
           comment.setMsgRoot(m);
+          m.addComment(comment);
           em.persist(comment);
         } else {
           problemMessageId = true;

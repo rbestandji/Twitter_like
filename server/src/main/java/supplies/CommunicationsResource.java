@@ -4,6 +4,7 @@ import core.CommunicationDAO;
 import core.UserDAO;
 import javax.ws.rs.CookieParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -15,6 +16,25 @@ import share.core.Status;
 
 @Path( "/communications")
 public class CommunicationsResource {
+   /*
+   * Permet à l'utilisateur connecté de supprimer l'un de ses messages ou commentaires
+   */
+  @POST
+  @Produces( MediaType.APPLICATION_JSON)
+  @Path( "/delete/{idCom}")
+  public Response deleteIdCommunication(@CookieParam("authCookie") Cookie authenciateCookie,
+          @PathParam("idCom") String idCom) {
+    if (authenciateCookie == null) {
+      return Response.status(new Status(Status.USER_OFFLINE)).build();
+    }
+    try {
+      CommunicationDAO.deleteCommunication(Long.parseLong(authenciateCookie.getValue()), Long.parseLong(idCom));
+      return Response.status(new Status(Status.OK)).build();
+    } catch (DAOExceptionUser ex) {
+      return Response.status(ex.getStatus()).build();
+    }
+  }
+
   /*
    * Retourne la liste des messages et commentaires de l'utilisateur connecté.
    */

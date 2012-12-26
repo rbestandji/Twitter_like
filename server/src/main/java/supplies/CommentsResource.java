@@ -24,7 +24,7 @@ public class CommentsResource {
   @Produces( MediaType.APPLICATION_JSON)
   @Path( "/send/{idMsg}")
   public Response sendComment(@CookieParam("authCookie") Cookie authenciateCookie,
-          @FormParam("msg") String msg, @PathParam("idMsg") String idMsg) {
+          @FormParam("comment") String msg, @PathParam("idMsg") String idMsg) {
     if (authenciateCookie == null) {
       return Response.status(new Status(Status.USER_OFFLINE)).build();
     }
@@ -36,6 +36,5 @@ public class CommentsResource {
     return Response.status(ex.getStatus()).build();
     }
   }
-  
   
 }

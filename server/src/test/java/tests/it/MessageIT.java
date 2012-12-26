@@ -84,14 +84,14 @@ public class MessageIT extends TestCase {
     
     // Commentaire du message précédent
     f.clear();
-    f.add("msg", "Je suis un commentaire");
+    f.add("comment", "Je suis un commentaire");
     webResource = client.resource(new URL(this.baseUrl + "/communications/comments/send/28").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     result.close();
 
     // Autre commentaire du même message
     f.clear();
-    f.add("msg", "Je suis un autre commentaire");
+    f.add("comment", "Je suis un autre commentaire");
     webResource = client.resource(new URL(this.baseUrl + "/communications/comments/send/28").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     result.close();
@@ -115,16 +115,22 @@ public class MessageIT extends TestCase {
     // Lecture de mes messages et commentaires
     webResource = client.resource(new URL(this.baseUrl + "/communications/my").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    List<LinkedHashMap<String, ?>> listMessage = result.getEntity(List.class);
-    String res = "Liste des messages de 'le.jitou@gmail.com': ";
-    for (LinkedHashMap<String, ?> m : listMessage) {
-      res+=m.get("text")+"  ";
+    List<LinkedHashMap<String, ?>> listCom = result.getEntity(List.class);
+    String res = "Liste des communications de 'le.jitou@gmail.com': ";
+    for (LinkedHashMap<String, ?> c : listCom) {
+      res+=c.get("text")+"; ";
     }
     System.out.println(res);
     result.close();
     
+    //Suppression du commentaire ayant l'id 29 (rattaché à l'utilisateur 1 et au commentaire 28)
+    webResource = client.resource(new URL(this.baseUrl + "/communications/delete/29").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+    Assert.assertEquals(result.getStatus(), Status.OK);
+    result.close();
+    
     //Suppression du message ayant l'id 28 (rattaché à l'utilisateur 1)
-    webResource = client.resource(new URL(this.baseUrl + "/communications/messages/delete/28").toURI());
+    webResource = client.resource(new URL(this.baseUrl + "/communications/delete/28").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
@@ -148,10 +154,10 @@ public class MessageIT extends TestCase {
     // Lecture de mes messages et commentaires
     webResource = client.resource(new URL(this.baseUrl + "/communications/my").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    listMessage = result.getEntity(List.class);
-    res = "Liste des messages de 'le.jitou@gmail.com': ";
-    for (LinkedHashMap<String, ?> m : listMessage) {
-      res+=m.get("text")+"  ";
+    listCom = result.getEntity(List.class);
+    res = "Liste des communications de 'le.jitou@gmail.com': ";
+    for (LinkedHashMap<String, ?> m : listCom) {
+      res+=m.get("text")+"; ";
     }
     System.out.println(res);
     result.close();
