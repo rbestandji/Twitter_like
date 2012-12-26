@@ -33,7 +33,6 @@ public class Lifecycle implements ServletContextListener {
       utx.begin();
       em.joinTransaction();
 
-
       //if (em.createQuery("select c from User c").getResultList().isEmpty()) {
       List<User> users = createUsers();
       for (User u : users) {
@@ -41,17 +40,14 @@ public class Lifecycle implements ServletContextListener {
       }
 
       List<Message> msgs = createMessages();
-      for (Message u : msgs) {
+      for (Message m : msgs) {
         User tmp = users.get((int) (Math.random() * (users.size() - 1)));
-        u.setAuthor(tmp);
-        tmp.getMessages().add(u);
-        em.persist(u);
+        m.setAuthor(tmp);
+        tmp.addMessage(m);
+        em.persist(m);
       }
 
-
       utx.commit();
-      //}
-
     } catch (Exception ex) {
       try {
         utx.setRollbackOnly();
@@ -99,7 +95,7 @@ public class Lifecycle implements ServletContextListener {
     listText.add("SCV READY");
     listText.add("Il en sera ainsi.");
     listText.add("2+3, 12 ? Que voulez vous ?");
-    listText.add("Vous purriez me faire l'historique de la louche à travers les ages ?");
+    listText.add("Vous pourriez me faire l'historique de la louche à travers les ages ?");
     listText.add("Your drone are under attacks");
     listText.add("Une fleche, un mort.");
     listText.add("Que voulez vous ?");
@@ -111,7 +107,7 @@ public class Lifecycle implements ServletContextListener {
     listText.add("I don't reveal much on the mini-map. It's all my fault!");
     listText.add("I'll attract the enemy with my human call: 'I'm so wasted! I'm so wasted!'");
 
-    List<Message> messages = new ArrayList<Message>();
+    List<Message> messages = new ArrayList<>();
     for (String l : listText) {
       messages.add(new Message(l, new Date()));
     }

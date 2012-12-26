@@ -7,6 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,13 +39,13 @@ public class User implements Serializable {
   private Date registrationDate = new Date();
   @Temporal( javax.persistence.TemporalType.DATE)
   private Date lastLoginDate = new Date();
-  @OneToMany
+  @OneToMany( mappedBy= "author" ,cascade=CascadeType.ALL)
   @JsonManagedReference("msg_e")
-  private List<Message> messages = new ArrayList<Message>();
-  @OneToMany( mappedBy = "following")
+  private List<Message> messages = new ArrayList<>();
+  @OneToMany( mappedBy = "following", cascade=CascadeType.ALL)
   @JsonManagedReference("ing")
   private List<UserAssignment> usersFollowing = new ArrayList<UserAssignment>();
-  @OneToMany( mappedBy = "follower")
+  @OneToMany( mappedBy = "follower", cascade=CascadeType.ALL)
   @JsonManagedReference("er")
   private List<UserAssignment> usersFollowers = new ArrayList<UserAssignment>();
 
@@ -76,6 +77,14 @@ public class User implements Serializable {
     this.usersFollowing = usersFollowing;
   }
 
+  public void addUserFollowing(UserAssignment usersFollowing) {
+    this.usersFollowing.add(usersFollowing);
+  }
+
+  public void removeUserFollowing(UserAssignment usersFollowing) {
+    this.usersFollowing.remove(usersFollowing);
+  }
+
   public List<UserAssignment> getUsersFollowers() {
     return usersFollowers;
   }
@@ -84,12 +93,28 @@ public class User implements Serializable {
     this.usersFollowers = usersFollowers;
   }
 
+  public void addUserFollowers(UserAssignment usersFollowers) {
+    this.usersFollowers.add(usersFollowers);
+  }
+
+  public void removeUserFollowers(UserAssignment usersFollowers) {
+    this.usersFollowers.remove(usersFollowers);
+  }
+
   public List<Message> getMessages() {
     return messages;
   }
 
   public void setMessages(List<Message> messages) {
     this.messages = messages;
+  }
+
+  public void addMessage(Message message) {
+    this.messages.add(message);
+  }
+
+  public void removeMessage(Message message) {
+    this.messages.remove(message);
   }
 
   public String getPassword() {

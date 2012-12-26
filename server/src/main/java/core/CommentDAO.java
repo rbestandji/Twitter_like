@@ -6,6 +6,7 @@ import java.util.Collection;
 import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.transaction.UserTransaction; 
+import share.model.Comment;
 import share.model.Message;
 import share.model.User;
 
@@ -14,7 +15,7 @@ public class CommentDAO {
    * Permet à l'utilisateur connecté de commenter un message
    */
 
-  public static void sendComment(Long idUser, Long idMessage, Message comment) throws DAOExceptionUser {
+  public static void sendComment(Long idUser, Long idMessage, Comment comment) throws DAOExceptionUser {
 
     UserTransaction utx = null;
     User uTmp;
@@ -32,10 +33,8 @@ public class CommentDAO {
         comment.setAuthor(uTmp);
         Message m = (Message) em.createQuery("SELECT x FROM Message x WHERE x.id=" + idMessage + "").getSingleResult();
         if (m != null) {
-          Collection<Message> list = m.getComments();
-          list.add(comment);
-          m.setComments(list);
-          comment.setIsComment(m.getId());
+          m.addComment(comment);
+          comment.setMsgRoot(m);
           em.persist(comment);
         } else {
           problemMessageId = true;

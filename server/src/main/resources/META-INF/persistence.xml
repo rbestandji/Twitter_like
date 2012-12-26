@@ -9,7 +9,9 @@
     </properties>
         
     <class>share.model.User</class>
+    <class>share.model.Communication</class>
     <class>share.model.Message</class>
+    <class>share.model.Comment</class>
     <class>share.model.UserAssignment</class>
 
     

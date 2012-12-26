@@ -60,6 +60,7 @@ public class WebappIT extends TestCase {
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
+    // Abonnements aux utilisateurs 2 et 3
     webResource = client.resource(new URL(this.baseUrl + "/follow/following/2").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     System.out.println("OK /: " + result.getStatus());
@@ -70,6 +71,7 @@ public class WebappIT extends TestCase {
     System.out.println("OK /: " + result.getStatus());
     result.close();
 
+    // Mes abonnements (utilisateur 1)
     webResource = client.resource(new URL(this.baseUrl + "/follow/following/my").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     List<LinkedHashMap<String, ?>> listUser = result.getEntity(List.class);
@@ -80,6 +82,7 @@ public class WebappIT extends TestCase {
     System.out.println(res);
     result.close();
 
+    // Abonnés de l'utilisateur 2
     webResource = client.resource(new URL(this.baseUrl + "/follow/follower/get/2").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     listUser = result.getEntity(List.class);
@@ -90,11 +93,13 @@ public class WebappIT extends TestCase {
     System.out.println(res);
     result.close();
 
+    // Arrêt de l'abonnement à l'utilisateur 2 
     webResource = client.resource(new URL(this.baseUrl + "/follow/stop/2").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     System.out.println("STOP /: " + result.getStatus());
     result.close();
 
+    // Abonnements de l'utilisateur 1
     webResource = client.resource(new URL(this.baseUrl + "/follow/following/get/1").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     listUser = result.getEntity(List.class);
@@ -105,10 +110,29 @@ public class WebappIT extends TestCase {
     System.out.println(res);
     result.close();
 
+    // Abonnés de l'utilisateur 2
     webResource = client.resource(new URL(this.baseUrl + "/follow/follower/get/2").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     listUser = result.getEntity(List.class);
     res = "Liste des abonnés de 'lavalber02@gmail.com': ";
+    for (LinkedHashMap<String, ?> u : listUser) {
+      res+=u.get("email")+"  ";
+    }
+    System.out.println(res);
+    result.close();
+
+    // Suppression de mon compte (utilisateur 1)
+    /*webResource = client.resource(new URL(this.baseUrl + "/delete/my").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+    System.out.println("Suppression de mon compte /: " + result.getStatus());
+    //Assert.assertEquals(result.getStatus(), Status.OK);
+    result.close();*/
+
+    // Abonnés de l'utilisateur 3
+    webResource = client.resource(new URL(this.baseUrl + "/follow/follower/get/3").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+    listUser = result.getEntity(List.class);
+    res = "Liste des abonnés de 'lionel.muller.34gmail.com': ";
     for (LinkedHashMap<String, ?> u : listUser) {
       res+=u.get("email")+"  ";
     }
@@ -151,97 +175,7 @@ public class WebappIT extends TestCase {
     result.close();
 
   }
-  // Cette fonction va tester l'envoi de Tweet ainsi que leur lecture 
-  /*@Test
-  public void testSendMsg() throws Exception {
-  Form f = new Form();
-  WebResource webResource;
-  ClientResponse result;
-  System.out.println("****************** Tests des messages ! ******************");
-
-  // Tentative d'envoi d'un message sans connection
-  f.add("msg", "Hello tout le monde");
-  webResource = client.resource(new URL(this.baseUrl + "/messages/send").toURI());
-  result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-  Assert.assertEquals(result.getStatus(), Status.USER_OFFLINE);
-  result.close();
-
-  // Connexion de l'utilisateur 1
-  f.clear();
-  f.add("email", "le.jitou@gmail.com");
-  f.add("password", "password");
-  webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
-  result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-  Assert.assertEquals(result.getStatus(), Status.OK);
-  result.close();
-
-  // envoie d'un message sur Twitter-like
-  f.clear();
-  f.add("msg", "Hello World");
-  webResource = client.resource(new URL(this.baseUrl + "/messages/send").toURI());
-  result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-  Assert.assertEquals(result.getStatus(), Status.OK);
-  result.close();
-
-  // envoie d'un deuxième message sur Twitter-like
-  f.clear();
-  f.add("msg", "Je suis un Twitte de Twitter like !");
-  webResource = client.resource(new URL(this.baseUrl + "/messages/send").toURI());
-  result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-  Assert.assertEquals(result.getStatus(), Status.OK);
-  result.close();
-
-  // L'utilisateur 1 se déconnecte
-  webResource = client.resource(new URL(this.baseUrl + "/bye").toURI());
-  result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-  Assert.assertEquals(result.getStatus(), Status.OK);
-  result.close();
-
-  // L'utilisateur 2 se connecte
-  f.clear();
-  f.add("email", "lavalber02@gmail.com");
-  f.add("password", "motdepasse");
-  webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
-  result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-  Assert.assertEquals(result.getStatus(), Status.OK);
-  result.close();
-
-  // Envoie d'un troisième message sur Twitter-like avec le compte de Bernard
-  f.clear();
-  f.add("msg", " Moi je suis un message");
-  webResource = client.resource(new URL(this.baseUrl + "/messages/send").toURI());
-  result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-  Assert.assertEquals(result.getStatus(), Status.OK);
-  result.close();
-
-  // Bernard veut lire son message
-  webResource = client.resource(new URL(this.baseUrl + "/messages/my").toURI());
-  result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-  Assert.assertEquals(result.getEntity(List.class).size(), 1);
-  result.close();
-
-  // Bernard veut lire les messages de l'utilisateur 1
-  webResource = client.resource(new URL(this.baseUrl + "/messages/get/1").toURI());
-  result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-  Assert.assertEquals(result.getEntity(List.class).size(), 2); //Jitou à posté deux messages.
-  result.close();
-
-  // Lecture des messages à partir du mail
-  webResource = client.resource(new URL(this.baseUrl + "/messages/getuser/lavalber02@gmail.com").toURI());
-  result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-  Assert.assertEquals(((LinkedHashMap) (result.getEntity(List.class).get(0))).get("text"),
-  " Moi je suis un message");
-  //System.out.println(result.getEntity(List.class));
-  result.close();
-
-  // Lecture des messages à partir d'un mauvais mail
-  webResource = client.resource(new URL(this.baseUrl + "/messages/getuser/lavalber03@gmail.com").toURI());
-  result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-  Assert.assertEquals(Status.USER_NO_ACCOUNT, result.getStatus());
-  result.close();
-
-  }
-
+/*
   // Cette fonction va tester la lecture d'un profil 
   @Test
   public void testViewUser() throws Exception {
@@ -294,12 +228,6 @@ public class WebappIT extends TestCase {
   Assert.assertEquals(result.getStatus(), Status.OK);
   result.close();
 
-
-  // Commentaires
-  f.add("msg", "Comment");
-  webResource = client.resource(new URL(this.baseUrl + "/messages/send/comment/4").toURI());
-  result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-  result.close();
 
   // Lecture des messages à partir du mail.
   webResource = client.resource(new URL(this.baseUrl + "/messages/get/1").toURI());
