@@ -13,14 +13,19 @@ public class Comment extends Communication implements Serializable {
   @JsonBackReference("com")
   private Message msgRoot = new Message();
 
-  public Comment() {}
+  public Comment() {
+    super();
+    super.setIsComment(true);
+  }
 
   public Comment(String text, Date msgDate) {
     super(text, msgDate);
+    super.setIsComment(true);
   }
     
   public Comment(String text, Date msgDate, Message msgRoot) {
     super(text, msgDate);
+    super.setIsComment(true);
     setMsgRoot(msgRoot);
   }
     

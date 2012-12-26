@@ -27,6 +27,8 @@ public class Communication implements Serializable {
   private String text = "";
   @Temporal( javax.persistence.TemporalType.DATE)
   private Date msgDate;
+  @Column
+  private boolean isComment = false;
 
   public Communication() {}
 
@@ -62,4 +64,13 @@ public class Communication implements Serializable {
   public void setText(String text) {
     this.text = text;
   }
+  
+  public boolean getIsComment() {
+    return isComment;
+  }
+
+  public void setIsComment(boolean isComment) {
+    this.isComment = isComment;
+  }
+  
 }
