@@ -109,7 +109,7 @@ public class MessageIT extends TestCase {
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(result.getStatus(), Status.OK);
-    System.out.println(result.getEntity(String.class));
+    //System.out.println(result.getEntity(String.class));
     result.close();
 
     // Lecture de mes messages et commentaires
@@ -120,7 +120,7 @@ public class MessageIT extends TestCase {
     for (LinkedHashMap<String, ?> c : listCom) {
       res+=c.get("text")+"; ";
     }
-    System.out.println(res);
+    //System.out.println(res);
     result.close();
     
     //Suppression du commentaire ayant l'id 29 (rattaché à l'utilisateur 1 et au commentaire 28)
@@ -147,7 +147,7 @@ public class MessageIT extends TestCase {
     f.add("password", "password");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-    System.out.println(result.getEntity(String.class));
+    //System.out.println(result.getEntity(String.class));
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
@@ -159,7 +159,7 @@ public class MessageIT extends TestCase {
     for (LinkedHashMap<String, ?> m : listCom) {
       res+=m.get("text")+"; ";
     }
-    System.out.println(res);
+    //System.out.println(res);
     result.close();
     
 /*

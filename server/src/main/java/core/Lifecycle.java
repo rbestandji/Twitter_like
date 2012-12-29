@@ -74,7 +74,7 @@ public class Lifecycle implements ServletContextListener {
     List<User> users = new ArrayList<User>();
     try {
       users.add(new User("Pasquet", "Jerome", "le.jitou@gmail.com", UserDAO.sha1sum("password")));
-      users.add(new User("Laval", "Benard", "lavalber02@gmail.com", UserDAO.sha1sum("motdepasse")));
+      users.add(new User("Laval", "Bernard", "lavalber02@gmail.com", UserDAO.sha1sum("motdepasse")));
       users.add(new User("Muller", "Lionel", "lionel.muller.34@gmail.com", UserDAO.sha1sum("motdepasse")));
       users.add(new User("Itam", "Johanna", "le.jojo@gmail.com", UserDAO.sha1sum("motdepasse")));
       users.add(new User("Nigon", "Julien", "le.julius@gmail.com", UserDAO.sha1sum("motdepasse")));

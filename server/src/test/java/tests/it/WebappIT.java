@@ -56,19 +56,19 @@ public class WebappIT extends TestCase {
     f.add("password", "password");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-    System.out.println(result.getEntity(String.class));
+    //System.out.println(result.getEntity(String.class));
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
 
     // Abonnements aux utilisateurs 2 et 3
     webResource = client.resource(new URL(this.baseUrl + "/follow/following/2").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    System.out.println("OK /: " + result.getStatus());
+    //System.out.println("OK /: " + result.getStatus());
     result.close();
 
     webResource = client.resource(new URL(this.baseUrl + "/follow/following/3").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    System.out.println("OK /: " + result.getStatus());
+    //System.out.println("OK /: " + result.getStatus());
     result.close();
 
     // Mes abonnements (utilisateur 1)
@@ -79,7 +79,7 @@ public class WebappIT extends TestCase {
     for (LinkedHashMap<String, ?> u : listUser) {
       res+=u.get("email")+"  ";
     }
-    System.out.println(res);
+    //System.out.println(res);
     result.close();
 
     // Abonnés de l'utilisateur 2
@@ -90,13 +90,13 @@ public class WebappIT extends TestCase {
     for (LinkedHashMap<String, ?> u : listUser) {
       res+=u.get("email")+"  ";
     }
-    System.out.println(res);
+    //System.out.println(res);
     result.close();
 
     // Arrêt de l'abonnement à l'utilisateur 2 
     webResource = client.resource(new URL(this.baseUrl + "/follow/stop/2").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    System.out.println("STOP /: " + result.getStatus());
+    //System.out.println("STOP /: " + result.getStatus());
     result.close();
 
     // Abonnements de l'utilisateur 1
@@ -107,7 +107,7 @@ public class WebappIT extends TestCase {
     for (LinkedHashMap<String, ?> u : listUser) {
       res+=u.get("email")+"  ";
     }
-    System.out.println(res);
+    //System.out.println(res);
     result.close();
 
     // Abonnés de l'utilisateur 2
@@ -118,7 +118,7 @@ public class WebappIT extends TestCase {
     for (LinkedHashMap<String, ?> u : listUser) {
       res+=u.get("email")+"  ";
     }
-    System.out.println(res);
+    //System.out.println(res);
     result.close();
 
     // Suppression de mon compte (utilisateur 1)
@@ -136,7 +136,7 @@ public class WebappIT extends TestCase {
     for (LinkedHashMap<String, ?> u : listUser) {
       res+=u.get("email")+"  ";
     }
-    System.out.println(res);
+    //System.out.println(res);
     result.close();
 
     // L'utilisateur 1 est encore connecté, tentative de connexion de l'utilisateur 2 

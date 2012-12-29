@@ -17,7 +17,7 @@ public class Status implements StatusType {
   public final static int PASSWORD_TOO_SHORT = 8;//8 caractères minimum
   public final static int INVALID_EMAIL = 9;//l'email doit contenir un @ et pas d'espace
   public final static int ID_NOT_EXIST = 10;//L'identifiant n'existe pas
-    public final static int NOT_FOLLOWING = 11;//Pas de relation following
+  public final static int NOT_FOLLOWING = 11;//Pas de relation following
 
   private int code;
 
