@@ -91,7 +91,7 @@
         <configuration>
           <mainClass>${main.class}</mainClass>
           <classpathScope>runtime</classpathScope>
-          <includePluginDependencies>false</includePluginDependencies>
+          <includePluginDependencies>true</includePluginDependencies>
         </configuration>
         <dependencies>
           <dependency>
