@@ -47,8 +47,9 @@ public class CreateUsersIT extends TestCase {
     WebResource webResource;
     ClientResponse result;
     System.out.println("****************** Creation des comptes ! ******************");
-
-    // Utilisateur 1 : bug car deja existant
+    
+    // création d'un nouveau compte déjà existant: user 1: échec attendu
+    f.clear();
     f.add("email", "le.jitou@gmail.com");
     f.add("password", "password");
     f.add("name", "Pasquet");
@@ -58,7 +59,7 @@ public class CreateUsersIT extends TestCase {
     Assert.assertEquals(result.getStatus(), Status.EMAIL_VALIDATED);
     result.close();
 
-    // Utilisateur 2 : Ok compte créé
+    // création d'un nouveau compte : succès attendu
     f.clear();
     f.add("email", "castorEnrage@gmail.com");
     f.add("password", "sdsdsdsdsdsdsd");
@@ -67,6 +68,27 @@ public class CreateUsersIT extends TestCase {
     webResource = client.resource(new URL(this.baseUrl + "/registration").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(result.getStatus(), Status.OK);
+    result.close();
+    
+    // Connexion de l'utilisateur 1 avec les bons identifiants: succès attendu
+    f.clear();
+    f.add("email", "le.jitou@gmail.com");
+    f.add("password", "password");
+    webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+    System.out.println(result.getEntity(String.class));
+    Assert.assertEquals(result.getStatus(), Status.OK);
+    result.close();
+    
+    // tentative de création d'un nouveau compte avec user 1 déjà connecté: échec attendu
+    f.clear();
+    f.add("email", "boblemarsoin@gmail.com");
+    f.add("password", "etc");
+    f.add("name", "dilan");
+    f.add("firstname", "bob");
+    webResource = client.resource(new URL(this.baseUrl + "/registration").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+    Assert.assertEquals(result.getStatus(), Status.USER_ONLINE);
     result.close();
   }
 }

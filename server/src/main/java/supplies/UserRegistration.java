@@ -15,9 +15,7 @@ import javax.ws.rs.core.Response;
 import share.model.User; 
 
 @Path( "/registration")
-public class UserRegistration {
-
-  
+public class UserRegistration {  
   /*
    * Fonction permettant de créer un compte.
    */
