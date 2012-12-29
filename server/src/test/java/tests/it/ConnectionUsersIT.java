@@ -42,7 +42,7 @@ public class ConnectionUsersIT extends TestCase {
 
   // Dans cette fonction nous allons connecter des utilisateurs 
   @Test
-  public void testCreateUsers() throws Exception {
+  public void testConnectUsers() throws Exception {
     Form f = new Form();
     WebResource webResource;
     ClientResponse result;

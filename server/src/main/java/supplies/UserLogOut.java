@@ -12,11 +12,11 @@ import javax.ws.rs.core.Response;
 public class UserLogOut {
 
   /*
-   * Fonction de déconnexion => destruction de authCookie
+   * Fonction de déconnexion => destruction du cookie d'authentification: authCookie
    */
   @GET
   @Produces( MediaType.APPLICATION_JSON)
-  public Response logout() {
+  public Response logout() {        
     NewCookie cookie = new NewCookie("authCookie", "-1", "/", "localhost", "", 0, false);
     return Response.status(new Status(Status.OK)).cookie(cookie).build();
   }
