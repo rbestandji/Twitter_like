@@ -7,12 +7,12 @@ import com.sun.jersey.api.representation.Form;
 import com.sun.jersey.client.apache.ApacheHttpClient;
 import com.sun.jersey.client.apache.config.ApacheHttpClientConfig;
 import com.sun.jersey.client.apache.config.DefaultApacheHttpClientConfig;
-import share.core.Status;
 import java.net.URL;
 import javax.ws.rs.core.MediaType;
 import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Test;
+import share.core.Status;
 
 public class ConnectionUsersIT extends TestCase {
 

@@ -5,7 +5,6 @@ import share.core.DAOExceptionUser;
 import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.transaction.UserTransaction; 
-import share.model.Comment;
 import share.model.Message;
 import share.model.User;
 
@@ -14,7 +13,7 @@ public class CommentDAO {
    * Permet à l'utilisateur connecté de commenter un message
    */
 
-  public static void sendComment(Long idUser, Long idMessage, Comment comment) throws DAOExceptionUser {
+  public static void sendComment(Long idUser, Long idMessage, Message comment) throws DAOExceptionUser {
 
     UserTransaction utx = null;
     User uTmp;
@@ -32,10 +31,10 @@ public class CommentDAO {
         comment.setAuthor(uTmp);
         Message m = (Message) em.createQuery("SELECT x FROM Message x WHERE x.id=" + idMessage + "").getSingleResult();
         if (m != null) {
-          comment.setMsgRoot(m);
-          m.addComment(comment);
+          comment.setMsgRoot(m); 
+          m.addComment(comment); 
           em.persist(comment);
-        } else {
+        } else { 
           problemMessageId = true;
         }
       } else {
@@ -61,4 +60,6 @@ public class CommentDAO {
       throw new DAOExceptionUser(new Status(Status.NO_MESSAGE_ID));
     }
   }
+  
+  
 }

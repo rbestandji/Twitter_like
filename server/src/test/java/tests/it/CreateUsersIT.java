@@ -47,7 +47,7 @@ public class CreateUsersIT extends TestCase {
     WebResource webResource;
     ClientResponse result;
     System.out.println("****************** Creation des comptes ! ******************");
-    
+
     // création d'un nouveau compte déjà existant: user 1: échec attendu
     f.clear();
     f.add("email", "le.jitou@gmail.com");
@@ -69,7 +69,7 @@ public class CreateUsersIT extends TestCase {
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
-    
+
     // Connexion de l'utilisateur 1 avec les bons identifiants: succès attendu
     f.clear();
     f.add("email", "le.jitou@gmail.com");
@@ -79,7 +79,7 @@ public class CreateUsersIT extends TestCase {
     System.out.println(result.getEntity(String.class));
     Assert.assertEquals(result.getStatus(), Status.OK);
     result.close();
-    
+
     // tentative de création d'un nouveau compte avec user 1 déjà connecté: échec attendu
     f.clear();
     f.add("email", "boblemarsoin@gmail.com");

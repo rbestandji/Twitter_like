@@ -13,9 +13,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import share.core.DAOExceptionUser;
 import share.core.Status;
-import share.model.Comment;
+import share.model.Message;
 
-@Path( "/communications/comments")
+@Path( "/comments")
 public class CommentsResource {
   /*
    * Permet à l'utilisateur connecté de commenter un message
@@ -28,7 +28,7 @@ public class CommentsResource {
     if (authenciateCookie == null) {
       return Response.status(new Status(Status.USER_OFFLINE)).build();
     }
-    Comment comment = new Comment(msg, new Date());
+    Message comment = new Message(msg, new Date());
     try {
       CommentDAO.sendComment(Long.parseLong(authenciateCookie.getValue()), Long.parseLong(idMsg), comment);
      return Response.ok(comment).status(Status.OK).build();
