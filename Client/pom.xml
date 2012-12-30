@@ -46,6 +46,12 @@
             <artifactId>jersey-client</artifactId>
             <version>1.14</version>
         </dependency>
+        <dependency>
+            <groupId>com.sun.jersey.contribs</groupId>
+            <artifactId>jersey-apache-client</artifactId>
+            <version>1.9-ea04</version>
+            <type>jar</type>
+        </dependency>
 
         <!-- Test dependencies -->
         <dependency>
@@ -54,7 +60,6 @@
             <version>4.10</version>
             <scope>test</scope>
         </dependency>
-   
   </dependencies>
 
 

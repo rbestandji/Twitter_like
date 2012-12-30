@@ -17,31 +17,18 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import share.model.User;
 
-public class IUser extends Parent {
-
-  private User user;
+public class CUser extends Parent {
   private Label gridCaption;
   private GridPane grid;
   private Button validate;
-  private Button returnB;
+  private Button registration;
   private GetUserTask post = new GetUserTask();
   private TextField email = new TextField();
-  private TextField name = new TextField();
-  private TextField firstname = new TextField();
   private TextField password = new PasswordField();
 
-  /*
-  public void setUser(User user) {
-    this.user = (user);
-    this.name.setText(user.getFirstname());
-    this.surname.setText(user.getName());
-    this.email.setText(user.getEmail());
-  }*/
-
-  public IUser() throws URISyntaxException, MalformedURLException {
-    gridCaption = new Label("Inscription");
+  public CUser() throws URISyntaxException, MalformedURLException {
+    gridCaption = new Label("Connexion");
     gridCaption.setWrapText(true);
     //this.setTranslateX(10);
     //this.setTranslateY(10);
@@ -69,50 +56,32 @@ public class IUser extends Parent {
     GridPane.setHalignment(password,HPos.LEFT);
     grid.getChildren().add(password);
     
-    label = new Label("Nom:");
-    GridPane.setConstraints(label,0,2);
-    GridPane.setHalignment(label,HPos.RIGHT);
-    grid.getChildren().add(label);
-
-    GridPane.setConstraints(name,1,2);
-    GridPane.setHalignment(name,HPos.LEFT);
-    grid.getChildren().add(name);
-    
-    label = new Label("Prénom:");
-    GridPane.setConstraints(label,0,3);
-    GridPane.setHalignment(label,HPos.RIGHT);
-    grid.getChildren().add(label);
-
-    GridPane.setConstraints(firstname,1,3);
-    GridPane.setHalignment(firstname,HPos.LEFT);
-    grid.getChildren().add(firstname);
-    
     // bouton valider
     validate = new Button("Valider");
     validate.setTranslateX(120);
-    validate.setTranslateY(160);
+    validate.setTranslateY(80);
 
-    // bouton retour
-    returnB = new Button("Retour");
-    returnB.setTranslateX(400);
-    returnB.setTranslateY(450);
+    // bouton s'inscrire
+    registration = new Button("S'inscrire");
+    registration.setTranslateX(400);
+    registration.setTranslateY(450);
 
     this.getChildren().add(gridCaption);
     this.getChildren().add(grid);
     this.getChildren().add(validate);
-    this.getChildren().add(returnB);
+    this.getChildren().add(registration);
     
-    // click bouton retour
-    returnB.setOnAction(new EventHandler<ActionEvent>() {
+    // click bouton s'inscrire 
+    registration.setOnAction(new EventHandler<ActionEvent>() {
       public void handle(ActionEvent t) {
         try {
           getChildren().clear();
-          CUser cuser = new CUser();
-          getChildren().add(cuser);
+          IUser iuser = new IUser();
+          getChildren().add(iuser);
         } catch (URISyntaxException ex) {
-          Logger.getLogger(IUser.class.getName()).log(Level.SEVERE, null, ex);
+          Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MalformedURLException ex) {
-          Logger.getLogger(IUser.class.getName()).log(Level.SEVERE, null, ex);
+          Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
       }
     });
@@ -124,17 +93,16 @@ public class IUser extends Parent {
           Form f = new Form();
           f.add("email", email.getText());
           f.add("password", password.getText());
-          f.add("name", name.getText());
-          f.add("firstname", firstname.getText());
-          ClientResponse result = post.postCall("registration",f);
+          ClientResponse result = post.postCall("connection",f);
+          System.out.println(result.getEntity(String.class));
           result.close();
           getChildren().clear();
-          CUser cuser = new CUser();
-          getChildren().add(cuser);
+          Wall wall = new Wall();
+          getChildren().add(wall);
         } catch (MalformedURLException ex) {
-          Logger.getLogger(IUser.class.getName()).log(Level.SEVERE, null, ex);
+          Logger.getLogger(CUser.class.getName()).log(Level.SEVERE, null, ex);
         } catch (URISyntaxException ex) {
-          Logger.getLogger(IUser.class.getName()).log(Level.SEVERE, null, ex);
+          Logger.getLogger(CUser.class.getName()).log(Level.SEVERE, null, ex);
         }
       }
     });

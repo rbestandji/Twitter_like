@@ -1,4 +1,4 @@
-package Interface;
+/*package Interface;
 
 import Network.GetUserTask;
 import com.sun.jersey.api.client.ClientResponse;
@@ -14,10 +14,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import share.model.User;
 
-/**
- *
- * @author jitou
- */
 public class MainWindow extends Scene {
 
   private static MainWindow mainWindow = new MainWindow();
@@ -42,9 +38,6 @@ public class MainWindow extends Scene {
     iUser.setUser(user);
   }
 
-  /**
-   * Initialisation de l'UI.
-   */
   private void init() {
     int W = 10;
     int H = 5;
@@ -104,3 +97,4 @@ public class MainWindow extends Scene {
     }
   }
 }
+*/

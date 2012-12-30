@@ -1,4 +1,4 @@
-Liste des règles à respecter : 
+Liste des règles à respecter :
 
 Langue :
 Anglais pour les noms de variables, fonctions, classes, fichiers, dossiers.
