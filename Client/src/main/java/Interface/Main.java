@@ -2,19 +2,16 @@ package Interface;
 
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-  public Group root;  
+  public static Group root;  
+  public static ProgressBar progress;
 
   public static void main(String[] args) {
     Application.launch(Main.class, args);
@@ -29,13 +26,22 @@ public class Main extends Application {
   private void init(Stage primaryStage) throws URISyntaxException, MalformedURLException {
     primaryStage.setTitle("Client Twitter-like");
     root = new Group();
+    root.setTranslateX(10);
+    root.setTranslateY(10);
     Scene scene = new Scene(root, 500, 500, Color.WHITE);
     primaryStage.setScene(scene);
 
-    // connexion
-    final CUser cuser = new CUser();
-    root.getChildren().add(cuser);
+    // Progress Bar
+    progress = new ProgressBar();
+    progress.setTranslateX(10);
+    progress.setTranslateY(450);
+    progress.setMaxSize( Double.MAX_VALUE, Double.MAX_VALUE );
+    progress.setProgress( 1 );
 
+    // connexion
+    CUser cuser = new CUser();
+    
+    root.getChildren().addAll(cuser,progress);
   }
 
 }

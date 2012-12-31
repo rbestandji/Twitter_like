@@ -7,6 +7,8 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -17,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import share.core.Status;
 import share.model.User;
 
 public class IUser extends Parent {
@@ -51,41 +54,33 @@ public class IUser extends Parent {
     grid.setVgap(10);
     grid.setPadding(new Insets(18));
     
-    Label label = new Label("Email:");
-    GridPane.setConstraints(label,0,0);
-    GridPane.setHalignment(label,HPos.RIGHT);
-    grid.getChildren().add(label);
+    Label lemail = new Label("Email:");
+    GridPane.setConstraints(lemail,0,0);
+    GridPane.setHalignment(lemail,HPos.RIGHT);
 
     GridPane.setConstraints(email,1,0);
     GridPane.setHalignment(email,HPos.LEFT);
-    grid.getChildren().add(email);
     
-    label = new Label("Mot de passe:");
-    GridPane.setConstraints(label,0,1);
-    GridPane.setHalignment(label,HPos.RIGHT);
-    grid.getChildren().add(label);
+    Label lpassword= new Label("Mot de passe:");
+    GridPane.setConstraints(lpassword,0,1);
+    GridPane.setHalignment(lpassword,HPos.RIGHT);
 
     GridPane.setConstraints(password,1,1);
     GridPane.setHalignment(password,HPos.LEFT);
-    grid.getChildren().add(password);
     
-    label = new Label("Nom:");
-    GridPane.setConstraints(label,0,2);
-    GridPane.setHalignment(label,HPos.RIGHT);
-    grid.getChildren().add(label);
+    Label lname = new Label("Nom:");
+    GridPane.setConstraints(lname,0,2);
+    GridPane.setHalignment(lname,HPos.RIGHT);
 
     GridPane.setConstraints(name,1,2);
     GridPane.setHalignment(name,HPos.LEFT);
-    grid.getChildren().add(name);
     
-    label = new Label("Prénom:");
-    GridPane.setConstraints(label,0,3);
-    GridPane.setHalignment(label,HPos.RIGHT);
-    grid.getChildren().add(label);
+    Label lfirstname = new Label("Prénom:");
+    GridPane.setConstraints(lfirstname,0,3);
+    GridPane.setHalignment(lfirstname,HPos.RIGHT);
 
     GridPane.setConstraints(firstname,1,3);
     GridPane.setHalignment(firstname,HPos.LEFT);
-    grid.getChildren().add(firstname);
     
     // bouton valider
     validate = new Button("Valider");
@@ -97,10 +92,8 @@ public class IUser extends Parent {
     returnB.setTranslateX(400);
     returnB.setTranslateY(450);
 
-    this.getChildren().add(gridCaption);
-    this.getChildren().add(grid);
-    this.getChildren().add(validate);
-    this.getChildren().add(returnB);
+    grid.getChildren().addAll(lemail,lpassword,lname,lfirstname,email,password,name,firstname);
+    this.getChildren().addAll(gridCaption, grid, validate, returnB);
     
     // click bouton retour
     returnB.setOnAction(new EventHandler<ActionEvent>() {
@@ -116,28 +109,55 @@ public class IUser extends Parent {
         }
       }
     });
+    
+    // click bouton valider
+    validate.setOnAction(new ServerRegistration());
+  }
 
-    // click bouton valider 
-    validate.setOnAction(new EventHandler<ActionEvent>() {
-      public void handle(ActionEvent t) {
-        try {
+  private class ServerRegistration implements EventHandler<ActionEvent> {
+    public void handle(ActionEvent t) {
+      gridCaption.setDisable( true );
+      grid.setDisable( true );
+      validate.setDisable( true );
+      Main.progress.setProgress( -1 );
+      Task<ClientResponse> task = new Task<ClientResponse>() {
+        @Override
+        protected ClientResponse call() throws Exception {
           Form f = new Form();
           f.add("email", email.getText());
           f.add("password", password.getText());
           f.add("name", name.getText());
           f.add("firstname", firstname.getText());
-          ClientResponse result = post.postCall("registration",f);
-          result.close();
-          getChildren().clear();
-          CUser cuser = new CUser();
-          getChildren().add(cuser);
-        } catch (MalformedURLException ex) {
-          Logger.getLogger(IUser.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (URISyntaxException ex) {
-          Logger.getLogger(IUser.class.getName()).log(Level.SEVERE, null, ex);
+          Thread.currentThread().sleep(1000);
+          return post.postCall("registration",f);
         }
-      }
-    });
+      };
+      task.setOnSucceeded( new EventHandler<WorkerStateEvent>() {
+        public void handle( WorkerStateEvent success ) {
+          try {
+            ClientResponse result = (ClientResponse) success.getSource().getValue();
+            gridCaption.setDisable( false );
+            grid.setDisable( false );
+            validate.setDisable( false );
+            Main.progress.setProgress( 1 );
+            if (result.getStatus() == Status.OK) {
+              grid.getChildren().clear();
+              getChildren().clear();
+              CUser cuser = new CUser();
+              Main.root.getChildren().add(cuser);
+            } else {
+              System.out.println( result.getStatus());
+            }
+          } catch (URISyntaxException ex) {
+            Logger.getLogger(CUser.class.getName()).log(Level.SEVERE, null, ex);
+          } catch (MalformedURLException ex) {
+            Logger.getLogger(CUser.class.getName()).log(Level.SEVERE, null, ex);
+          }
+        }
+      });
+      new Thread( task, "Fetch Registration Thread" ).start();
+    }
   }
+  
 }
 
