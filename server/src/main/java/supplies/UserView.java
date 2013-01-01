@@ -1,7 +1,7 @@
 package supplies;
 
-import share.core.DAOExceptionUser; 
-import share.core.Status; 
+import share.core.DAOExceptionUser;
+import share.core.Status;
 import core.UserDAO;
 import java.util.List;
 import javax.ws.rs.CookieParam;
@@ -12,7 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import share.model.User; 
+import share.model.User;
 
 @Path( "/users")
 public class UserView {
@@ -20,7 +20,7 @@ public class UserView {
   /*
    * Retourne la description de l'utilisateur
    */
-  @Path("/getuser/{id}")
+  @Path("/getuserid/{id}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public Response getUserWithID(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("id") String id) {
@@ -37,11 +37,11 @@ public class UserView {
     }
   }
 
-  @Path("/getuser/{email}")
+  @Path("/getuseremail/{email}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public Response getUserWithEmail(@CookieParam("authCookie") Cookie authenciateCookie,
-                                   @PathParam("email") String email) {
+          @PathParam("email") String email) {
     if (authenciateCookie == null) {
       return Response.status(new Status(Status.USER_OFFLINE)).build();
     }
