@@ -30,7 +30,8 @@ public class Communication implements Serializable {
   @Column
   private boolean isComment = false;
 
-  public Communication() {}
+  public Communication() {
+  }
 
   public Communication(String text, Date msgDate) {
     setText(text);
@@ -64,7 +65,7 @@ public class Communication implements Serializable {
   public void setText(String text) {
     this.text = text;
   }
-  
+
   public boolean getIsComment() {
     return isComment;
   }
@@ -72,5 +73,4 @@ public class Communication implements Serializable {
   public void setIsComment(boolean isComment) {
     this.isComment = isComment;
   }
-  
 }

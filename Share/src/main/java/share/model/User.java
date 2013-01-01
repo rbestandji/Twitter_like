@@ -1,5 +1,5 @@
 package share.model;
- 
+
 import share.core.DAOExceptionUser;
 import share.core.Status;
 import java.io.Serializable;
@@ -17,7 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import org.codehaus.jackson.annotate.JsonManagedReference;
- 
+
 @Entity
 @Table(name = "tUser")
 public class User implements Serializable {
@@ -39,13 +39,13 @@ public class User implements Serializable {
   private Date registrationDate = new Date();
   @Temporal( javax.persistence.TemporalType.DATE)
   private Date lastLoginDate = new Date();
-  @OneToMany( mappedBy= "author" ,cascade=CascadeType.ALL)
+  @OneToMany( mappedBy = "author", cascade = CascadeType.ALL)
   @JsonManagedReference("msg_e")
   private List<Message> messages = new ArrayList<>();
-  @OneToMany( mappedBy = "following", cascade=CascadeType.ALL)
+  @OneToMany( mappedBy = "following", cascade = CascadeType.ALL)
   @JsonManagedReference("ing")
   private List<UserAssignment> usersFollowing = new ArrayList<UserAssignment>();
-  @OneToMany( mappedBy = "follower", cascade=CascadeType.ALL)
+  @OneToMany( mappedBy = "follower", cascade = CascadeType.ALL)
   @JsonManagedReference("er")
   private List<UserAssignment> usersFollowers = new ArrayList<UserAssignment>();
 
@@ -58,7 +58,7 @@ public class User implements Serializable {
   }
 
   public User(String name, String firstname, String email, String password)
-          throws DAOExceptionUser , NoSuchAlgorithmException {
+          throws DAOExceptionUser, NoSuchAlgorithmException {
     try {
       this.setPassword(password);
       this.setEmail(email);
@@ -121,7 +121,7 @@ public class User implements Serializable {
     return password;
   }
 
-  public void setPassword(String password) throws DAOExceptionUser{
+  public void setPassword(String password) throws DAOExceptionUser {
     if (password.length() < 8) {
       throw new DAOExceptionUser(new Status(Status.PASSWORD_TOO_SHORT));
     } else {
@@ -194,5 +194,4 @@ public class User implements Serializable {
   public void setId(Long id) {
     this.id = id;
   }
-
 }
