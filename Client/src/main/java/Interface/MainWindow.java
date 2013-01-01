@@ -1,4 +1,4 @@
-/*package Interface;
+package Interface;
 
 import Network.GetUserTask;
 import com.sun.jersey.api.client.ClientResponse;
@@ -20,13 +20,13 @@ public class MainWindow extends Scene {
   private ProgressBar progress;
   private TextField fieldSearch;
   private Button startSearch;
-  private IUser iUser;
-  
-  
+  private User user = null;
+  private Wall wall = null;
+
   //private TextArea text;
   private MainWindow() {
     super(new StackPane());
-    iUser = new IUser();;
+    wall = new Wall();
     init();
   }
 
@@ -35,7 +35,8 @@ public class MainWindow extends Scene {
   }
 
   public void setUser(User user) {
-    iUser.setUser(user);
+    this.user = user;
+    wall.setUser(user);
   }
 
   private void init() {
@@ -46,7 +47,7 @@ public class MainWindow extends Scene {
 
 
     GridPane grid = new GridPane();
-    
+
     grid.setHgap(W);
     grid.setVgap(H);
 
@@ -61,7 +62,7 @@ public class MainWindow extends Scene {
     grid.add(progress, 0, 0, W / 2, 1);
     grid.add(fieldSearch, W / 2, 0, W / 4, 1);
     grid.add(startSearch, W / 2 + W / 4, 0, W / 4, 1);
-    grid.add(iUser, 0, 1, W / 4, W / 2);
+    grid.add(wall, 0, 1, W / 4, W / 2);
 
     startSearch.setOnAction(new GoodFetchMenuActionHandler());
     root.getChildren().add(grid);
@@ -72,29 +73,10 @@ public class MainWindow extends Scene {
     System.out.println("L 1  : " + sta.toString());
   }
 
-  
-  
   private class GoodFetchMenuActionHandler implements EventHandler<ActionEvent> {
 
     public void handle(ActionEvent t) {
-      System.out.println("Debut !");
-      GetUserTask  task = null;
-      try {
-        task = new GetUserTask( "1");
-      } catch (MalformedURLException ex) {
-        System.out.println("LAAAAA");
-      }
-      
-      task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-      public void handle(WorkerStateEvent success) {
-          updateUserProfil((ClientResponse)success.getSource().getValue());
-      }
-    });
-    new Thread(task, "Search").start();
-
-
-    System.out.println("Fin !");
+      throw new UnsupportedOperationException("Not supported yet.");
     }
   }
 }
-*/

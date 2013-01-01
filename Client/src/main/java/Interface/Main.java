@@ -10,16 +10,23 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-  public static Group root;  
+
+  public static Group root;
   public static ProgressBar progress;
+  private static Stage primaryStage;
 
   public static void main(String[] args) {
     Application.launch(Main.class, args);
   }
-  
+
+  static public Stage getMainWindow() {
+    return primaryStage;
+  }
+
   @Override
   public void start(Stage primaryStage) throws Exception {
-    init( primaryStage );
+    Main.primaryStage = primaryStage;
+    init(primaryStage);
     primaryStage.show();
   }
 
@@ -35,13 +42,12 @@ public class Main extends Application {
     progress = new ProgressBar();
     progress.setTranslateX(10);
     progress.setTranslateY(450);
-    progress.setMaxSize( Double.MAX_VALUE, Double.MAX_VALUE );
-    progress.setProgress( 1 );
+    progress.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+    progress.setProgress(1);
 
     // connexion
     CUser cuser = new CUser();
-    
-    root.getChildren().addAll(cuser,progress);
-  }
 
+    root.getChildren().addAll(cuser, progress);
+  }
 }
