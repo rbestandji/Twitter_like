@@ -18,6 +18,25 @@ import share.model.User;
 public class UserView {
 
   /*
+   * Retourne le mur de l'utilisateur cad : ses messages et ceux des personnes suivis.
+   */
+  @Path("/getmywall")
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getMyWall(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("id") String id) {
+    if (authenciateCookie == null) {
+      return Response.status(new Status(Status.USER_OFFLINE)).build();
+    }
+
+    try {
+      
+      return Response.ok(UserDAO.getWall(Long.parseLong(id)), MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
+    } catch (DAOExceptionUser ex) {
+      return Response.status(ex.getStatus()).build();
+    }
+  }
+
+  /*
    * Retourne la description de l'utilisateur
    */
   @Path("/getuserid/{id}")

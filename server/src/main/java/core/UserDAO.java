@@ -3,19 +3,20 @@ package core;
 import share.core.DAOExceptionUser;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.naming.InitialContext; 
+import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.transaction.UserTransaction;
 import share.model.User;
 import share.core.Status;
+import share.model.Message;
 
 public class UserDAO {
 
   //Fonction permettant de créer un compte.
-   
   public static void createUser(User user) throws DAOExceptionUser {
     UserTransaction utx = null;
     boolean isValidated = false;
@@ -96,7 +97,7 @@ public class UserDAO {
 
       user = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + id + "").getSingleResult();
       utx.commit();
-      
+
     } catch (Exception ex) {
       try {
         if (utx != null) {
@@ -148,6 +149,17 @@ public class UserDAO {
 
 
     return id;
+  }
+
+  //Retourne le wall d'un utilisateur
+  public static List<Message> getWall(long id) throws DAOExceptionUser {
+    ArrayList<Message> messagesWall = new ArrayList<Message>();
+    messagesWall.addAll(MessageDAO.getMessages(id));
+    List<User> follower = FollowDAO.getFollows(id, "follower");
+    for (User u : follower) {
+      messagesWall.addAll(MessageDAO.getMessages(u.getId()));
+    }
+    return messagesWall;
   }
 
   //Retourne la liste des users dont le nom contient la chaine 'name' en paramètre
@@ -224,13 +236,12 @@ public class UserDAO {
 
     return user;
   }
-
   private static final String salt = "my twitter-like salt";
-  
+
   public static String sha1sum(String password) throws NoSuchAlgorithmException {
     byte[] hash;
     MessageDigest md = MessageDigest.getInstance("SHA1");
-    String text = password+salt;
+    String text = password + salt;
     hash = md.digest(text.getBytes());
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < hash.length; ++i) {
@@ -244,6 +255,4 @@ public class UserDAO {
     }
     return sb.toString();
   }
-
 }
-
