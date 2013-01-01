@@ -41,6 +41,30 @@ public class MessageIT extends TestCase {
     client.setFollowRedirects(Boolean.TRUE);// Plus utilisé 
 
   }
+  
+    // A efffacer
+  @Test
+  public void testLogOutUsers() throws Exception {
+    Form f = new Form();
+    WebResource webResource;
+    ClientResponse result;
+    
+    
+    // Connexion de l'utilisateur 1: succès attendu 
+    f.add("email", "le.jitou@gmail.com");
+    f.add("password", "password");
+    webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);    
+    Assert.assertEquals(result.getStatus(), Status.OK);
+    result.close();
+    
+    // L'utilisateur 1 se déconnecte : succès attendu
+    webResource = client.resource(new URL(this.baseUrl + "/bye").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+    Assert.assertEquals(result.getStatus(), Status.OK);
+    result.close();
+  }
+  
 //Evidement ne fonctionne plus now !
   // Cette fonction va tester l'envoi de Tweet ainsi que leur lecture 
   /*@Test
