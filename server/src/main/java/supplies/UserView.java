@@ -20,7 +20,7 @@ public class UserView {
   /*
    * Retourne la description de l'utilisateur
    */
-  @Path("/get/{id}")
+  @Path("/getuser/{id}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public Response getUserWithID(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("id") String id) {

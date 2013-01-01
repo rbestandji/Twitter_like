@@ -60,6 +60,4 @@ public class CommentDAO {
       throw new DAOExceptionUser(new Status(Status.NO_MESSAGE_ID));
     }
   }
-  
-  
 }

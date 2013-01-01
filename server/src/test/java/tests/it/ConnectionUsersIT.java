@@ -53,7 +53,7 @@ public class ConnectionUsersIT extends TestCase {
     f.add("password", "motdepasse");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-    Assert.assertEquals(result.getStatus(), Status.USER_NO_ACCOUNT);
+    Assert.assertEquals(Status.USER_NO_ACCOUNT, result.getStatus());
     result.close();
     
     // L'utilisateur 3 tente de se connecter avec un mauvais password sans succès
@@ -62,7 +62,7 @@ public class ConnectionUsersIT extends TestCase {
     f.add("password", "mauvaismotdepasse");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-    Assert.assertEquals(result.getStatus(), Status.USER_WRONG_PASSWORD);
+    Assert.assertEquals(Status.USER_WRONG_PASSWORD, result.getStatus());
     result.close();
     
     // Connexion de l'utilisateur 1 avec les bons identifiants succès attendu
@@ -72,7 +72,7 @@ public class ConnectionUsersIT extends TestCase {
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     System.out.println(result.getEntity(String.class));
-    Assert.assertEquals(result.getStatus(), Status.OK);
+    Assert.assertEquals(Status.OK, result.getStatus());
     result.close();
     
     // L'utilisateur 1 est encore connecté, tentative de connexion de l'utilisateur 2 échec attendu
@@ -81,7 +81,7 @@ public class ConnectionUsersIT extends TestCase {
     f.add("password", "motdepasse");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-    Assert.assertEquals(result.getStatus(), Status.USER_ONLINE);
+    Assert.assertEquals(Status.USER_ONLINE, result.getStatus());
     result.close();
   }
 }

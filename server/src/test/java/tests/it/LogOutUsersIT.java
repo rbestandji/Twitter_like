@@ -46,20 +46,20 @@ public class LogOutUsersIT extends TestCase {
     Form f = new Form();
     WebResource webResource;
     ClientResponse result;
-    System.out.println("****************** Déconnexion des utilisateurs ! ******************");
+    System.out.println("****************** Déconnexion des utilisateurs ! ******************");      
     
     // Connexion de l'utilisateur 1: succès attendu 
     f.add("email", "le.jitou@gmail.com");
     f.add("password", "password");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);    
-    Assert.assertEquals(result.getStatus(), Status.OK);
+    Assert.assertEquals(Status.OK, result.getStatus());
     result.close();
     
     // L'utilisateur 1 se déconnecte : succès attendu
     webResource = client.resource(new URL(this.baseUrl + "/bye").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    Assert.assertEquals(result.getStatus(), Status.OK);
+    Assert.assertEquals(Status.OK, result.getStatus());
     result.close();
   }
 }

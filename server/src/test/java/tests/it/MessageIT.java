@@ -42,100 +42,97 @@ public class MessageIT extends TestCase {
 
   }
   
-    // A efffacer
-  @Test
-  public void testLogOutUsers() throws Exception {
-    Form f = new Form();
-    WebResource webResource;
-    ClientResponse result;
-    
-    
-    // Connexion de l'utilisateur 1: succès attendu 
-    f.add("email", "le.jitou@gmail.com");
-    f.add("password", "password");
-    webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
-    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);    
-    Assert.assertEquals(result.getStatus(), Status.OK);
-    result.close();
-    
-    // L'utilisateur 1 se déconnecte : succès attendu
-    webResource = client.resource(new URL(this.baseUrl + "/bye").toURI());
-    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    Assert.assertEquals(result.getStatus(), Status.OK);
-    result.close();
-  }
-  
 //Evidement ne fonctionne plus now !
   // Cette fonction va tester l'envoi de Tweet ainsi que leur lecture 
-  /*@Test
+  @Test
    public void testSendMsg() throws Exception {
    Form f = new Form();
    WebResource webResource;
    ClientResponse result;
    System.out.println("****************** Tests des messages ! ******************");
-
-   // Tentative d'envoi d'un message sans connection
+    
+   // Tentative d'envoi d'un message sans connection: échec attendu
    f.add("msg", "Hello tout le monde");
-   webResource = client.resource(new URL(this.baseUrl + "/communications/messages/send").toURI());
+   webResource = client.resource(new URL(this.baseUrl + "/messages/send").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-   Assert.assertEquals(result.getStatus(), Status.USER_OFFLINE);
+   System.out.println(result.getStatus());
+   Assert.assertEquals(Status.USER_OFFLINE, result.getStatus());
    result.close();
 
-   // Connexion de l'utilisateur 1 
+   // Connexion de l'utilisateur 1 : succès attendu
    f.clear();
    f.add("email", "le.jitou@gmail.com");
    f.add("password", "password");
    webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-   Assert.assertEquals(result.getStatus(), Status.OK);
+   Assert.assertEquals(Status.OK, result.getStatus());
    result.close();
 
-   // envoie d'un message sur Twitter-like
+   // envoie d'un message sur Twitter-like: succès attendu
    f.clear();
    f.add("msg", "Hello World");
-   webResource = client.resource(new URL(this.baseUrl + "/communications/messages/send").toURI());
+   webResource = client.resource(new URL(this.baseUrl + "/messages/send").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-   Assert.assertEquals(result.getStatus(), Status.OK);
+   Assert.assertEquals(Status.OK, result.getStatus());
    result.close();
-    
-   // envoie d'un deuxième message sur Twitter-like
+   
+   // envoie d'un deuxième message sur Twitter-like: succès attendu
    f.clear();
-   f.add("msg", "Je suis un Twitte de Twitter like !");
-   webResource = client.resource(new URL(this.baseUrl + "/communications/messages/send").toURI());
+   f.add("msg", "Je suis un Tweet de Twitter like !");
+   webResource = client.resource(new URL(this.baseUrl + "/messages/send").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-   Assert.assertEquals(result.getStatus(), Status.OK);
+   Assert.assertEquals(Status.OK, result.getStatus());
    result.close();
-    
-   // Commentaire du message précédent
+   
+   // Commentaire d'un message non-existant: échec attendu
    f.clear();
-   f.add("comment", "Je suis un commentaire");
-   webResource = client.resource(new URL(this.baseUrl + "/communications/comments/send/28").toURI());
+   f.add("comment", "Je suis un commentaire du msg 56");
+   webResource = client.resource(new URL(this.baseUrl + "/comments/send/56313").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+   System.out.println(result.getEntity(String.class));
+   Assert.assertEquals(Status.DB_ERROR, result.getStatus());
    result.close();
-
-   // Autre commentaire du même message
+   
+   // Commentaire du message précédent: succès attendu
    f.clear();
-   f.add("comment", "Je suis un autre commentaire");
-   webResource = client.resource(new URL(this.baseUrl + "/communications/comments/send/28").toURI());
+   f.add("comment", "Je suis un commentaire du msg 28");
+   webResource = client.resource(new URL(this.baseUrl + "/comments/send/28").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+   Assert.assertEquals(Status.OK, result.getStatus());
    result.close();
-    
-   // L'utilisateur 1 se déconnecte 
+  
+   // Autre commentaire du même message précédent: succès attendu
+   f.clear();
+   f.add("comment", "Je suis un autre commentaire du msg 28");
+   webResource = client.resource(new URL(this.baseUrl + "/comments/send/28").toURI());
+   result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+   Assert.assertEquals(Status.OK, result.getStatus());
+   result.close();
+   
+   // Commentaire du commentaire précédent: succès attendu
+   f.clear();
+   f.add("comment", "Je suis un sous commentaire du commentaire 30");
+   webResource = client.resource(new URL(this.baseUrl + "/comments/send/30").toURI());
+   result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+   Assert.assertEquals(Status.OK, result.getStatus());
+   result.close();
+  
+   // L'utilisateur 1 se déconnecte: succès attendu
    webResource = client.resource(new URL(this.baseUrl + "/bye").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-   Assert.assertEquals(result.getStatus(), Status.OK);
+   Assert.assertEquals(Status.OK, result.getStatus());
    result.close();
 
-   // Connexion de l'utilisateur 1 
+   // Reconnexion de l'utilisateur 1 : succès attendu
    f.clear();
    f.add("email", "le.jitou@gmail.com");
    f.add("password", "password");
    webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-   Assert.assertEquals(result.getStatus(), Status.OK);
-   //System.out.println(result.getEntity(String.class));
+   Assert.assertEquals(Status.OK, result.getStatus());
+   System.out.println(result.getEntity(String.class));
    result.close();
-
+ /*
    // Lecture de mes messages et commentaires
    webResource = client.resource(new URL(this.baseUrl + "/communications/my").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
@@ -145,24 +142,24 @@ public class MessageIT extends TestCase {
    res+=c.get("text")+"; ";
    }
    //System.out.println(res);
-   result.close();
-    
-   //Suppression du commentaire ayant l'id 29 (rattaché à l'utilisateur 1 et au commentaire 28)
-   webResource = client.resource(new URL(this.baseUrl + "/communications/delete/29").toURI());
+   result.close();*/
+     
+   //Suppression du commentaire ayant l'id 30 et du 31 par cascade: succès attendu
+   webResource = client.resource(new URL(this.baseUrl + "/messages/delete/30").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-   Assert.assertEquals(result.getStatus(), Status.OK);
+   Assert.assertEquals(Status.OK, result.getStatus());
    result.close();
-    
-   //Suppression du message ayant l'id 28 (rattaché à l'utilisateur 1)
-   webResource = client.resource(new URL(this.baseUrl + "/communications/delete/28").toURI());
+ 
+   //Suppression du message ayant l'id 27 : succès attendu
+   webResource = client.resource(new URL(this.baseUrl + "/messages/delete/27").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-   Assert.assertEquals(result.getStatus(), Status.OK);
+   Assert.assertEquals(Status.OK, result.getStatus());
    result.close();
     
-   // L'utilisateur 1 se déconnecte 
+   // L'utilisateur 1 se déconnecte : succès attendu
    webResource = client.resource(new URL(this.baseUrl + "/bye").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-   Assert.assertEquals(result.getStatus(), Status.OK);
+   Assert.assertEquals(Status.OK, result.getStatus());
    result.close();
 
    // Connexion de l'utilisateur 1 
@@ -171,10 +168,10 @@ public class MessageIT extends TestCase {
    f.add("password", "password");
    webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-   //System.out.println(result.getEntity(String.class));
-   Assert.assertEquals(result.getStatus(), Status.OK);
+   System.out.println(result.getEntity(String.class));
+   Assert.assertEquals(Status.OK, result.getStatus());
    result.close();
-
+/*
    // Lecture de mes messages et commentaires
    webResource = client.resource(new URL(this.baseUrl + "/communications/my").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
@@ -238,5 +235,5 @@ public class MessageIT extends TestCase {
    Assert.assertEquals(Status.USER_NO_ACCOUNT, result.getStatus());
    result.close();
    */
-  //}*/
+  }
 }

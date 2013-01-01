@@ -29,7 +29,7 @@ public class MessagesResource {
   @Produces( MediaType.APPLICATION_JSON)
   @Path( "/send")
   public Response sendMessage(@CookieParam("authCookie") Cookie authenciateCookie,
-          @FormParam("msg") String msg) {
+          @FormParam("msg") String msg) {    
     if (authenciateCookie == null) {
       return Response.status(new Status(Status.USER_OFFLINE)).build();
     }
@@ -42,10 +42,10 @@ public class MessagesResource {
     }
   }
   
-  @GET //Voir si on met du delete ensemble ?
+  @POST //Voir si on met du delete ensemble ?
   @Produces( MediaType.APPLICATION_JSON)
   @Path( "/delete/{idMsg}")
-  public Response sendComment(@CookieParam("authCookie") Cookie authenciateCookie,
+  public Response deleteMsg(@CookieParam("authCookie") Cookie authenciateCookie,
           @FormParam("comment") String msg, @PathParam("idMsg") String idMsg) {
     if (authenciateCookie == null) {
       return Response.status(new Status(Status.USER_OFFLINE)).build();
