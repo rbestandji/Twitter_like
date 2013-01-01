@@ -36,13 +36,12 @@ public class IUser extends Parent {
   private TextField password = new PasswordField();
 
   /*
-  public void setUser(User user) {
-    this.user = (user);
-    this.name.setText(user.getFirstname());
-    this.surname.setText(user.getName());
-    this.email.setText(user.getEmail());
-  }*/
-
+   public void setUser(User user) {
+   this.user = (user);
+   this.name.setText(user.getFirstname());
+   this.surname.setText(user.getName());
+   this.email.setText(user.getEmail());
+   }*/
   public IUser() throws URISyntaxException, MalformedURLException {
     gridCaption = new Label("Inscription");
     gridCaption.setWrapText(true);
@@ -53,35 +52,35 @@ public class IUser extends Parent {
     grid.setHgap(20);
     grid.setVgap(10);
     grid.setPadding(new Insets(18));
-    
+
     Label lemail = new Label("Email:");
-    GridPane.setConstraints(lemail,0,0);
-    GridPane.setHalignment(lemail,HPos.RIGHT);
+    GridPane.setConstraints(lemail, 0, 0);
+    GridPane.setHalignment(lemail, HPos.RIGHT);
 
-    GridPane.setConstraints(email,1,0);
-    GridPane.setHalignment(email,HPos.LEFT);
-    
-    Label lpassword= new Label("Mot de passe:");
-    GridPane.setConstraints(lpassword,0,1);
-    GridPane.setHalignment(lpassword,HPos.RIGHT);
+    GridPane.setConstraints(email, 1, 0);
+    GridPane.setHalignment(email, HPos.LEFT);
 
-    GridPane.setConstraints(password,1,1);
-    GridPane.setHalignment(password,HPos.LEFT);
-    
+    Label lpassword = new Label("Mot de passe:");
+    GridPane.setConstraints(lpassword, 0, 1);
+    GridPane.setHalignment(lpassword, HPos.RIGHT);
+
+    GridPane.setConstraints(password, 1, 1);
+    GridPane.setHalignment(password, HPos.LEFT);
+
     Label lname = new Label("Nom:");
-    GridPane.setConstraints(lname,0,2);
-    GridPane.setHalignment(lname,HPos.RIGHT);
+    GridPane.setConstraints(lname, 0, 2);
+    GridPane.setHalignment(lname, HPos.RIGHT);
 
-    GridPane.setConstraints(name,1,2);
-    GridPane.setHalignment(name,HPos.LEFT);
-    
+    GridPane.setConstraints(name, 1, 2);
+    GridPane.setHalignment(name, HPos.LEFT);
+
     Label lfirstname = new Label("Prénom:");
-    GridPane.setConstraints(lfirstname,0,3);
-    GridPane.setHalignment(lfirstname,HPos.RIGHT);
+    GridPane.setConstraints(lfirstname, 0, 3);
+    GridPane.setHalignment(lfirstname, HPos.RIGHT);
 
-    GridPane.setConstraints(firstname,1,3);
-    GridPane.setHalignment(firstname,HPos.LEFT);
-    
+    GridPane.setConstraints(firstname, 1, 3);
+    GridPane.setHalignment(firstname, HPos.LEFT);
+
     // bouton valider
     validate = new Button("Valider");
     validate.setTranslateX(120);
@@ -92,9 +91,9 @@ public class IUser extends Parent {
     returnB.setTranslateX(400);
     returnB.setTranslateY(450);
 
-    grid.getChildren().addAll(lemail,lpassword,lname,lfirstname,email,password,name,firstname);
+    grid.getChildren().addAll(lemail, lpassword, lname, lfirstname, email, password, name, firstname);
     this.getChildren().addAll(gridCaption, grid, validate, returnB);
-    
+
     // click bouton retour
     returnB.setOnAction(new EventHandler<ActionEvent>() {
       public void handle(ActionEvent t) {
@@ -109,17 +108,18 @@ public class IUser extends Parent {
         }
       }
     });
-    
+
     // click bouton valider
     validate.setOnAction(new ServerRegistration());
   }
 
   private class ServerRegistration implements EventHandler<ActionEvent> {
+
     public void handle(ActionEvent t) {
-      gridCaption.setDisable( true );
-      grid.setDisable( true );
-      validate.setDisable( true );
-      Main.progress.setProgress( -1 );
+      gridCaption.setDisable(true);
+      grid.setDisable(true);
+      validate.setDisable(true);
+      Main.progress.setProgress(-1);
       Task<ClientResponse> task = new Task<ClientResponse>() {
         @Override
         protected ClientResponse call() throws Exception {
@@ -129,24 +129,24 @@ public class IUser extends Parent {
           f.add("name", name.getText());
           f.add("firstname", firstname.getText());
           Thread.currentThread().sleep(1000);
-          return post.postCall("registration",f);
+          return post.postCall("registration", f);
         }
       };
-      task.setOnSucceeded( new EventHandler<WorkerStateEvent>() {
-        public void handle( WorkerStateEvent success ) {
+      task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+        public void handle(WorkerStateEvent success) {
           try {
             ClientResponse result = (ClientResponse) success.getSource().getValue();
-            gridCaption.setDisable( false );
-            grid.setDisable( false );
-            validate.setDisable( false );
-            Main.progress.setProgress( 1 );
+            gridCaption.setDisable(false);
+            grid.setDisable(false);
+            validate.setDisable(false);
+            Main.progress.setProgress(1);
             if (result.getStatus() == Status.OK) {
               grid.getChildren().clear();
               getChildren().clear();
               CUser cuser = new CUser();
               Main.root.getChildren().add(cuser);
             } else {
-              System.out.println( result.getStatus());
+              System.out.println(result.getStatus());
             }
           } catch (URISyntaxException ex) {
             Logger.getLogger(CUser.class.getName()).log(Level.SEVERE, null, ex);
@@ -155,9 +155,7 @@ public class IUser extends Parent {
           }
         }
       });
-      new Thread( task, "Fetch Registration Thread" ).start();
+      new Thread(task, "Fetch Registration Thread").start();
     }
   }
-  
 }
-

@@ -21,6 +21,7 @@ public class Wall extends Parent {
    * Probleme user reste non connecté => getUserTask change !!!!
    * A regler demain urgent !
    */
+
   private User user;
 
   public Wall() {
@@ -44,7 +45,7 @@ public class Wall extends Parent {
           getChildren().clear();
           ArrayList<Message> listMsg = result.getEntity(ArrayList.class);
           for (Message m : listMsg) {
-            getChildren().add(new Label((String)m.getText()));
+            getChildren().add(new Label((String) m.getText()));
           }
         } else {
           System.out.println(result.getStatus());
