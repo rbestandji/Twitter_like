@@ -29,7 +29,6 @@ public class UserView {
     }
 
     try {
-      
       return Response.ok(UserDAO.getWall(Long.parseLong(id)), MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
     } catch (DAOExceptionUser ex) {
       return Response.status(ex.getStatus()).build();
