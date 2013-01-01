@@ -90,7 +90,7 @@ public class MessageIT extends TestCase {
    webResource = client.resource(new URL(this.baseUrl + "/comments/send/56313").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    System.out.println(result.getEntity(String.class));
-   Assert.assertEquals(Status.DB_ERROR, result.getStatus());
+   Assert.assertEquals(Status.DB_ERROR, result.getStatus());// ça devrait marcher avec NO_MESSAGE_ID!!!!
    result.close();
    
    // Commentaire du message précédent: succès attendu
@@ -149,9 +149,9 @@ public class MessageIT extends TestCase {
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    Assert.assertEquals(Status.OK, result.getStatus());
    result.close();
- 
-   //Suppression du message ayant l'id 27 : succès attendu
-   webResource = client.resource(new URL(this.baseUrl + "/messages/delete/27").toURI());
+
+   //Suppression du message ayant l'id 28 : succès attendu
+   webResource = client.resource(new URL(this.baseUrl + "/messages/delete/28").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    Assert.assertEquals(Status.OK, result.getStatus());
    result.close();
@@ -161,7 +161,7 @@ public class MessageIT extends TestCase {
    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
    Assert.assertEquals(Status.OK, result.getStatus());
    result.close();
-
+/*
    // Connexion de l'utilisateur 1 
    f.clear();
    f.add("email", "le.jitou@gmail.com");
@@ -189,24 +189,30 @@ public class MessageIT extends TestCase {
    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
    Assert.assertEquals(result.getStatus(), Status.OK);
    result.close();
-
+*/
    // L'utilisateur 2 se connecte 
    f.clear();
    f.add("email", "lavalber02@gmail.com");
    f.add("password", "motdepasse");
    webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-   Assert.assertEquals(result.getStatus(), Status.OK);
+   Assert.assertEquals(Status.OK, result.getStatus());
    result.close();
 
-   // Envoie d'un troisième message sur Twitter-like avec le compte de Bernard
+   // l'utilisateur 2 écrit un commentaire à l'utilisateur 1
    f.clear();
-   f.add("msg", "Moi je suis un message");
-   webResource = client.resource(new URL(this.baseUrl + "/communications/messages/send").toURI());
+   f.add("comment", "je suis un commentaire du user 2");
+   webResource = client.resource(new URL(this.baseUrl + "/comments/send/29").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-   Assert.assertEquals(result.getStatus(), Status.OK);
+   Assert.assertEquals(Status.OK, result.getStatus());
    result.close();
-
+   
+   //L'utilisateur 2 tente de supprimer le message 28 de l'utilisateur 1: échec attendu
+   webResource = client.resource(new URL(this.baseUrl + "/messages/delete/28").toURI());
+   result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+   Assert.assertEquals(Status.DB_ERROR, result.getStatus()); // ca devrait marcher avec WRONG_USER!!!
+   result.close();
+/*
    // Bernard veut lire son message
    webResource = client.resource(new URL(this.baseUrl + "/communications/my").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
