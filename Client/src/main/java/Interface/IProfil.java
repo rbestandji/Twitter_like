@@ -23,5 +23,7 @@ public class IProfil extends Parent {
     pane.add(new Label(user.getName()), 0, 0, 1, 1);
     pane.add(new Label(user.getFirstname()), 1, 0, 1, 1);
     pane.add(new Label(user.getEmail()), 0, 1, 2, 1);
+    pane.setHgap(10.);
+    this.getChildren().add(pane);
   }
 }

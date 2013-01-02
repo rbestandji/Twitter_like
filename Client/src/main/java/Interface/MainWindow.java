@@ -28,7 +28,7 @@ public class MainWindow extends Scene {
   private MainWindow() {
     super(new StackPane());
     wall = new Wall();
-    profil= new IProfil();
+    profil = new IProfil();
     init();
   }
 
@@ -62,11 +62,12 @@ public class MainWindow extends Scene {
 
 
     // Scene tree
-    grid.add(progress, 0, 0, W / 2, 1);
-    grid.add(fieldSearch, W / 2, 0, W / 4, 1);
-    grid.add(startSearch, W / 2 + W / 4, 0, W / 4, 1);
-    grid.add(profil, 0, 1, W / 4, W / 2);
-    grid.add(wall,W / 4, 1, 3*W / 4, W / 2);
+    grid.add(progress, 0, 0, 5, 1);
+    grid.add(fieldSearch, 5, 0, 3, 1);
+    grid.add(startSearch, 8, 0, 2, 1);
+
+    grid.add(profil, 0, 1, 4, 5);
+    grid.add(wall, 4, 1, 6, 5);
 
     startSearch.setOnAction(new GoodFetchMenuActionHandler());
     root.getChildren().add(grid);
