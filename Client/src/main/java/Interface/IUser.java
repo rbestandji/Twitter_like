@@ -29,7 +29,6 @@ public class IUser extends Parent {
   private GridPane grid;
   private Button validate;
   private Button returnB;
-  private GetUserTask post = new GetUserTask();
   private TextField email = new TextField();
   private TextField name = new TextField();
   private TextField firstname = new TextField();
@@ -129,7 +128,7 @@ public class IUser extends Parent {
           f.add("name", name.getText());
           f.add("firstname", firstname.getText());
           Thread.currentThread().sleep(1000);
-          return post.postCall("registration", f);
+          return GetUserTask.getUserTask().postCall("registration", f);
         }
       };
       task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {

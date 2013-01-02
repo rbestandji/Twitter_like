@@ -12,15 +12,12 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.layout.VBox;
 import share.core.Status;
 import share.model.Message;
 import share.model.User;
 
 public class Wall extends Parent {
-  /*
-   * Probleme user reste non connecté => getUserTask change !!!!
-   * A regler demain urgent !
-   */
 
   private User user;
 
@@ -35,7 +32,7 @@ public class Wall extends Parent {
     Task<ClientResponse> task = new Task<ClientResponse>() {
       @Override
       protected ClientResponse call() throws Exception {
-        return new GetUserTask().getCall("users/getmywall");
+        return GetUserTask.getUserTask().getCall("users/getmywall");
       }
     };
     task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
@@ -43,12 +40,15 @@ public class Wall extends Parent {
         ClientResponse result = (ClientResponse) success.getSource().getValue();
         if (result.getStatus() == Status.OK) {
           getChildren().clear();
+          VBox box = new VBox();
+
           ArrayList<Message> listMsg = result.getEntity(ArrayList.class);
           for (Message m : listMsg) {
-            getChildren().add(new Label((String) m.getText()));
+            box.getChildren().add(new IMessage(m));
           }
+          getChildren().add(box);
         } else {
-          System.out.println(result.getStatus());
+          System.out.println("Erreur chargement wall : " + result.getStatus());
         }
       }
     });

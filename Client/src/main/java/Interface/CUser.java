@@ -29,7 +29,6 @@ public class CUser extends Parent {
   private GridPane grid;
   private Button validate;
   private Button registration;
-  private GetUserTask post = new GetUserTask();
   private TextField email = new TextField();
   private TextField password = new PasswordField();
 
@@ -47,9 +46,9 @@ public class CUser extends Parent {
     Label lemail = new Label("Email:");
     GridPane.setConstraints(lemail, 0, 0);
     GridPane.setHalignment(lemail, HPos.RIGHT);
-
     GridPane.setConstraints(email, 1, 0);
     GridPane.setHalignment(email, HPos.LEFT);
+email.setText("le.jitou@gmail.com");
 
     Label lpassword = new Label("Mot de passe:");
     GridPane.setConstraints(lpassword, 0, 1);
@@ -57,6 +56,7 @@ public class CUser extends Parent {
 
     GridPane.setConstraints(password, 1, 1);
     GridPane.setHalignment(password, HPos.LEFT);
+password.setText("password");
 
     // bouton valider
     validate = new Button("Valider");
@@ -104,8 +104,7 @@ public class CUser extends Parent {
           Form f = new Form();
           f.add("email", email.getText());
           f.add("password", password.getText());
-          Thread.currentThread().sleep(1000);
-          return post.postCall("connection", f);
+          return GetUserTask.getUserTask().postCall("connection", f);
         }
       };
       task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {

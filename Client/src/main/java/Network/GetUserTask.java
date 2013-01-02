@@ -14,36 +14,36 @@ import javax.ws.rs.core.MediaType;
 
 public class GetUserTask {
 
-    private final static String port = "8080"; 
-    private String baseUrl = "http://localhost:" + port + "/cargo-webapp/";  
-    private ApacheHttpClient client;
+  private final static String port = "8080";
+  private String baseUrl = "http://localhost:" + port + "/cargo-webapp/";
+  private ApacheHttpClient client;
+  private static GetUserTask singleTask = new GetUserTask();
 
-    public GetUserTask() throws URISyntaxException, MalformedURLException
-    {
+  private GetUserTask() {
 
-        DefaultApacheHttpClientConfig config = new DefaultApacheHttpClientConfig();
-        //Autorisation des cookies
-        config.getProperties().put(ApacheHttpClientConfig.PROPERTY_HANDLE_COOKIES, true);
-        //Jersey configuration
-        config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-        //Client apache 
-        client = ApacheHttpClient.create(config);
-        client.setFollowRedirects(Boolean.TRUE);// Plus utilisé 
-    }
+    DefaultApacheHttpClientConfig config = new DefaultApacheHttpClientConfig();
+    //Autorisation des cookies
+    config.getProperties().put(ApacheHttpClientConfig.PROPERTY_HANDLE_COOKIES, true);
+    //Jersey configuration
+    config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+    //Client apache 
+    client = ApacheHttpClient.create(config);
+    client.setFollowRedirects(Boolean.TRUE);// Plus utilisé 
+  }
 
-    public ClientResponse getCall(String endUrl) throws MalformedURLException, URISyntaxException
-    {
-        URL url = new URL(this.baseUrl+endUrl);
-        WebResource resource = this.client.resource( url.toURI() );
-        return resource.accept( MediaType.APPLICATION_JSON ).get( ClientResponse.class );
-    }
+  static public GetUserTask getUserTask() {
+    return singleTask;
+  }
 
-    public ClientResponse postCall(String endUrl, Form f) throws MalformedURLException, URISyntaxException
-    {
-        URL url = new URL(this.baseUrl+endUrl);
-        WebResource resource = this.client.resource( url.toURI() );
-        return resource.accept( MediaType.APPLICATION_JSON ).post( ClientResponse.class,f );
-    }
+  public ClientResponse getCall(String endUrl) throws MalformedURLException, URISyntaxException {
+    URL url = new URL(this.baseUrl + endUrl);
+    WebResource resource = this.client.resource(url.toURI());
+    return resource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+  }
 
+  public ClientResponse postCall(String endUrl, Form f) throws MalformedURLException, URISyntaxException {
+    URL url = new URL(this.baseUrl + endUrl);
+    WebResource resource = this.client.resource(url.toURI());
+    return resource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+  }
 }
-
