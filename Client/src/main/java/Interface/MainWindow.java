@@ -22,11 +22,13 @@ public class MainWindow extends Scene {
   private Button startSearch;
   private User user = null;
   private Wall wall = null;
+  private IProfil profil = null;
 
   //private TextArea text;
   private MainWindow() {
     super(new StackPane());
     wall = new Wall();
+    profil= new IProfil();
     init();
   }
 
@@ -37,6 +39,7 @@ public class MainWindow extends Scene {
   public void setUser(User user) {
     this.user = user;
     wall.setUser(user);
+    profil.setUser(user);
   }
 
   private void init() {
@@ -48,8 +51,8 @@ public class MainWindow extends Scene {
 
     GridPane grid = new GridPane();
 
-    grid.setHgap(W);
-    grid.setVgap(H);
+    grid.setHgap(10);
+    grid.setVgap(10);
 
     // Scene
     progress = new ProgressBar();
@@ -62,7 +65,8 @@ public class MainWindow extends Scene {
     grid.add(progress, 0, 0, W / 2, 1);
     grid.add(fieldSearch, W / 2, 0, W / 4, 1);
     grid.add(startSearch, W / 2 + W / 4, 0, W / 4, 1);
-    grid.add(wall, 0, 1, W / 4, W / 2);
+    grid.add(profil, 0, 1, W / 4, W / 2);
+    grid.add(wall,W / 4, 1, 3*W / 4, W / 2);
 
     startSearch.setOnAction(new GoodFetchMenuActionHandler());
     root.getChildren().add(grid);
