@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.transaction.UserTransaction;
 import share.core.DAOExceptionUser;
@@ -24,8 +25,8 @@ public class MessageDAO {
       EntityManager em = (EntityManager) ic.lookup("java:comp/env/persistence/EntityManager");
       utx.begin();
       em.joinTransaction();
-      Message msg = (Message) em.createQuery("SELECT x FROM Message x WHERE x.id=" + msgId + "").getSingleResult();
-      if (msg != null) {
+      try {
+        Message msg = (Message) em.createQuery("SELECT x FROM Message x WHERE x.id=" + msgId + "").getSingleResult();      
         if (msg.getAuthor().getId() == authorId) {
           Message root = msg.getMsgRoot();
           if (root != null) { // Si c'est un commentaire.
@@ -33,9 +34,9 @@ public class MessageDAO {
           }
           em.remove(msg);
         } else {
-          authorIdError = true;
+          authorIdError = true;         
         }
-      } else {
+      } catch (NoResultException ex) {
         msgIdError = true;
       }
       utx.commit();
@@ -68,12 +69,12 @@ public class MessageDAO {
       EntityManager em = (EntityManager) ic.lookup("java:comp/env/persistence/EntityManager");
       utx.begin();
       em.joinTransaction();
-      User uTmp = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + id + "").getSingleResult();
-      if (uTmp != null) {
+      try {
+        User uTmp = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + id + "").getSingleResult();
         message.setAuthor(uTmp);
         uTmp.addMessage(message);
         em.persist(message);
-      } else {
+      } catch(NoResultException ex) {
         idError = true;
       }
       utx.commit();
@@ -103,12 +104,12 @@ public class MessageDAO {
       EntityManager em = (EntityManager) ic.lookup("java:comp/env/persistence/EntityManager");
       utx.begin();
       em.joinTransaction();
-      User user = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idUser + "").getSingleResult();
-      if (user != null) {
+      try {
+        User user = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idUser + "").getSingleResult();
         Query q = em.createQuery("SELECT x FROM Message x WHERE x.author= :paraAuthor AND x.isComment IS NULL");
         q.setParameter("paraAuthor", user);
         list = (List<Message>) q.getResultList();
-      } else {
+      } catch (NoResultException ex) {
         idUserError = true;
       }
       utx.commit();

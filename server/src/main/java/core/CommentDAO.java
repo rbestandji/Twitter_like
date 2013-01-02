@@ -4,6 +4,7 @@ import share.core.Status;
 import share.core.DAOExceptionUser;
 import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.transaction.UserTransaction; 
 import share.model.Message;
 import share.model.User;
@@ -26,18 +27,20 @@ public class CommentDAO {
       EntityManager em = (EntityManager) ic.lookup("java:comp/env/persistence/EntityManager");
       utx.begin();
       em.joinTransaction();
-      uTmp = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idUser + "").getSingleResult();
-      if (uTmp != null) {
+      try {
+        uTmp = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idUser + "").getSingleResult();
+      
         comment.setAuthor(uTmp);
-        Message m = (Message) em.createQuery("SELECT x FROM Message x WHERE x.id=" + idMessage + "").getSingleResult();
-        if (m != null) {
+        try {
+          Message m = (Message) em.createQuery("SELECT x FROM Message x WHERE x.id=" + idMessage + "").getSingleResult();
+        
           comment.setMsgRoot(m); 
           m.addComment(comment); 
           em.persist(comment);
-        } else { 
+        } catch (NoResultException ex) { 
           problemMessageId = true;
         }
-      } else {
+      } catch (NoResultException ex) {
         problemAuthorId = true;
       }
       utx.commit();

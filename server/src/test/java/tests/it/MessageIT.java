@@ -90,7 +90,7 @@ public class MessageIT extends TestCase {
    webResource = client.resource(new URL(this.baseUrl + "/comments/send/56313").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    System.out.println(result.getEntity(String.class));
-   Assert.assertEquals(Status.DB_ERROR, result.getStatus());// ça devrait marcher avec NO_MESSAGE_ID!!!!
+   Assert.assertEquals(Status.NO_MESSAGE_ID, result.getStatus());// ça devrait marcher avec NO_MESSAGE_ID!!!!
    result.close();
    
    // Commentaire du message précédent: succès attendu
@@ -144,16 +144,20 @@ public class MessageIT extends TestCase {
    //System.out.println(res);
    result.close();*/
      
-   //Suppression du commentaire ayant l'id 30 et du 31 par cascade: succès attendu
+   //Suppression d'un message inexistant: échec attendu
+   webResource = client.resource(new URL(this.baseUrl + "/messages/delete/30032").toURI());
+   result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+   Assert.assertEquals(Status.ID_NOT_EXIST, result.getStatus());
+   result.close();
+   
+   //Suppression du commentaire ayant l'id 30 et du 32 par cascade: succès attendu
    webResource = client.resource(new URL(this.baseUrl + "/messages/delete/30").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    Assert.assertEquals(Status.OK, result.getStatus());
    result.close();
-
-   //Suppression du message ayant l'id 28 : succès attendu
-   webResource = client.resource(new URL(this.baseUrl + "/messages/delete/28").toURI());
+   webResource = client.resource(new URL(this.baseUrl + "/messages/delete/32").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-   Assert.assertEquals(Status.OK, result.getStatus());
+   Assert.assertEquals(Status.ID_NOT_EXIST, result.getStatus());
    result.close();
     
    // L'utilisateur 1 se déconnecte : succès attendu
@@ -207,10 +211,10 @@ public class MessageIT extends TestCase {
    Assert.assertEquals(Status.OK, result.getStatus());
    result.close();
    
-   //L'utilisateur 2 tente de supprimer le message 28 de l'utilisateur 1: échec attendu
-   webResource = client.resource(new URL(this.baseUrl + "/messages/delete/28").toURI());
+   //L'utilisateur 2 tente de supprimer le message 29 de l'utilisateur 1: échec attendu
+   webResource = client.resource(new URL(this.baseUrl + "/messages/delete/29").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-   Assert.assertEquals(Status.DB_ERROR, result.getStatus()); // ca devrait marcher avec WRONG_USER!!!
+   Assert.assertEquals(Status.WRONG_USER, result.getStatus()); // ca devrait marcher avec WRONG_USER!!!
    result.close();
 /*
    // Bernard veut lire son message

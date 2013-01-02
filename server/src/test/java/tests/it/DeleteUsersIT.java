@@ -68,11 +68,10 @@ public class DeleteUsersIT extends TestCase {
     Assert.assertEquals(Status.OK, result.getStatus());
     result.close();
     
-    // L'utilisateur  se déconnecte : succès attendu
+    // L'utilisateur se déconnecte
     webResource = client.resource(new URL(this.baseUrl + "/bye").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    Assert.assertEquals(Status.OK, result.getStatus());
-    result.close();    
+    result.close(); /**/   
     
     // Vérification que l'utilisateur 5 a bien été supprimé: succès attendu 
     f.add("email", "le.julius@gmail.com");

@@ -48,7 +48,7 @@ public class RegistrationUsersIT extends TestCase {
     ClientResponse result;
     System.out.println("****************** Creation des comptes ! ******************");
 
-    // création d'un nouveau compte déjà existant: user 1: échec attendu
+    // création d'un nouveau compte déjà existant delui de l'utilisateur 1: échec attendu
     f.clear();
     f.add("email", "le.jitou@gmail.com");
     f.add("password", "password");

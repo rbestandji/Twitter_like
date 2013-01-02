@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.transaction.UserTransaction;
 import share.model.User;
@@ -60,10 +61,10 @@ public class UserDAO {
       EntityManager em = (EntityManager) ic.lookup("java:comp/env/persistence/EntityManager");
       utx.begin();
       em.joinTransaction();
-      user = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idUser + "").getSingleResult();
-      if (user != null) {
+      try {
+        user = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idUser + "").getSingleResult();      
         em.remove(user);
-      } else {
+      } catch (NoResultException ex) {
         idUserError = true;
       }
       utx.commit();
@@ -87,6 +88,7 @@ public class UserDAO {
   public static User getUser(Long id) throws DAOExceptionUser {
     User user = null;
     UserTransaction utx = null;
+    boolean idUserError = false;
     try {
       InitialContext ic = new InitialContext();
       utx = (UserTransaction) ic.lookup("java:comp/UserTransaction");
@@ -94,10 +96,12 @@ public class UserDAO {
       // Transaction begin
       utx.begin();
       em.joinTransaction();
-
-      user = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + id + "").getSingleResult();
-      utx.commit();
-
+      try {
+        user = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + id + "").getSingleResult();
+        utx.commit();
+      } catch(NoResultException ex){
+        idUserError = true;
+      }
     } catch (Exception ex) {
       try {
         if (utx != null) {
@@ -109,7 +113,7 @@ public class UserDAO {
       }
       throw new DAOExceptionUser(new Status(Status.DB_ERROR), ex.getMessage());
     }
-    if (user == null) {
+    if (idUserError) {
       throw new DAOExceptionUser(new Status(Status.USER_NO_ACCOUNT));
     }
 
