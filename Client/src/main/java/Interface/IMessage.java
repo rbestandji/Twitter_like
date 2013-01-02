@@ -7,25 +7,32 @@ import share.model.Message;
 
 public class IMessage extends Parent {
 
-  private Message msg;
+  private Long id;
+  private String author;
+  private String text;
+  private String date;
 
-  public IMessage(Message msg) {
-    this.msg = msg;
+  IMessage(Long id, String author, String text, String date) {
+    this.author = author;
+    this.text = text;
+    this.id = id;
+    this.date = date;
     init();
+
   }
 
   private void init() {
-    Label auteur = new Label();
-    auteur.setText(msg.getAuthor().getName());
-    Label date = new Label();
-    date.setText(msg.getMsgDate().toString());
-    Label text = new Label();
-    text.setText(msg.getText());
+    Label lauthor = new Label();
+    lauthor.setText(author);
+    Label ldate = new Label();
+    ldate.setText(date);
+    Label ltext = new Label();
+    ltext.setText(text);
 
     GridPane gridpane = new GridPane();
-    gridpane.add(auteur, 0, 0, 1, 1);
-    gridpane.add(auteur, 1, 0, 1, 1);
-    gridpane.add(auteur, 0, 1, 2, 1);
+    gridpane.add(lauthor, 0, 0, 1, 1);
+    gridpane.add(ldate, 1, 0, 1, 1);
+    gridpane.add(ltext, 0, 1, 2, 1);
 
 
     gridpane.setHgap(10.);
