@@ -24,9 +24,9 @@ public class UserDelete {
       return Response.status(new Status(Status.USER_OFFLINE)).build();
     }
     Status sta; 
-    try {
+    try {      
       UserDAO.deleteUser(Long.parseLong(authenciateCookie.getValue()));
-      //NewCookie cookie = new NewCookie("authCookie", "-1", "/", "localhost", "", 0, false);
+      NewCookie cookie = new NewCookie("authCookie", "-1", "/", "localhost", "", 0, false);
       sta = new Status(Status.OK);
       return Response.status(sta).build();
     } catch (DAOExceptionUser ex) {
