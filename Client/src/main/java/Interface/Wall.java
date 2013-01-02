@@ -20,33 +20,41 @@ import share.model.User;
 public class Wall extends Parent {
 
   private User user;
+  private VBox box;
+  private INewTweet newTweet;
 
   public Wall() {
-    this.getChildren().clear();
+    box = new VBox();
+    newTweet = new INewTweet();
+    box.getChildren().add(newTweet);
+    this.getChildren().add(box);
   }
 
   void setUser(User idUser) {
     this.user = user;
+    box.getChildren().clear();
     ProgressIndicator p = new ProgressIndicator();
-    this.getChildren().add(p);
+    box.getChildren().add(p);
+
+
     Task<ClientResponse> task = new Task<ClientResponse>() {
       @Override
       protected ClientResponse call() throws Exception {
         return GetUserTask.getUserTask().getCall("users/getmywall");
       }
     };
+
+
     task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
       public void handle(WorkerStateEvent success) {
         ClientResponse result = (ClientResponse) success.getSource().getValue();
         if (result.getStatus() == Status.OK) {
-          getChildren().clear();
-          VBox box = new VBox();
-
+          box.getChildren().clear();
+          box.getChildren().add(newTweet);
           ArrayList<Message> listMsg = result.getEntity(ArrayList.class);
           for (Message m : listMsg) {
             box.getChildren().add(new IMessage(m));
           }
-          getChildren().add(box);
         } else {
           System.out.println("Erreur chargement wall : " + result.getStatus());
         }
