@@ -106,7 +106,7 @@ public class MessageDAO {
       em.joinTransaction();
       try {
         User user = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idUser + "").getSingleResult();
-        Query q = em.createQuery("SELECT x FROM Message x WHERE x.author= :paraAuthor AND x.isComment IS NULL");
+        Query q = em.createQuery("SELECT x FROM Message x WHERE x.author= :paraAuthor AND x.msgRoot IS NULL");
         q.setParameter("paraAuthor", user);
         list = (List<Message>) q.getResultList();
       } catch (NoResultException ex) {

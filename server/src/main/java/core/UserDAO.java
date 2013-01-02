@@ -157,7 +157,7 @@ public class UserDAO {
 
   //Retourne le wall d'un utilisateur
   public static List<Message> getWall(long id) throws DAOExceptionUser {
-    ArrayList<Message> messagesWall = new ArrayList<Message>();
+    List<Message> messagesWall = new ArrayList<>();
     messagesWall.addAll(MessageDAO.getMessages(id));
     List<User> follower = FollowDAO.getFollows(id, "follower");
     for (User u : follower) {

@@ -39,15 +39,18 @@ public class Lifecycle implements ServletContextListener {
       for (User u : users) {
         em.persist(u);
       }
-      
+
       //création de messages et attribution à des utilisateurs de façon aléatoire + insertion en BD
-      List<Message> msgs = createMessages();
-      for (Message m : msgs) {
-        User tmp = users.get((int) (Math.random() * (users.size() - 1)));
-        m.setAuthor(tmp);
-        tmp.addMessage(m);
-        em.persist(m);
+      for (int k = 0; k < 3; k++) {
+        List<Message> msgs = createMessages();
+        for (Message m : msgs) {
+          User tmp = users.get((int) (Math.random() * (users.size() - 1)));
+          m.setAuthor(tmp);
+          tmp.addMessage(m);
+          em.persist(m);
+        }
       }
+
 
       utx.commit();
     } catch (Exception ex) {
@@ -108,6 +111,10 @@ public class Lifecycle implements ServletContextListener {
     listText.add("Fall! Like leaves… in fall!");
     listText.add("I don't reveal much on the mini-map. It's all my fault!");
     listText.add("I'll attract the enemy with my human call: 'I'm so wasted! I'm so wasted!'");
+
+
+
+
 
     List<Message> messages = new ArrayList<>();
     for (String l : listText) {
