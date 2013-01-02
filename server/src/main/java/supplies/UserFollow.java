@@ -24,7 +24,7 @@ import javax.ws.rs.core.Response;
 public class UserFollow {
 
    /*
-   * Retourne juste un code d'erreur
+   * suivre qq.Retourne juste un code d'erreur
    */
   @Path("following/{id}")
   @GET
@@ -42,7 +42,7 @@ public class UserFollow {
   }
 
    /*
-   * Retourne juste un code d'erreur
+   * arrêter de suivre qq. Retourne juste un code d'erreur
    */
   @Path("stop/{id}")
   @GET
