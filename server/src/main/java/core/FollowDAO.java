@@ -46,11 +46,8 @@ public class FollowDAO {
       } catch (NoResultException ex) {
         idProblem = true;
       }
-
-
       utx.commit();
     } catch (Exception ex) {
-
       try {
         if (utx != null) {
           utx.setRollbackOnly();
@@ -62,7 +59,6 @@ public class FollowDAO {
     if (idProblem) {
       throw new DAOExceptionUser(new Status(Status.ID_NOT_EXIST));
     }
-
   }
 
   public static void stopFollowUser(long idFollower, long idFollowing) throws DAOExceptionUser {
@@ -73,18 +69,13 @@ public class FollowDAO {
       InitialContext ic = new InitialContext();
       utx = (UserTransaction) ic.lookup("java:comp/UserTransaction");
       EntityManager em = (EntityManager) ic.lookup("java:comp/env/persistence/EntityManager");
-
-
       utx.begin();
       em.joinTransaction();
-
-
       try {
         User userFollower = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idFollower + "")
                 .getSingleResult();
         User userFollowing = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idFollowing + "")
                 .getSingleResult();
-
         Query q = em.createQuery("SELECT x FROM UserAssignment x WHERE x.follower= :follower and x.following= :following");
         q.setParameter("follower", userFollower);
         q.setParameter("following", userFollowing);
@@ -99,13 +90,8 @@ public class FollowDAO {
       } catch (NoResultException ex) {
         idProblem = true;
       }
-
-
-
-
-
       utx.commit();
-    } catch (NamingException | NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
+    } catch (Exception ex) {
       try {
         if (utx != null) {
           utx.setRollbackOnly();
@@ -116,7 +102,6 @@ public class FollowDAO {
       }
       throw new DAOExceptionUser(new Status(Status.DB_ERROR), ex.getMessage());
     }
-
 
     if (idProblem) {
       throw new DAOExceptionUser(new Status(Status.ID_NOT_EXIST));
@@ -146,12 +131,12 @@ public class FollowDAO {
       EntityManager em = (EntityManager) ic.lookup("java:comp/env/persistence/EntityManager");
       utx.begin();
       em.joinTransaction();
-      User user = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idUser + "").getSingleResult();
-      if (user != null) {
-        Query q = em.createQuery("SELECT x." + follow + " FROM UserAssignment x WHERE x." + followRes + "= :followres");
-        q.setParameter("followres", user);
+      try {
+        User user = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idUser + "").getSingleResult();
+        Query q = em.createQuery("SELECT x." + follow + " FROM UserAssignment x WHERE x." + followRes + "= :followers");
+        q.setParameter("followers", user);
         list = (List<User>) q.getResultList();
-      } else {
+      } catch (NoResultException ex) {
         idUserError = true;
       }
       utx.commit();

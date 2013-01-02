@@ -61,8 +61,7 @@ public class FollowUsersIT extends TestCase {
     // s'abonner à un utilisateur inexistant: échec attendu
     webResource = client.resource(new URL(this.baseUrl + "/follow/following/5656").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    System.out.println("LAAA" + result.getEntity(String.class));
-    Assert.assertEquals(Status.ID_NOT_EXIST, result.getStatus()); // ça devrait être ID_NOT_EXIST
+    Assert.assertEquals(Status.ID_NOT_EXIST, result.getStatus());
     result.close();
     
     // s'abonner aux utilisateurs 2 et 3: succès attendu
@@ -75,8 +74,14 @@ public class FollowUsersIT extends TestCase {
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.OK, result.getStatus());
     result.close();
-
-    // retourner les abonnements (utilisateur 1): succès attendu
+    
+    // retourner les abonnés d'un utilisateur inexistant: échec attendu
+    webResource = client.resource(new URL(this.baseUrl + "/follow/follower/get/5675").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+    Assert.assertEquals(Status.USER_NO_ACCOUNT, result.getStatus());
+    result.close();
+    
+    // retourner les abonnements de l'utilisateur 1: succès attendu
     webResource = client.resource(new URL(this.baseUrl + "/follow/following/my").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.OK, result.getStatus());
@@ -100,14 +105,25 @@ public class FollowUsersIT extends TestCase {
     System.out.println(res);
     result.close();
 
+    // Arrêt de l'abonnement à un utilisateur inexistant : échec attendu
+    webResource = client.resource(new URL(this.baseUrl + "/follow/stop/372832").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+    Assert.assertEquals(Status.ID_NOT_EXIST, result.getStatus());
+    result.close();
+    
+    // Arrêt de l'abonnement à un utilisateur non suivi : échec attendu
+    webResource = client.resource(new URL(this.baseUrl + "/follow/stop/8").toURI());
+    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+    Assert.assertEquals(Status.NOT_FOLLOWING, result.getStatus());
+    result.close();
+    
     // Arrêt de l'abonnement à l'utilisateur 2 : succès attendu
     webResource = client.resource(new URL(this.baseUrl + "/follow/stop/2").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.OK, result.getStatus());
-    System.out.println("STOP /: " + result.getStatus());
     result.close();
 
-    // Abonnements de l'utilisateur 1
+    // regarder les abonnements de l'utilisateur 1
     webResource = client.resource(new URL(this.baseUrl + "/follow/following/get/1").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     listUser = result.getEntity(List.class);
@@ -118,7 +134,7 @@ public class FollowUsersIT extends TestCase {
     System.out.println(res);
     result.close();
 
-    // Abonnés de l'utilisateur 2
+    // regarder les abonnés de l'utilisateur 2
     webResource = client.resource(new URL(this.baseUrl + "/follow/follower/get/2").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     listUser = result.getEntity(List.class);
@@ -147,7 +163,7 @@ public class FollowUsersIT extends TestCase {
     Assert.assertEquals(Status.OK, result.getStatus());    
     result.close();
     
-    // retourner les abonnements (utilisateur 2): succès attendu
+    // retourner les abonnements de l'utilisateur 2: succès attendu
     webResource = client.resource(new URL(this.baseUrl + "/follow/following/my").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     listUser = result.getEntity(List.class);
@@ -169,18 +185,5 @@ public class FollowUsersIT extends TestCase {
     }
     System.out.println(res);
     result.close();
-/*
-
-
-    // Abonnés de l'utilisateur 3
-    webResource = client.resource(new URL(this.baseUrl + "/follow/follower/get/3").toURI());
-    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    listUser = result.getEntity(List.class);
-    res = "Liste des abonnés de 'lionel.muller.34gmail.com': ";
-    for (LinkedHashMap<String, ?> u : listUser) {
-      res+=u.get("email")+"  ";
-    }
-    //System.out.println(res);
-    result.close();*/
   }
 }
