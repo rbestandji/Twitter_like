@@ -61,6 +61,7 @@ public class FollowUsersIT extends TestCase {
     // s'abonner à un utilisateur inexistant: échec attendu
     webResource = client.resource(new URL(this.baseUrl + "/follow/following/5656").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+    System.out.println("LAAA" + result.getEntity(String.class));
     Assert.assertEquals(Status.ID_NOT_EXIST, result.getStatus()); // ça devrait être ID_NOT_EXIST
     result.close();
     

@@ -3,9 +3,18 @@ package core;
 import share.core.DAOExceptionUser;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import share.model.User;
 import share.model.UserAssignment;
@@ -24,27 +33,29 @@ public class FollowDAO {
 
       utx.begin();
       em.joinTransaction();
-      User userFollower = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idFollower + "")
-              .getSingleResult();
-      User userFollowing = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idFollowing + "")
-              .getSingleResult();
-      if (userFollower == null || userFollowing == null) {
-        idProblem = true;
-      } else {
+      try {
+        User userFollower = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idFollower + "")
+                .getSingleResult();
+        User userFollowing = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idFollowing + "")
+                .getSingleResult();
+
         UserAssignment ass = new UserAssignment(userFollower, userFollowing);
         userFollower.getUsersFollowing().add(ass);
         userFollowing.getUsersFollowers().add(ass);
         em.persist(ass);
+      } catch (NoResultException ex) {
+        idProblem = true;
       }
+
+
       utx.commit();
     } catch (Exception ex) {
+
       try {
         if (utx != null) {
           utx.setRollbackOnly();
         }
       } catch (Exception rollbackEx) {
-        // Impossible d'annuler les changements, vous devriez logguer une erreur,
-        // voir envoyer un email à l'exploitant de l'application.
       }
       throw new DAOExceptionUser(new Status(Status.DB_ERROR), ex.getMessage());
     }
@@ -63,31 +74,38 @@ public class FollowDAO {
       utx = (UserTransaction) ic.lookup("java:comp/UserTransaction");
       EntityManager em = (EntityManager) ic.lookup("java:comp/env/persistence/EntityManager");
 
+
       utx.begin();
       em.joinTransaction();
-      User userFollower = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idFollower + "")
-              .getSingleResult();
-      User userFollowing = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idFollowing + "")
-              .getSingleResult();
-      if (userFollower == null || userFollowing == null) {
-        idProblem = true;
-      } else {
+
+
+      try {
+        User userFollower = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idFollower + "")
+                .getSingleResult();
+        User userFollowing = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idFollowing + "")
+                .getSingleResult();
+
         Query q = em.createQuery("SELECT x FROM UserAssignment x WHERE x.follower= :follower and x.following= :following");
         q.setParameter("follower", userFollower);
         q.setParameter("following", userFollowing);
-        UserAssignment ass = (UserAssignment) q.getSingleResult();
-        if (ass == null) {
-          followProblem = true;
-        } else {
+        try {
+          UserAssignment ass = (UserAssignment) q.getSingleResult();
           userFollower.getUsersFollowing().remove(ass);
           userFollowing.getUsersFollowers().remove(ass);
           em.remove(ass);
+        } catch (NoResultException ex) {
+          followProblem = true;
         }
+      } catch (NoResultException ex) {
+        idProblem = true;
       }
 
 
+
+
+
       utx.commit();
-    } catch (Exception ex) {
+    } catch (NamingException | NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
       try {
         if (utx != null) {
           utx.setRollbackOnly();
@@ -98,6 +116,8 @@ public class FollowDAO {
       }
       throw new DAOExceptionUser(new Status(Status.DB_ERROR), ex.getMessage());
     }
+
+
     if (idProblem) {
       throw new DAOExceptionUser(new Status(Status.ID_NOT_EXIST));
     }
@@ -136,6 +156,9 @@ public class FollowDAO {
       }
       utx.commit();
     } catch (Exception ex) {
+
+      Logger.getLogger(FollowDAO.class.getName()).log(Level.SEVERE, null, ex);
+
       try {
         if (utx != null) {
           utx.setRollbackOnly();

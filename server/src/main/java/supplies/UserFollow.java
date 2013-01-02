@@ -37,7 +37,7 @@ public class UserFollow {
       FollowDAO.followUser(Long.parseLong(authenciateCookie.getValue()), Long.parseLong(id));
       return Response.status(new Status(Status.OK)).build();
     } catch (DAOExceptionUser ex) {
-      return Response.status(ex.getStatus()).build();
+      return Response.ok(ex.getMessage()).status(ex.getStatus()).build();
     }
   }
 
