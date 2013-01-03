@@ -15,6 +15,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import share.core.Status;
 import share.model.Message;
@@ -33,7 +35,7 @@ public class Wall extends Parent {
     this.getChildren().add(box);
   }
 
-  void setUser(User idUser) {
+  void setUser(final User user) {
     this.user = user;
     box.getChildren().clear();
     ProgressIndicator p = new ProgressIndicator();
@@ -57,15 +59,27 @@ public class Wall extends Parent {
           List<HashMap<String, ?>> listMsg = result.getEntity(List.class);
           box.setSpacing(10.);
           VBox boxTmp = new VBox();
-          ScrollPane s1 = new ScrollPane();
-          s1.setContent(boxTmp);
-          box.getChildren().add(s1);
+          //boxTmp.setPrefWrapLength(200); 
+
+          //ScrollPane s1 = new ScrollPane();
+          //s1.setContent(boxTmp);
           for (HashMap<String, ?> m : listMsg) {
             System.out.println(m);
-            boxTmp.getChildren().add(new IMessage(Long.parseLong(m.get("id").toString()), 
-                    ((HashMap<String, ?>)m.get("author")).get("firstname").toString(),
+            User uu = null;
+            if (m.get("author") != null) {
+              uu.setId(Long.parseLong(((HashMap<String, ?>) m.get("author")).get("id").toString()));
+              uu.setFirstname(((HashMap<String, ?>) m.get("author")).get("firstname").toString());
+              uu.setName(((HashMap<String, ?>) m.get("author")).get("name").toString());
+            } else {
+              uu = user;
+            }
+
+            boxTmp.getChildren().add(new IMessage(Long.parseLong(m.get("id").toString()),
+                    uu,
                     m.get("text").toString(), new Date(Long.parseLong(m.get("msgDate").toString())).toString()));
           }
+          box.getChildren().add(boxTmp);
+
         } else {
           System.out.println("Erreur chargement wall : " + result.getStatus());
         }

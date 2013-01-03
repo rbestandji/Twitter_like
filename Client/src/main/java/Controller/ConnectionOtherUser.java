@@ -24,7 +24,8 @@ public class ConnectionOtherUser implements EventHandler<ActionEvent> {
   }
 
   public void handle(ActionEvent t) {
-    stage.close();
+    if(stage!=null)
+      stage.close();
     
     MainWindow.getMainWindow().getProgress().setProgress(-1.);
     Task<ClientResponse> task = new Task<ClientResponse>() {

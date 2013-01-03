@@ -38,7 +38,7 @@ public class MainWindow extends Scene {
 
   //private TextArea text;
   private MainWindow() {
-    super(new StackPane());
+    super(new StackPane(), 600, 500);
     wall = new Wall();
     profil = new IProfil();
     init();
