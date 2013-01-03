@@ -62,7 +62,7 @@ public class UserDAO {
       utx.begin();
       em.joinTransaction();
       try {
-        user = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idUser + "").getSingleResult();      
+        user = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + idUser + "").getSingleResult();
         em.remove(user);
       } catch (NoResultException ex) {
         idUserError = true;
@@ -99,7 +99,7 @@ public class UserDAO {
       try {
         user = (User) em.createQuery("SELECT x FROM User x WHERE x.id=" + id + "").getSingleResult();
         utx.commit();
-      } catch(NoResultException ex){
+      } catch (NoResultException ex) {
         idUserError = true;
       }
     } catch (Exception ex) {
@@ -156,12 +156,18 @@ public class UserDAO {
   }
 
   //Retourne le wall d'un utilisateur
-  public static List<Message> getWall(long id) throws DAOExceptionUser {
-    List<Message> messagesWall = new ArrayList<>();
-    messagesWall.addAll(MessageDAO.getMessages(id));
-    List<User> follower = FollowDAO.getFollows(id, "follower");
+  public static List<Object> getWall(long id) throws DAOExceptionUser {
+    List<Object> messagesWall = new ArrayList<>();
+    for (Message m : MessageDAO.getMessages(id)) {
+      messagesWall.add(null);
+      messagesWall.add(m);
+    }
+    List<User> follower = FollowDAO.getFollows(id, "following");
     for (User u : follower) {
-      messagesWall.addAll(MessageDAO.getMessages(u.getId()));
+      for (Message m : MessageDAO.getMessages(u.getId())) {
+        messagesWall.add(u);
+        messagesWall.add(m);
+      }
     }
     return messagesWall;
   }

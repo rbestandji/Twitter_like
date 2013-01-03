@@ -48,7 +48,7 @@ public class CUser extends Parent {
     GridPane.setHalignment(lemail, HPos.RIGHT);
     GridPane.setConstraints(email, 1, 0);
     GridPane.setHalignment(email, HPos.LEFT);
-email.setText("le.jitou@gmail.com");
+    email.setText("le.jitou@gmail.com");
 
     Label lpassword = new Label("Mot de passe:");
     GridPane.setConstraints(lpassword, 0, 1);
@@ -56,7 +56,7 @@ email.setText("le.jitou@gmail.com");
 
     GridPane.setConstraints(password, 1, 1);
     GridPane.setHalignment(password, HPos.LEFT);
-password.setText("password");
+    password.setText("password");
 
     // bouton valider
     validate = new Button("Valider");
@@ -121,8 +121,9 @@ password.setText("password");
 
             //Pas de suppression propre ?
             Main.getMainWindow().setScene(wall);
-            wall.setUser((User) result.getEntity(User.class));
-
+            User u = (User) result.getEntity(User.class);
+            MainWindow.userConnected = u;
+            wall.setUser(u);
           } else {
             System.out.println(result.getStatus());
           }

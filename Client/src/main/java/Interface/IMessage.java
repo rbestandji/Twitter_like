@@ -5,9 +5,9 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import share.model.Message;
 import share.model.User;
 
 public class IMessage extends Parent {
@@ -23,7 +23,6 @@ public class IMessage extends Parent {
     this.id = id;
     this.date = date;
     init();
-
   }
 
   private void init() {
@@ -34,10 +33,15 @@ public class IMessage extends Parent {
     Label ltext = new Label();
     ltext.setText(text);
 
-    ldate.setTextFill(Color.GREEN);   
+    ldate.setTextFill(Color.GREEN);
     ltext.setWrapText(true);
-    
+    lauthor.setWrapText(false);
+    ltext.setMinSize(390, 30);
+
     GridPane gridpane = new GridPane();
+    gridpane.getColumnConstraints().add(new ColumnConstraints(200));
+    gridpane.getColumnConstraints().add(new ColumnConstraints(200));
+
     gridpane.setAlignment(Pos.BASELINE_LEFT);
     gridpane.add(lauthor, 0, 0, 1, 1);
     gridpane.add(ldate, 1, 0, 1, 1);
@@ -47,8 +51,10 @@ public class IMessage extends Parent {
     gridpane.setVgap(10.);
 
     gridpane.setMaxWidth(400);
+    gridpane.setMinWidth(400);
+
     this.getChildren().add(gridpane);
-    
+
     lauthor.setOnAction(new ConnectionOtherUser(author.getId(), null));
   }
 }

@@ -41,14 +41,13 @@ public class Lifecycle implements ServletContextListener {
       }
 
       //création de messages et attribution à des utilisateurs de façon aléatoire + insertion en BD
-      for (int k = 0; k < 3; k++) {
-        List<Message> msgs = createMessages();
-        for (Message m : msgs) {
-          User tmp = users.get((int) (Math.random() * (users.size() - 1)));
-          m.setAuthor(tmp);
-          tmp.addMessage(m);
-          em.persist(m);
-        }
+      List<Message> msgs = createMessages();
+      for (Message m : msgs) {
+        User tmp = users.get((int) (Math.random() * (users.size() - 1)));
+        m.setAuthor(tmp);
+        tmp.addMessage(m);
+        em.persist(m);
+
       }
 
 

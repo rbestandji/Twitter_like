@@ -14,7 +14,8 @@ public class Main extends Application {
   public static Group root;
   public static ProgressBar progress;
   private static Stage primaryStage;
-
+  
+  
   public static void main(String[] args) {
     Application.launch(Main.class, args);
   }

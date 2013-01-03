@@ -35,6 +35,7 @@ public class MainWindow extends Scene {
   private User user = null;
   private Wall wall = null;
   private IProfil profil = null;
+  public static User userConnected = null;
 
   //private TextArea text;
   private MainWindow() {
@@ -62,10 +63,7 @@ public class MainWindow extends Scene {
 
     // Scene root
     StackPane root = (StackPane) this.getRoot();
-
-
     GridPane grid = new GridPane();
-
     grid.setHgap(10);
     grid.setVgap(10);
 
@@ -73,6 +71,7 @@ public class MainWindow extends Scene {
     progress = new ProgressBar();
     progress.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
     fieldSearch = new TextField();
+    fieldSearch.setPrefColumnCount(100);
     startSearch = new Button("Chercher");
 
 
@@ -84,7 +83,7 @@ public class MainWindow extends Scene {
 
     grid.add(profil, 0, 1, 4, 5);
     grid.add(wall, 4, 1, 6, 15);
-    
+
     startSearch.setOnAction(new SearchAction());
     root.getChildren().add(grid);
     this.setRoot(root);

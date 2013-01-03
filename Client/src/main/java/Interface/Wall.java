@@ -59,27 +59,31 @@ public class Wall extends Parent {
           List<HashMap<String, ?>> listMsg = result.getEntity(List.class);
           box.setSpacing(10.);
           VBox boxTmp = new VBox();
-          //boxTmp.setPrefWrapLength(200); 
 
-          //ScrollPane s1 = new ScrollPane();
-          //s1.setContent(boxTmp);
-          for (HashMap<String, ?> m : listMsg) {
-            System.out.println(m);
+          ScrollPane s1 = new ScrollPane();
+          s1.setFitToWidth(true);
+          for (int j = 0; j < listMsg.size(); j += 2) {
+            HashMap<String, ?> m1 = listMsg.get(j);//identifiant
+            HashMap<String, ?> m2 = listMsg.get(j + 1);//message
+
+            System.out.println(m1);
+            System.out.println(m2);
+
             User uu = null;
-            if (m.get("author") != null) {
-              uu.setId(Long.parseLong(((HashMap<String, ?>) m.get("author")).get("id").toString()));
-              uu.setFirstname(((HashMap<String, ?>) m.get("author")).get("firstname").toString());
-              uu.setName(((HashMap<String, ?>) m.get("author")).get("name").toString());
+            if (m1 != null) {
+              uu = new User();
+              uu.setId(Long.parseLong(m1.get("id").toString()));
+              uu.setFirstname((String) m1.get("firstname"));
+              uu.setName((String) m1.get("name"));
             } else {
               uu = user;
             }
-
-            boxTmp.getChildren().add(new IMessage(Long.parseLong(m.get("id").toString()),
-                    uu,
-                    m.get("text").toString(), new Date(Long.parseLong(m.get("msgDate").toString())).toString()));
+            boxTmp.getChildren().add(new IMessage(Long.parseLong(m2.get("id").toString()), uu,
+                    m2.get("text").toString(), new Date(Long.parseLong(m2.get("msgDate").toString())).toString()));
           }
-          box.getChildren().add(boxTmp);
 
+          s1.setContent(boxTmp);
+          box.getChildren().add(s1);
         } else {
           System.out.println("Erreur chargement wall : " + result.getStatus());
         }
