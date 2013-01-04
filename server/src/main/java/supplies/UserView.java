@@ -41,7 +41,11 @@ public class UserView {
   @Path("/getuserwall/{id}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getUserWall(@PathParam("id") String id) {
+  public Response getUserWall(@CookieParam("authCookie") Cookie authenciateCookie, @PathParam("id") String id) {
+    if (authenciateCookie == null) {
+      return Response.status(new Status(Status.USER_OFFLINE)).build();
+    }
+    
     try {
       return Response.ok(UserDAO.getWall(Long.parseLong(id)), MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
     } catch (DAOExceptionUser ex) {
