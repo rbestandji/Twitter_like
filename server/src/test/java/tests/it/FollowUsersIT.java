@@ -118,7 +118,7 @@ public class FollowUsersIT extends TestCase {
     result.close();
     
     // Arrêt de l'abonnement à un utilisateur non suivi : échec attendu
-    webResource = client.resource(new URL(this.baseUrl + "/follow/stop/8").toURI());
+    webResource = client.resource(new URL(this.baseUrl + "/follow/stop/7").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.NOT_FOLLOWING, result.getStatus());
     System.out.println("L'utilisateur 1 tente, sans succes, de ne plus suivre un utilisateur non suivi");

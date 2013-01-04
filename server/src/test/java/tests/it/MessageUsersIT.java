@@ -113,15 +113,6 @@ public class MessageUsersIT extends TestCase {
    Assert.assertEquals(Status.OK, result.getStatus());
    System.out.println("L'utilisateur 1 commente une deuxième fois l'un de ses precedents messages");
    result.close();
-   
-   /*// Commentaire du commentaire précédent: succès attendu
-   f.clear();
-   f.add("comment", "Je suis un sous commentaire du commentaire 30");
-   webResource = client.resource(new URL(this.baseUrl + "/comments/send/30").toURI());
-   result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-   Assert.assertEquals(Status.OK, result.getStatus());
-   System.out.println("L'utilisateur 1 commente son dernier commentaire");
-   result.close();*/
   
    // L'utilisateur 1 se déconnecte: succès attendu
    webResource = client.resource(new URL(this.baseUrl + "/bye").toURI());
