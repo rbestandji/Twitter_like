@@ -35,6 +35,20 @@ public class UserView {
     }
   }
 
+    /*
+   * Retourne le mur d'un utilisateur identifié par id cad : ses messages et ceux des personnes suivis.
+   */
+  @Path("/getuserwall/{id}")
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getUserWall(@PathParam("id") String id) {
+    try {
+      return Response.ok(UserDAO.getWall(Long.parseLong(id)), MediaType.APPLICATION_JSON).status(new Status(Status.OK)).build();
+    } catch (DAOExceptionUser ex) {
+      return Response.status(ex.getStatus()).build();
+    }
+  }
+  
   /*
    * Retourne la description de l'utilisateur
    */
