@@ -42,21 +42,20 @@ public class MessageUsersIT extends TestCase {
 
   }
   
-//Evidement ne fonctionne plus now !
-  // Cette fonction va tester l'envoi de Tweet ainsi que leur lecture 
+  // Cette fonction va tester l'envoi de messages et de commentaires ainsi que leur suppression 
   @Test
-   public void testSendMsg() throws Exception {
+   public void testMessages() throws Exception {
    Form f = new Form();
    WebResource webResource;
    ClientResponse result;
-   System.out.println("****************** Tests des messages ! ******************");
+   System.out.println("****************** ecriture et suppression de messages ! ******************");
     
    // Tentative d'envoi d'un message sans connection: échec attendu
    f.add("msg", "Hello tout le monde");
    webResource = client.resource(new URL(this.baseUrl + "/messages/send").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-   System.out.println(result.getStatus());
    Assert.assertEquals(Status.USER_OFFLINE, result.getStatus());
+   System.out.println("Un utilisateur non connecte tente, sans succes, d'envoyer un message");
    result.close();
 
    // Connexion de l'utilisateur 1 : succès attendu
@@ -66,6 +65,7 @@ public class MessageUsersIT extends TestCase {
    webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    Assert.assertEquals(Status.OK, result.getStatus());
+   System.out.println("L'utilisateur 1 se connecte");
    result.close();
 
    // envoie d'un message sur Twitter-like: succès attendu
@@ -74,6 +74,7 @@ public class MessageUsersIT extends TestCase {
    webResource = client.resource(new URL(this.baseUrl + "/messages/send").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    Assert.assertEquals(Status.OK, result.getStatus());
+   System.out.println("L'utilisateur 1 envoie un message");
    result.close();
    
    // envoie d'un deuxième message sur Twitter-like: succès attendu
@@ -82,6 +83,7 @@ public class MessageUsersIT extends TestCase {
    webResource = client.resource(new URL(this.baseUrl + "/messages/send").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    Assert.assertEquals(Status.OK, result.getStatus());
+   System.out.println("L'utilisateur 1 envoie un deuxieme message");
    result.close();
    
    // Commentaire d'un message non-existant: échec attendu
@@ -90,7 +92,8 @@ public class MessageUsersIT extends TestCase {
    webResource = client.resource(new URL(this.baseUrl + "/comments/send/56313").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    System.out.println(result.getEntity(String.class));
-   Assert.assertEquals(Status.NO_MESSAGE_ID, result.getStatus());// ça devrait marcher avec NO_MESSAGE_ID!!!!
+   Assert.assertEquals(Status.NO_MESSAGE_ID, result.getStatus());
+   System.out.println("L'utilisateur 1 tente, sans succes, de commenter un message inexistant");
    result.close();
    
    // Commentaire du message précédent: succès attendu
@@ -99,6 +102,7 @@ public class MessageUsersIT extends TestCase {
    webResource = client.resource(new URL(this.baseUrl + "/comments/send/28").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    Assert.assertEquals(Status.OK, result.getStatus());
+   System.out.println("L'utilisateur 1 commente le precedent message");
    result.close();
   
    // Autre commentaire du même message précédent: succès attendu
@@ -107,6 +111,7 @@ public class MessageUsersIT extends TestCase {
    webResource = client.resource(new URL(this.baseUrl + "/comments/send/28").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    Assert.assertEquals(Status.OK, result.getStatus());
+   System.out.println("L'utilisateur 1 commente une deuxième fois le precedent message");
    result.close();
    
    // Commentaire du commentaire précédent: succès attendu
@@ -115,12 +120,14 @@ public class MessageUsersIT extends TestCase {
    webResource = client.resource(new URL(this.baseUrl + "/comments/send/30").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    Assert.assertEquals(Status.OK, result.getStatus());
+   System.out.println("L'utilisateur 1 commente son dernier commentaire");
    result.close();
   
    // L'utilisateur 1 se déconnecte: succès attendu
    webResource = client.resource(new URL(this.baseUrl + "/bye").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
    Assert.assertEquals(Status.OK, result.getStatus());
+   System.out.println("L'utilisateur 1 se deconnecte");
    result.close();
 
    // Reconnexion de l'utilisateur 1 : succès attendu
@@ -130,70 +137,36 @@ public class MessageUsersIT extends TestCase {
    webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    Assert.assertEquals(Status.OK, result.getStatus());
+   System.out.println("L'utilisateur 1 se connecte. Ses informations sont:");
    System.out.println(result.getEntity(String.class));
    result.close();
- /*
-   // Lecture de mes messages et commentaires
-   webResource = client.resource(new URL(this.baseUrl + "/communications/my").toURI());
-   result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-   List<LinkedHashMap<String, ?>> listCom = result.getEntity(List.class);
-   String res = "Liste des communications de 'le.jitou@gmail.com': ";
-   for (LinkedHashMap<String, ?> c : listCom) {
-   res+=c.get("text")+"; ";
-   }
-   //System.out.println(res);
-   result.close();*/
      
    //Suppression d'un message inexistant: échec attendu
    webResource = client.resource(new URL(this.baseUrl + "/messages/delete/30032").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    Assert.assertEquals(Status.ID_NOT_EXIST, result.getStatus());
+   System.out.println("L'utilisateur 1 tente, sans succes, de supprimer un message inexistant");
    result.close();
    
    //Suppression du commentaire ayant l'id 30 et du 32 par cascade: succès attendu
    webResource = client.resource(new URL(this.baseUrl + "/messages/delete/30").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    Assert.assertEquals(Status.OK, result.getStatus());
+   System.out.println("L'utilisateur 1 supprime 1 commentaire et tous les sous commentaires sont supprimés par effet cascade");
    result.close();
    webResource = client.resource(new URL(this.baseUrl + "/messages/delete/32").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    Assert.assertEquals(Status.ID_NOT_EXIST, result.getStatus());
+   System.out.println("L'utilisateur 1 vérifie que les sous commentaires ont bien ete supprimes en tentant, sans succes, de supprimer un de ces sous commentaire");
    result.close();
     
    // L'utilisateur 1 se déconnecte : succès attendu
    webResource = client.resource(new URL(this.baseUrl + "/bye").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
    Assert.assertEquals(Status.OK, result.getStatus());
+   System.out.println("L'utilisateur 1 se deconnecte");
    result.close();
-/*
-   // Connexion de l'utilisateur 1 
-   f.clear();
-   f.add("email", "le.jitou@gmail.com");
-   f.add("password", "password");
-   webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
-   result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-   System.out.println(result.getEntity(String.class));
-   Assert.assertEquals(Status.OK, result.getStatus());
-   result.close();
-/*
-   // Lecture de mes messages et commentaires
-   webResource = client.resource(new URL(this.baseUrl + "/communications/my").toURI());
-   result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-   listCom = result.getEntity(List.class);
-   res = "Liste des communications de 'le.jitou@gmail.com': ";
-   for (LinkedHashMap<String, ?> m : listCom) {
-   res+=m.get("text")+"; ";
-   }
-   //System.out.println(res);
-   result.close();
-    
-   /*
-   // L'utilisateur 1 se déconnecte 
-   webResource = client.resource(new URL(this.baseUrl + "/bye").toURI());
-   result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-   Assert.assertEquals(result.getStatus(), Status.OK);
-   result.close();
-*/
+
    // L'utilisateur 2 se connecte 
    f.clear();
    f.add("email", "lavalber02@gmail.com");
@@ -201,6 +174,7 @@ public class MessageUsersIT extends TestCase {
    webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    Assert.assertEquals(Status.OK, result.getStatus());
+   System.out.println("L'utilisateur 2 se connecte");
    result.close();
 
    // l'utilisateur 2 écrit un commentaire à l'utilisateur 1
@@ -209,41 +183,14 @@ public class MessageUsersIT extends TestCase {
    webResource = client.resource(new URL(this.baseUrl + "/comments/send/29").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    Assert.assertEquals(Status.OK, result.getStatus());
+   System.out.println("L'utilisateur 2 ecrit un commentaire a l'utilisateur 1");
    result.close();
    
    //L'utilisateur 2 tente de supprimer le message 29 de l'utilisateur 1: échec attendu
    webResource = client.resource(new URL(this.baseUrl + "/messages/delete/29").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-   Assert.assertEquals(Status.WRONG_USER, result.getStatus()); // ca devrait marcher avec WRONG_USER!!!
+   Assert.assertEquals(Status.WRONG_USER, result.getStatus());
+   System.out.println("L'utilisateur 2 tente, sans succes, de supprimer un message ecrit par l'utilisateur 1");
    result.close();
-/*
-   // Bernard veut lire son message
-   webResource = client.resource(new URL(this.baseUrl + "/communications/my").toURI());
-   result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-   List<LinkedHashMap<String, ?>> listMsg = result.getEntity(List.class);
-   boolean ff = false;
-   for (LinkedHashMap<String, ?> m : listMsg) {
-   if (((String) m.get("text")).compareTo("Moi je suis un message") == 0) {
-   ff = true;
-   }
-   }
-   Assert.assertEquals(ff, true);
-   result.close();*/
-
-  /*
-      
-   // Lecture des messages à partir du mail 
-   webResource = client.resource(new URL(this.baseUrl + "/communications/getuser/lavalber02@gmail.com").toURI());
-   result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-   Assert.assertEquals(((LinkedHashMap) (result.getEntity(List.class).get(0))).get("text"), "Moi je suis un message");
-   //System.out.println(result.getEntity(List.class));
-   result.close();
-
-   // Lecture des messages à partir d'un mauvais mail 
-   webResource = client.resource(new URL(this.baseUrl + "/communications/getuser/lavalber03@gmail.com").toURI());
-   result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-   Assert.assertEquals(Status.USER_NO_ACCOUNT, result.getStatus());
-   result.close();
-   */
   }
 }

@@ -48,22 +48,25 @@ public class GetUsersIT extends TestCase {
     Form f = new Form();
     WebResource webResource;
     ClientResponse result;
-    System.out.println("****************** Recuperer des identifiants utilisateurs ! ******************");      
+    System.out.println("****************** Recupereration des utilisateurs ! ******************");      
     
     // tente de récupérer un utilisateur sans être connecté: échec attendu
     webResource = client.resource(new URL(this.baseUrl + "/users/getuserid/1").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.USER_OFFLINE, result.getStatus());
+    System.out.println("Un utilisateur non connecte tente, sans succes, de recuperer les informations de l'utilisateur 1 par id");
     result.close();
     
     webResource = client.resource(new URL(this.baseUrl + "/users/getuseremail/le.julius@gmail.com").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.USER_OFFLINE, result.getStatus());
+    System.out.println("Un utilisateur non connecte tente, sans succes, de recuperer les informations de l'utilisateur 1 par email");
     result.close();
     
     webResource = client.resource(new URL(this.baseUrl + "/users/search/jul").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.USER_OFFLINE, result.getStatus());
+    System.out.println("Un utilisateur non connecte tente, sans succes, de rechercher des utilisateurs par nom");
     result.close();
     
     // Connexion de l'utilisateur 1: succès attendu 
@@ -72,30 +75,35 @@ public class GetUsersIT extends TestCase {
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);    
     Assert.assertEquals(Status.OK, result.getStatus());
+    System.out.println("L'utilisateur 1 se connecte");
     result.close();
     
     // tente de récupérer un utilisateur inexistant par id: échec attendu
     webResource = client.resource(new URL(this.baseUrl + "/users/getuserid/132324").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.USER_NO_ACCOUNT, result.getStatus());
+    System.out.println("L'utilisateur 1 n'arrive pas a recuperer les informations d'un utilisateur inexistant");
     result.close();
     
     // récupère l'utilisateur ayant l'id 1 : succès attendu
     webResource = client.resource(new URL(this.baseUrl + "/users/getuserid/1").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.OK, result.getStatus());
+    System.out.println("L'utilisateur 1 recupere les informations de l'utilisateur 1 par identifiant technique");
     result.close();
 
     // tente de récupérer un utilisateur inexistant par email: échec attendu
     webResource = client.resource(new URL(this.baseUrl + "/users/getuseremail/mauvaisemail@gmail.com").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.USER_NO_ACCOUNT, result.getStatus());
+    System.out.println("L'utilisateur 1 tente de recuperer, sans succes, les informations d'un utilisateur inexistant par email");
     result.close();
     
     // récupère l'utilisateur 5 ayant l'email le.julius@gmail.com : succès attendu
     webResource = client.resource(new URL(this.baseUrl + "/users/getuseremail/le.julius@gmail.com").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.OK, result.getStatus());
+    System.out.println("L'utilisateur 1 recupere les informations de l'utilisateur 5 par email");
     result.close();
     
     //récupère la liste des utilisateurs dont une partie du nom est 'n': succès attendu
@@ -103,7 +111,7 @@ public class GetUsersIT extends TestCase {
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.OK, result.getStatus());
     List<LinkedHashMap<String, ?>> listUser = result.getEntity(List.class);
-    String res = "Utilisateurs correspondants a la recherche 'n': ";
+    String res = "L'utilisateur 1 recherche les utilisateurs possedants 'n' dans leur nom: ";
     for (LinkedHashMap<String, ?> u : listUser) {
       res+=u.get("email")+"  ";
     }

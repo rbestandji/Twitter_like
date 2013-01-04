@@ -54,6 +54,7 @@ public class ViewUsersIT extends TestCase {
     webResource = client.resource(new URL(this.baseUrl + "/users/getmywall").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.USER_OFFLINE, result.getStatus());
+    System.out.println("Un utilisateur non identifie tente, sans succes, d'afficher son mur de messages");
     result.close();
     
     // Connexion de l'utilisateur 3
@@ -63,6 +64,7 @@ public class ViewUsersIT extends TestCase {
     System.out.println("connection de user 3");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+    System.out.println("L'utilisateur 3 se connecte");
     result.close();
 
     // envoie d'un message sur Twitter-like
@@ -70,6 +72,7 @@ public class ViewUsersIT extends TestCase {
     f.add("msg", "msg de user 3");
     webResource = client.resource(new URL(this.baseUrl + "/messages/send").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+    System.out.println("L'utilisateur 3 ecrit un message");
     result.close();
 
     // envoie d'un deuxième message sur Twitter-like
@@ -77,6 +80,7 @@ public class ViewUsersIT extends TestCase {
     f.add("msg", "Je suis un autre msg de user 3");
     webResource = client.resource(new URL(this.baseUrl + "/messages/send").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+    System.out.println("L'utilisateur 3 ecrit un deuxieme message");
     result.close();
 
     // Commentaire du message précédent
@@ -84,6 +88,7 @@ public class ViewUsersIT extends TestCase {
     f.add("comment", "Je suis un commentaire du msg 35");
     webResource = client.resource(new URL(this.baseUrl + "/comments/send/35").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+    System.out.println("L'utilisateur 3 ecrit un commentaire du message precedent");
     result.close();
 
     // Autre commentaire du même message précédent: succès attendu
@@ -92,31 +97,35 @@ public class ViewUsersIT extends TestCase {
     webResource = client.resource(new URL(this.baseUrl + "/comments/send/35").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(Status.OK, result.getStatus());
+    System.out.println("L'utilisateur 3 ecrit un deuxieme commentaire du message precedent");
     result.close();
 
     // L'utilisateur 3 affiche ses messages: succès attendu
     webResource = client.resource(new URL(this.baseUrl + "/users/getmywall").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.OK, result.getStatus());
+    System.out.println("L'utilisateur 3 recupere les messages de son mur:");
     System.out.println(result.getEntity(String.class));
     result.close();
 
     // s'abonner aux utilisateurs 1 et 2
     webResource = client.resource(new URL(this.baseUrl + "/follow/following/1").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    Assert.assertEquals(Status.OK, result.getStatus());    
+    Assert.assertEquals(Status.OK, result.getStatus()); 
+    System.out.println("L'utilisateur 3 suit maintenant l'utilisateur 1");
     result.close();
 
     webResource = client.resource(new URL(this.baseUrl + "/follow/following/2").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.OK, result.getStatus());
+    System.out.println("L'utilisateur 3 suit maintenant l'utilisateur 2");
     result.close();
 
     // L'utilisateur 3 affiche ses messages ainsi que ceux des users suivis: succès attendu
     webResource = client.resource(new URL(this.baseUrl + "/users/getmywall").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.OK, result.getStatus());
-    System.out.println("mur de user 3:");
+    System.out.println("L'utilisateur 3 recupere les messages de son mur:");
     System.out.println(result.getEntity(String.class));
     result.close();
 
@@ -124,14 +133,15 @@ public class ViewUsersIT extends TestCase {
     webResource = client.resource(new URL(this.baseUrl + "/users/getuserwall/1").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.OK, result.getStatus());
-    System.out.println("mur de user 1:");
+    System.out.println("L'utilisateur 3 recupere les messages du mur de l'utilisateur 1:");
     System.out.println(result.getEntity(String.class));
     result.close();
 
     // un utilisateur inexistant tente d'afficher ses messages : échec attendu
     webResource = client.resource(new URL(this.baseUrl + "/users/getuserwall/6721").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    Assert.assertEquals(Status.USER_NO_ACCOUNT, result.getStatus());  
+    Assert.assertEquals(Status.USER_NO_ACCOUNT, result.getStatus());
+    System.out.println("L'utilisateur 3 tente, sans succes, de recuperer les messages du mur d'un utilisateur inexistant");
     result.close();
   }
 }

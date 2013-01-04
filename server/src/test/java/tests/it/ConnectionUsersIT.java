@@ -46,7 +46,7 @@ public class ConnectionUsersIT extends TestCase {
     Form f = new Form();
     WebResource webResource;
     ClientResponse result;
-    System.out.println("****************** Connexion des comptes ! ******************");
+    System.out.println("****************** Connexion des comptes utilisateurs ! ******************");
 
     // L'utilisateur 2 tente de se connecter avec un mauvais email sans succès
     f.add("email", "mauvais_lavalber02@gmail.com");
@@ -54,6 +54,7 @@ public class ConnectionUsersIT extends TestCase {
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(Status.USER_NO_ACCOUNT, result.getStatus());
+    System.out.println("l'utilisateur 2 tente, sans succès, de se connecter avec un mauvais email");
     result.close();
     
     // L'utilisateur 3 tente de se connecter avec un mauvais password sans succès
@@ -63,6 +64,7 @@ public class ConnectionUsersIT extends TestCase {
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(Status.USER_WRONG_PASSWORD, result.getStatus());
+    System.out.println("l'utilisateur 3 tente, sans succès, de se connecter avec un mauvais mot de passe");
     result.close();
     
     // Connexion de l'utilisateur 1 avec les bons identifiants succès attendu
@@ -70,9 +72,10 @@ public class ConnectionUsersIT extends TestCase {
     f.add("email", "le.jitou@gmail.com");
     f.add("password", "password");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
-    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-    System.out.println(result.getEntity(String.class));
+    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);    
     Assert.assertEquals(Status.OK, result.getStatus());
+    System.out.println("l'utilisateur 1 reussi a se connecter avec les bons identifiants");
+    System.out.println(result.getEntity(String.class));
     result.close();
     
     // L'utilisateur 1 est encore connecté, tentative de connexion de l'utilisateur 2 échec attendu
@@ -82,6 +85,7 @@ public class ConnectionUsersIT extends TestCase {
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(Status.USER_ONLINE, result.getStatus());
+    System.out.println("L'utilisateur 1 est encore connecte, tentative de connexion de l'utilisateur 2 mais echec");
     result.close();
   }
 }

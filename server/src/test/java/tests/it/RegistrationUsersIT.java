@@ -46,7 +46,7 @@ public class RegistrationUsersIT extends TestCase {
     Form f = new Form();
     WebResource webResource;
     ClientResponse result;
-    System.out.println("****************** Creation des comptes ! ******************");
+    System.out.println("****************** Creation de comptes ! ******************");
 
     // création d'un nouveau compte déjà existant delui de l'utilisateur 1: échec attendu
     f.clear();
@@ -57,27 +57,30 @@ public class RegistrationUsersIT extends TestCase {
     webResource = client.resource(new URL(this.baseUrl + "/registration").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(Status.EMAIL_VALIDATED, result.getStatus());
+    System.out.println("Un utilisateur tente, sans succes, de creer un compte dont l'email est deja utilise");
     result.close();
 
     // création d'un nouveau compte : succès attendu
     f.clear();
     f.add("email", "castorEnrage@gmail.com");
-    f.add("password", "sdsdsdsdsdsdsd");
+    f.add("password", "ilenfautun");
     f.add("name", "Laval");
     f.add("firstname", "Bernard");
     webResource = client.resource(new URL(this.baseUrl + "/registration").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(Status.OK, result.getStatus());
+    System.out.println("Un utilisateur creer un nouveau compte");
     result.close();
 
     // Connexion de l'utilisateur 1 avec les bons identifiants: succès attendu
     f.clear();
-    f.add("email", "le.jitou@gmail.com");
-    f.add("password", "password");
+    f.add("email", "castorEnrage@gmail.com");
+    f.add("password", "ilenfautun");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     System.out.println(result.getEntity(String.class));
     Assert.assertEquals(Status.OK, result.getStatus());
+    System.out.println("L'utilisateur se connecte avec ce nouveau compte");
     result.close();
 
     // tentative de création d'un nouveau compte avec user 1 déjà connecté: échec attendu
@@ -89,6 +92,7 @@ public class RegistrationUsersIT extends TestCase {
     webResource = client.resource(new URL(this.baseUrl + "/registration").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(Status.USER_ONLINE, result.getStatus());
+    System.out.println("L'utilisateur tente, sans succes, de creer un nouveau compte alors qu'il est encore connecte");
     result.close();
   }
 }

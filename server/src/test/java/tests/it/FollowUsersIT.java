@@ -56,29 +56,34 @@ public class FollowUsersIT extends TestCase {
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);    
     Assert.assertEquals(Status.OK, result.getStatus());
+    System.out.println("L'utilisateur 1 se connecte");
     result.close();
 
     // s'abonner à un utilisateur inexistant: échec attendu
     webResource = client.resource(new URL(this.baseUrl + "/follow/following/5656").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.ID_NOT_EXIST, result.getStatus());
+    System.out.println("L'utilisateur 1 tente de suivre, sans succes, un utilisateur inexistant");
     result.close();
     
     // s'abonner aux utilisateurs 2 et 3: succès attendu
     webResource = client.resource(new URL(this.baseUrl + "/follow/following/2").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    Assert.assertEquals(Status.OK, result.getStatus());    
+    Assert.assertEquals(Status.OK, result.getStatus());
+    System.out.println("L'utilisateur 1 suit maintenant l'utilsateur 2");
     result.close();
 
     webResource = client.resource(new URL(this.baseUrl + "/follow/following/3").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.OK, result.getStatus());
+    System.out.println("L'utilisateur 1 suit maintenant l'utilisateur 3");
     result.close();
     
     // retourner les abonnés d'un utilisateur inexistant: échec attendu
     webResource = client.resource(new URL(this.baseUrl + "/follow/follower/get/5675").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.USER_NO_ACCOUNT, result.getStatus());
+    System.out.println("La liste d'abonnes d'un utilisateur inexistant n'est pas trouve");
     result.close();
     
     // retourner les abonnements de l'utilisateur 1: succès attendu
@@ -86,7 +91,7 @@ public class FollowUsersIT extends TestCase {
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.OK, result.getStatus());
     List<LinkedHashMap<String, ?>> listUser = result.getEntity(List.class);
-    String res = "Liste des abonnements de 'le.jitou@gmail.com': ";
+    String res = "Liste des abonnements de l'utilisateur 1 : 'le.jitou@gmail.com': ";
     for (LinkedHashMap<String, ?> u : listUser) {
       res+=u.get("email")+"  ";
     }
@@ -98,7 +103,7 @@ public class FollowUsersIT extends TestCase {
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.OK, result.getStatus());
     listUser = result.getEntity(List.class);
-    res = "Liste des abonnés de 'lavalber02@gmail.com': ";
+    res = "Liste des abonnes de l'utilisateur 2 :'lavalber02@gmail.com': ";
     for (LinkedHashMap<String, ?> u : listUser) {
       res+=u.get("email")+"  ";
     }
@@ -109,25 +114,28 @@ public class FollowUsersIT extends TestCase {
     webResource = client.resource(new URL(this.baseUrl + "/follow/stop/372832").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.ID_NOT_EXIST, result.getStatus());
+    System.out.println("L'utilisateur 1 tente, sans succes, de ne plus suivre un utilisateur inexistant");
     result.close();
     
     // Arrêt de l'abonnement à un utilisateur non suivi : échec attendu
     webResource = client.resource(new URL(this.baseUrl + "/follow/stop/8").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.NOT_FOLLOWING, result.getStatus());
+    System.out.println("L'utilisateur 1 tente, sans succes, de ne plus suivre un utilisateur non suivi");
     result.close();
     
     // Arrêt de l'abonnement à l'utilisateur 2 : succès attendu
     webResource = client.resource(new URL(this.baseUrl + "/follow/stop/2").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.OK, result.getStatus());
+    System.out.println("L'utilisateur 1 arrete de suivre l'utilisateur 2");
     result.close();
 
     // regarder les abonnements de l'utilisateur 1
     webResource = client.resource(new URL(this.baseUrl + "/follow/following/get/1").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     listUser = result.getEntity(List.class);
-    res = "Liste des abonnements de 'le.jitou@gmail.com': ";
+    res = "Liste des abonnements de l'utilisateur 1 : 'le.jitou@gmail.com': ";
     for (LinkedHashMap<String, ?> u : listUser) {
       res+=u.get("email")+"  ";
     }
@@ -138,7 +146,7 @@ public class FollowUsersIT extends TestCase {
     webResource = client.resource(new URL(this.baseUrl + "/follow/follower/get/2").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     listUser = result.getEntity(List.class);
-    res = "Liste des abonnés de 'lavalber02@gmail.com': ";
+    res = "Liste des abonnés de l'utilisateur 2: 'lavalber02@gmail.com': ";
     for (LinkedHashMap<String, ?> u : listUser) {
       res+=u.get("email")+"  ";
     }
@@ -148,6 +156,7 @@ public class FollowUsersIT extends TestCase {
     // L'utilisateur 1 se déconnecte
     webResource = client.resource(new URL(this.baseUrl + "/bye").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+    System.out.println("L'utilisateur 1 se deconnecte");
     result.close();
     
     // Connexion de l'utilisateur 2
@@ -155,19 +164,21 @@ public class FollowUsersIT extends TestCase {
     f.add("password", "motdepasse");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);    
+    System.out.println("L'utilisateur 2 se connecte");
     result.close();
     
     // s'abonner à l'utilisateurs 1: succès attendu
     webResource = client.resource(new URL(this.baseUrl + "/follow/following/1").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    Assert.assertEquals(Status.OK, result.getStatus());    
+    Assert.assertEquals(Status.OK, result.getStatus());  
+    System.out.println("L'utilisateur 2 suit l'utilisateur 1");
     result.close();
     
     // retourner les abonnements de l'utilisateur 2: succès attendu
     webResource = client.resource(new URL(this.baseUrl + "/follow/following/my").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     listUser = result.getEntity(List.class);
-    res = "Liste des abonnements de 'lavalber02@gmail.com': ";
+    res = "Liste des abonnements de l'utilisateur 2 : 'lavalber02@gmail.com': ";
     for (LinkedHashMap<String, ?> u : listUser) {
       res+=u.get("email")+"  ";
     }
@@ -179,7 +190,7 @@ public class FollowUsersIT extends TestCase {
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.OK, result.getStatus());    
     listUser = result.getEntity(List.class);
-    res = "Liste des abonnes a 'lavalber02@gmail.com': ";
+    res = "Liste des abonnes a l'utilisateur 2 : 'lavalber02@gmail.com': ";
     for (LinkedHashMap<String, ?> u : listUser) {
       res+=u.get("email")+"  ";
     }

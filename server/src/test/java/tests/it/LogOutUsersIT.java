@@ -54,12 +54,14 @@ public class LogOutUsersIT extends TestCase {
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);    
     Assert.assertEquals(Status.OK, result.getStatus());
+    System.out.println("L'utilisateur 1 se connecte");
     result.close();
     
     // L'utilisateur 1 se déconnecte : succès attendu
     webResource = client.resource(new URL(this.baseUrl + "/bye").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     Assert.assertEquals(Status.OK, result.getStatus());
+    System.out.println("L'utilsiateur 1 se deconnecte");
     result.close();
   }
 }
