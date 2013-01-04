@@ -39,6 +39,7 @@ public class Wall extends Parent {
   void setUser(final User user) {
     this.user = user;
     box.getChildren().clear();
+
     ProgressIndicator p = new ProgressIndicator();
     box.getChildren().add(p);
     /* utilisiteur regarde son wall */
@@ -62,13 +63,11 @@ public class Wall extends Parent {
 
             ScrollPane s1 = new ScrollPane();
             s1.setFitToWidth(true);
+            s1.setMinWidth(400);
+            s1.setMinHeight(500);
             for (int j = 0; j < listMsg.size(); j += 2) {
               HashMap<String, ?> m1 = listMsg.get(j);//identifiant
               HashMap<String, ?> m2 = listMsg.get(j + 1);//message
-
-              System.out.println("wall " + m1);
-              System.out.println("wall " + m2);
-
 
               User uu = null;
               if (m1 != null) {
@@ -102,6 +101,8 @@ public class Wall extends Parent {
       VBox boxTmp = new VBox();
       ScrollPane s1 = new ScrollPane();
       s1.setFitToWidth(true);
+      s1.setMinWidth(400);
+      s1.setMinHeight(500);
       for (Message m : user.getMessages()) {
         boxTmp.getChildren().add(new IMessage(m.getId(), user,
                 m.getText(), new SimpleDateFormat("yyyy.MM.dd ' à ' HH:mm:ss").format(m.getMsgDate()).toString()));

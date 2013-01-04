@@ -18,7 +18,9 @@ import javafx.event.EventType;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -35,6 +37,8 @@ public class MainWindow extends Scene {
   private User user = null;
   private Wall wall = null;
   private IProfil profil = null;
+  private IFollower follower = null;
+  private IFollowing following = null;
   public static User userConnected = null;
 
   //private TextArea text;
@@ -42,6 +46,8 @@ public class MainWindow extends Scene {
     super(new StackPane(), 600, 500);
     wall = new Wall();
     profil = new IProfil();
+    follower = new IFollower();
+    following = new IFollowing();
     init();
   }
 
@@ -53,6 +59,8 @@ public class MainWindow extends Scene {
     this.user = user;
     wall.setUser(user);
     profil.setUser(user);
+    follower.setUser(user);
+    following.setUser(user);
   }
 
   public ProgressBar getProgress() {
@@ -60,29 +68,44 @@ public class MainWindow extends Scene {
   }
 
   private void init() {
-
     // Scene root
     StackPane root = (StackPane) this.getRoot();
     GridPane grid = new GridPane();
-    grid.setHgap(10);
-    grid.setVgap(10);
+    grid.setHgap(7);
+    grid.setVgap(5);
+
+    int n = 11;
+    for (int i = 0; i < n; i++) {
+      ColumnConstraints c = new ColumnConstraints();
+      c.setPrefWidth(20.);
+      grid.getColumnConstraints().add(c);
+    }
+    n = 15;
+    for (int i = 0; i < n; i++) {
+      RowConstraints c = new RowConstraints();
+      if(i==0) c.setPrefHeight(15.);
+      else c.setPrefHeight(35.);
+      grid.getRowConstraints().add(c);
+    }
 
     // Scene
     progress = new ProgressBar();
     progress.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
     fieldSearch = new TextField();
-    fieldSearch.setPrefColumnCount(100);
+    //fieldSearch.setPrefColumnCount(75);
     startSearch = new Button("Chercher");
 
-
     // Scene tree
-    grid.add(progress, 0, 0, 5, 1);
-    grid.add(fieldSearch, 5, 0, 3, 1);
-    grid.add(startSearch, 8, 0, 2, 1);
+    grid.add(progress, 0, 0, 4, 1);
+    grid.add(fieldSearch, 4, 0, 4, 1);
+    grid.add(startSearch, 8, 0, 3, 1);
     progress.setProgress(0.);
 
     grid.add(profil, 0, 1, 4, 5);
-    grid.add(wall, 4, 1, 6, 15);
+    grid.add(follower, 0, 6, 4, 4);
+    grid.add(following, 0, 10, 4, 4);
+    grid.add(wall, 4, 1, 7, 14);
+
 
     startSearch.setOnAction(new SearchAction());
     root.getChildren().add(grid);
