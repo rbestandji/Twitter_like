@@ -83,8 +83,11 @@ public class MainWindow extends Scene {
     n = 15;
     for (int i = 0; i < n; i++) {
       RowConstraints c = new RowConstraints();
-      if(i==0) c.setPrefHeight(15.);
-      else c.setPrefHeight(35.);
+      if (i == 0) {
+        c.setPrefHeight(15.);
+      } else {
+        c.setPrefHeight(35.);
+      }
       grid.getRowConstraints().add(c);
     }
 
