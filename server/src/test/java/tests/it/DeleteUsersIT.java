@@ -55,35 +55,35 @@ public class DeleteUsersIT extends TestCase {
     System.out.println("Un utilisateur non connecte tente, sans succes, de supprimer son compte");
     result.close();
     
-    // Connexion de l'utilisateur 5: succès attendu 
-    f.add("email", "le.julius@gmail.com");
+    // Connexion de l'utilisateur 8: succès attendu 
+    f.add("email", "harry@poudlard.com");
     f.add("password", "motdepasse");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);    
     Assert.assertEquals(Status.OK, result.getStatus());
-    System.out.println("connexion de l'utilisateur 5");
+    System.out.println("connexion de l'utilisateur 8");
     result.close();
     
     // tentative de suppression de mon compte : succès attendu
     webResource = client.resource(new URL(this.baseUrl + "/delete/my").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);    
     Assert.assertEquals(Status.OK, result.getStatus());
-    System.out.println("l'utilisateur 5 reussi a supprimer son compte");
+    System.out.println("l'utilisateur 8 reussi a supprimer son compte");
     result.close();
     
     // L'utilisateur se déconnecte
     webResource = client.resource(new URL(this.baseUrl + "/bye").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-    System.out.println("L'utilisateur 5 se deconnecte");
+    System.out.println("L'utilisateur 8 se deconnecte");
     result.close();
     
-    // Vérification que l'utilisateur 5 a bien été supprimé: succès attendu 
-    f.add("email", "le.julius@gmail.com");
+    // Vérification que l'utilisateur 8 a bien été supprimé: succès attendu 
+    f.add("email", "harry@poudlard.com");
     f.add("password", "motdepasse");
     webResource = client.resource(new URL(this.baseUrl + "/connection").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);    
     Assert.assertEquals(Status.USER_NO_ACCOUNT, result.getStatus());
-    System.out.println("Tentative rate de connexion de l'utilisateur 5 (suite a la suppression de son compte)");
+    System.out.println("Tentative rate de connexion de l'utilisateur 8 (suite a la suppression de son compte)");
     result.close();
   }
 }

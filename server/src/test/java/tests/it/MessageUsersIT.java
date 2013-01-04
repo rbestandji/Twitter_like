@@ -98,30 +98,30 @@ public class MessageUsersIT extends TestCase {
    
    // Commentaire du message précédent: succès attendu
    f.clear();
-   f.add("comment", "Je suis un commentaire du msg 28");
-   webResource = client.resource(new URL(this.baseUrl + "/comments/send/28").toURI());
+   f.add("comment", "Je suis un commentaire du msg 1");
+   webResource = client.resource(new URL(this.baseUrl + "/comments/send/11").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    Assert.assertEquals(Status.OK, result.getStatus());
-   System.out.println("L'utilisateur 1 commente le precedent message");
+   System.out.println("L'utilisateur 1 commente l'un de ses precedents messages");
    result.close();
   
    // Autre commentaire du même message précédent: succès attendu
    f.clear();
-   f.add("comment", "Je suis un autre commentaire du msg 28");
-   webResource = client.resource(new URL(this.baseUrl + "/comments/send/28").toURI());
+   f.add("comment", "Je suis un autre commentaire du msg 1");
+   webResource = client.resource(new URL(this.baseUrl + "/comments/send/11").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    Assert.assertEquals(Status.OK, result.getStatus());
-   System.out.println("L'utilisateur 1 commente une deuxième fois le precedent message");
+   System.out.println("L'utilisateur 1 commente une deuxième fois l'un de ses precedents messages");
    result.close();
    
-   // Commentaire du commentaire précédent: succès attendu
+   /*// Commentaire du commentaire précédent: succès attendu
    f.clear();
    f.add("comment", "Je suis un sous commentaire du commentaire 30");
    webResource = client.resource(new URL(this.baseUrl + "/comments/send/30").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    Assert.assertEquals(Status.OK, result.getStatus());
    System.out.println("L'utilisateur 1 commente son dernier commentaire");
-   result.close();
+   result.close();*/
   
    // L'utilisateur 1 se déconnecte: succès attendu
    webResource = client.resource(new URL(this.baseUrl + "/bye").toURI());
@@ -148,16 +148,16 @@ public class MessageUsersIT extends TestCase {
    System.out.println("L'utilisateur 1 tente, sans succes, de supprimer un message inexistant");
    result.close();
    
-   //Suppression du commentaire ayant l'id 30 et du 32 par cascade: succès attendu
-   webResource = client.resource(new URL(this.baseUrl + "/messages/delete/30").toURI());
+   //Suppression du commentaire ayant l'id 11 et des commentaires associés par cascade: succès attendu
+   webResource = client.resource(new URL(this.baseUrl + "/messages/delete/11").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    Assert.assertEquals(Status.OK, result.getStatus());
-   System.out.println("L'utilisateur 1 supprime 1 commentaire et tous les sous commentaires sont supprimés par effet cascade");
+   System.out.println("L'utilisateur 1 supprime 1 message et tous les sous commentaires sont supprimés par effet cascade");
    result.close();
-   webResource = client.resource(new URL(this.baseUrl + "/messages/delete/32").toURI());
+   webResource = client.resource(new URL(this.baseUrl + "/messages/delete/11").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    Assert.assertEquals(Status.ID_NOT_EXIST, result.getStatus());
-   System.out.println("L'utilisateur 1 vérifie que les sous commentaires ont bien ete supprimes en tentant, sans succes, de supprimer un de ces sous commentaire");
+   System.out.println("L'utilisateur 1 vérifie que les sous commentaires ont bien ete supprimes en tentant, sans succes, de supprimer un des messages");
    result.close();
     
    // L'utilisateur 1 se déconnecte : succès attendu
@@ -179,15 +179,15 @@ public class MessageUsersIT extends TestCase {
 
    // l'utilisateur 2 écrit un commentaire à l'utilisateur 1
    f.clear();
-   f.add("comment", "je suis un commentaire du msg 29 du user 2");
-   webResource = client.resource(new URL(this.baseUrl + "/comments/send/29").toURI());
+   f.add("comment", "je suis un commentaire du msg 2 du user 3");
+   webResource = client.resource(new URL(this.baseUrl + "/comments/send/12").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    Assert.assertEquals(Status.OK, result.getStatus());
-   System.out.println("L'utilisateur 2 ecrit un commentaire a l'utilisateur 1");
+   System.out.println("L'utilisateur 2 ecrit un commentaire a l'utilisateur 3");
    result.close();
    
    //L'utilisateur 2 tente de supprimer le message 29 de l'utilisateur 1: échec attendu
-   webResource = client.resource(new URL(this.baseUrl + "/messages/delete/29").toURI());
+   webResource = client.resource(new URL(this.baseUrl + "/messages/delete/12").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    Assert.assertEquals(Status.WRONG_USER, result.getStatus());
    System.out.println("L'utilisateur 2 tente, sans succes, de supprimer un message ecrit par l'utilisateur 1");

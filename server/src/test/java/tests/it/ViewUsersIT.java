@@ -85,19 +85,19 @@ public class ViewUsersIT extends TestCase {
 
     // Commentaire du message précédent
     f.clear();
-    f.add("comment", "Je suis un commentaire du msg 35");
-    webResource = client.resource(new URL(this.baseUrl + "/comments/send/35").toURI());
+    f.add("comment", "Je suis un commentaire du msg 2");
+    webResource = client.resource(new URL(this.baseUrl + "/comments/send/12").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-    System.out.println("L'utilisateur 3 ecrit un commentaire du message precedent");
+    System.out.println("L'utilisateur 3 ecrit un commentaire d'un de ses messages");
     result.close();
 
     // Autre commentaire du même message précédent: succès attendu
     f.clear();
-    f.add("comment", "Je suis un autre commentaire du msg 35");
-    webResource = client.resource(new URL(this.baseUrl + "/comments/send/35").toURI());
+    f.add("comment", "Je suis un autre commentaire du msg 2");
+    webResource = client.resource(new URL(this.baseUrl + "/comments/send/12").toURI());
     result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
     Assert.assertEquals(Status.OK, result.getStatus());
-    System.out.println("L'utilisateur 3 ecrit un deuxieme commentaire du message precedent");
+    System.out.println("L'utilisateur 3 ecrit un deuxieme commentaire d'un de ses messages");
     result.close();
 
     // L'utilisateur 3 affiche ses messages: succès attendu
