@@ -75,16 +75,7 @@ public class MessageUsersIT extends TestCase {
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    Assert.assertEquals(Status.OK, result.getStatus());
    System.out.println("L'utilisateur 1 envoie un message");
-   result.close();
-   
-   // envoie d'un deuxième message sur Twitter-like: succès attendu
-   f.clear();
-   f.add("msg", "Je suis un Tweet de Twitter like !");
-   webResource = client.resource(new URL(this.baseUrl + "/messages/send").toURI());
-   result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
-   Assert.assertEquals(Status.OK, result.getStatus());
-   System.out.println("L'utilisateur 1 envoie un deuxieme message");
-   result.close();
+   result.close();  
    
    // Commentaire d'un message non-existant: échec attendu
    f.clear();
@@ -181,7 +172,7 @@ public class MessageUsersIT extends TestCase {
    webResource = client.resource(new URL(this.baseUrl + "/messages/delete/12").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    Assert.assertEquals(Status.WRONG_USER, result.getStatus());
-   System.out.println("L'utilisateur 2 tente, sans succes, de supprimer un message ecrit par l'utilisateur 1");
+   System.out.println("L'utilisateur 2 tente, sans succes, de supprimer un message ecrit par l'utilisateur 3");
    result.close();
   }
 }
