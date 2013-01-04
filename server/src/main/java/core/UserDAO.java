@@ -164,8 +164,10 @@ public class UserDAO {
     }
     List<User> follower = FollowDAO.getFollows(id, "following");
     for (User u : follower) {
+      u.setUsersFollowers(null);
+      u.addUserFollowing(null);
       for (Message m : MessageDAO.getMessages(u.getId())) {
-        messagesWall.add(u.getId());
+        messagesWall.add(u);
         messagesWall.add(m);
       }
     }
