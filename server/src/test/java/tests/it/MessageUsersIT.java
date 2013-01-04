@@ -16,7 +16,7 @@ import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class MessageIT extends TestCase {
+public class MessageUsersIT extends TestCase {
 
   private String baseUrl;
   private DefaultApacheHttpClientConfig config;
@@ -205,7 +205,7 @@ public class MessageIT extends TestCase {
 
    // l'utilisateur 2 écrit un commentaire à l'utilisateur 1
    f.clear();
-   f.add("comment", "je suis un commentaire du user 2");
+   f.add("comment", "je suis un commentaire du msg 29 du user 2");
    webResource = client.resource(new URL(this.baseUrl + "/comments/send/29").toURI());
    result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
    Assert.assertEquals(Status.OK, result.getStatus());
