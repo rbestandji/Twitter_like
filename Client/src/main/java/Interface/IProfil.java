@@ -1,5 +1,7 @@
 package Interface;
 
+import Controller.DisconnectUser;
+import Controller.FollowStop;
 import Controller.FollowUser;
 import Network.GetUserTask;
 import com.sun.jersey.api.client.ClientResponse;
@@ -43,6 +45,7 @@ public class IProfil extends Parent {
     final Button state = new Button();
     if (user.getId() == MainWindow.userConnected.getId()) {
       state.setText("Deconnexion");
+      state.setOnAction(new DisconnectUser());
     } else {
       state.setText("... Chargement ...");
 
@@ -66,6 +69,7 @@ public class IProfil extends Parent {
             }
             if (present) {
               state.setText("Arreter de suivre");
+              state.setOnAction(new FollowStop(user.getId()));
             } else {
               state.setText("Suivre");
               state.setOnAction(new FollowUser(user.getId()));
