@@ -65,6 +65,7 @@ public class Wall extends Parent {
             s1.setFitToWidth(true);
             s1.setMinWidth(420);
             s1.setMinHeight(500);
+            ArrayList<Message> liste = new  ArrayList<Message>();
             for (int j = 0; j < listMsg.size(); j += 2) {
               HashMap<String, ?> m1 = listMsg.get(j);//identifiant
               HashMap<String, ?> m2 = listMsg.get(j + 1);//message
@@ -77,8 +78,7 @@ public class Wall extends Parent {
                 uu.setName((String) m1.get("name"));
               } else {
                 uu = user;
-              }
-              System.out.println(m2);
+              }              
               boxTmp.getChildren().add(new IMessage(Long.parseLong(m2.get("id").toString()), uu,
                       (String)m2.get("text"), new SimpleDateFormat("yyyy.MM.dd ' à ' HH:mm:ss").
                       format(new Date(Long.parseLong(m2.get("msgDate").toString()))).toString()));
@@ -112,6 +112,8 @@ public class Wall extends Parent {
       s1.setContent(boxTmp);
       box.getChildren().add(s1);
     }
-
   }
+  
+  
+  
 }
