@@ -78,8 +78,9 @@ public class Wall extends Parent {
               } else {
                 uu = user;
               }
+              System.out.println(m2);
               boxTmp.getChildren().add(new IMessage(Long.parseLong(m2.get("id").toString()), uu,
-                      m2.get("text").toString(), new SimpleDateFormat("yyyy.MM.dd ' à ' HH:mm:ss").
+                      (String)m2.get("text"), new SimpleDateFormat("yyyy.MM.dd ' à ' HH:mm:ss").
                       format(new Date(Long.parseLong(m2.get("msgDate").toString()))).toString()));
             }
 

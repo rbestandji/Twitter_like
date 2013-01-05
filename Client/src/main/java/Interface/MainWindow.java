@@ -43,7 +43,7 @@ public class MainWindow extends Scene {
 
   //private TextArea text;
   private MainWindow() {
-    super(new StackPane(), 600, 500);
+    super(new StackPane(), 600, 700);
     wall = new Wall();
     profil = new IProfil();
     follower = new IFollower();
@@ -95,7 +95,7 @@ public class MainWindow extends Scene {
     progress = new ProgressBar();
     progress.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
     fieldSearch = new TextField();
-    //fieldSearch.setPrefColumnCount(75);
+    fieldSearch.setPrefWidth(100);
     startSearch = new Button("Chercher");
 
     // Scene tree
