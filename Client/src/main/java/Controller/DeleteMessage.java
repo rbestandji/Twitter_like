@@ -13,9 +13,12 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import share.core.Status;
 
-public class DisconnectUser implements EventHandler<ActionEvent> {
+public class DeleteMessage implements EventHandler<ActionEvent> {
 
-  public DisconnectUser() {
+  private Long id;
+
+  public DeleteMessage(Long id) {
+    this.id = id;
   }
 
   public void handle(ActionEvent t) {
@@ -23,7 +26,7 @@ public class DisconnectUser implements EventHandler<ActionEvent> {
     Task<ClientResponse> task = new Task<ClientResponse>() {
       @Override
       protected ClientResponse call() throws Exception {
-        return GetUserTask.getUserTask().getCall("bye");
+        return GetUserTask.getUserTask().getCall("messages/delete/" + id.toString());
       }
     };
 
@@ -31,20 +34,16 @@ public class DisconnectUser implements EventHandler<ActionEvent> {
       public void handle(WorkerStateEvent success) {
         ClientResponse result = (ClientResponse) success.getSource().getValue();
         MainWindow.getMainWindow().getProgress().setProgress(0.);
-        
+        result.close();
+
         if (result.getStatus() == Status.OK) {
-          result.close();
-          try {
-            //Main.getMainWindow().close();
-            new Main().start(Main.getMainWindow());
-          } catch (Exception ex) {
-          System.out.println("Deconnexion probleme : "+ex);
-          }
+          System.out.println("Message supprimé!");
+          MainWindow.getMainWindow().setUser(MainWindow.userConnected);
         } else {
-          System.out.println("Deconnexion probleme : "+result.getStatus());
+          System.out.println("delete probleme : " + result.getStatus());
         }
       }
     });
-    new Thread(task, "Chargement user Thread").start();
+    new Thread(task, "Delete message").start();
   }
 }

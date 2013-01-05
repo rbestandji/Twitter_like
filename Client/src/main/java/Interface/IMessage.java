@@ -1,10 +1,12 @@
 package Interface;
 
 import Controller.ConnectionOtherUser;
+import Controller.DeleteMessage;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -40,12 +42,20 @@ public class IMessage extends Parent {
 
     GridPane gridpane = new GridPane();
     gridpane.getColumnConstraints().add(new ColumnConstraints(200));
-    gridpane.getColumnConstraints().add(new ColumnConstraints(200));
+    gridpane.getColumnConstraints().add(new ColumnConstraints(180));
+    gridpane.getColumnConstraints().add(new ColumnConstraints(30));
 
     gridpane.setAlignment(Pos.BASELINE_LEFT);
     gridpane.add(lauthor, 0, 0, 1, 1);
     gridpane.add(ldate, 1, 0, 1, 1);
-    gridpane.add(ltext, 0, 1, 2, 1);
+    if (this.author.getId() == MainWindow.userConnected.getId()) {
+      Button delete = new Button("X");
+      delete.setTooltip(new Tooltip("Supprimer"));
+      gridpane.add(delete, 2, 0, 1, 1);
+      delete.setOnAction(new DeleteMessage(id));
+    }
+    gridpane.add(ltext, 0, 1, 3, 1);
+
 
     gridpane.setHgap(10.);
     gridpane.setVgap(10.);
@@ -56,5 +66,6 @@ public class IMessage extends Parent {
     this.getChildren().add(gridpane);
 
     lauthor.setOnAction(new ConnectionOtherUser(author.getId(), null));
+
   }
 }

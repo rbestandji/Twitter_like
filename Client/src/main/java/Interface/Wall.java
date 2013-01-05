@@ -63,7 +63,7 @@ public class Wall extends Parent {
 
             ScrollPane s1 = new ScrollPane();
             s1.setFitToWidth(true);
-            s1.setMinWidth(400);
+            s1.setMinWidth(420);
             s1.setMinHeight(500);
             for (int j = 0; j < listMsg.size(); j += 2) {
               HashMap<String, ?> m1 = listMsg.get(j);//identifiant
