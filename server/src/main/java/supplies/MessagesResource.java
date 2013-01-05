@@ -29,11 +29,18 @@ public class MessagesResource {
   @Produces( MediaType.APPLICATION_JSON)
   @Path( "/send")
   public Response sendMessage(@CookieParam("authCookie") Cookie authenciateCookie,
-          @FormParam("msg") String msg) {    
+          @FormParam("msg") String msg, @FormParam("latitude") Double latitude, @FormParam("longitude") Double longitude) {
     if (authenciateCookie == null) {
       return Response.status(new Status(Status.USER_OFFLINE)).build();
     }
     Message message = new Message(msg, new Date());
+    if (latitude != null) {
+      message.setLatitude(latitude);
+    }
+    if (longitude != null) {
+      message.setLatitude(longitude);
+    }
+
     try {
       MessageDAO.sendMessage(Long.parseLong(authenciateCookie.getValue()), message);
       return Response.status(new Status(Status.OK)).build();
@@ -41,7 +48,7 @@ public class MessagesResource {
       return Response.status(ex.getStatus()).build();
     }
   }
-  
+
   @POST //Voir si on met du delete ensemble ?
   @Produces( MediaType.APPLICATION_JSON)
   @Path( "/delete/{idMsg}")
@@ -54,7 +61,7 @@ public class MessagesResource {
       MessageDAO.deleteMessage(Long.parseLong(authenciateCookie.getValue()), Long.parseLong(idMsg));
       return Response.status(Status.OK).build();
     } catch (DAOExceptionUser ex) {
-    return Response.status(ex.getStatus()).build();
+      return Response.status(ex.getStatus()).build();
     }
   }
 }
