@@ -29,7 +29,7 @@ import share.model.Message;
 import share.model.User;
 
 public class MainWindow extends Scene {
-
+  
   private static MainWindow mainWindow = new MainWindow();
   private ProgressBar progress;
   private TextField fieldSearch;
@@ -50,11 +50,11 @@ public class MainWindow extends Scene {
     following = new IFollowing();
     init();
   }
-
+  
   public static MainWindow getMainWindow() {
     return mainWindow;
   }
-
+  
   public void setUser(User user) {
     this.user = user;
     wall.setUser(user);
@@ -62,18 +62,18 @@ public class MainWindow extends Scene {
     follower.setUser(user);
     following.setUser(user);
   }
-
+  
   public ProgressBar getProgress() {
     return progress;
   }
-
+  
   private void init() {
     // Scene root
     StackPane root = (StackPane) this.getRoot();
     GridPane grid = new GridPane();
     grid.setHgap(7);
     grid.setVgap(5);
-
+    
     int n = 11;
     for (int i = 0; i < n; i++) {
       ColumnConstraints c = new ColumnConstraints();
@@ -103,20 +103,20 @@ public class MainWindow extends Scene {
     grid.add(fieldSearch, 4, 0, 4, 1);
     grid.add(startSearch, 8, 0, 3, 1);
     progress.setProgress(0.);
-
+    
     grid.add(profil, 0, 1, 4, 5);
     grid.add(follower, 0, 6, 4, 4);
     grid.add(following, 0, 10, 4, 4);
     grid.add(wall, 4, 1, 7, 14);
-
-
+    
+    
     startSearch.setOnAction(new SearchAction());
     root.getChildren().add(grid);
     this.setRoot(root);
   }
-
+  
   private class SearchAction implements EventHandler<ActionEvent> {
-
+    
     public void handle(ActionEvent t) {
       progress.setProgress(-1.);
       Task<ClientResponse> task = new Task<ClientResponse>() {
@@ -125,14 +125,14 @@ public class MainWindow extends Scene {
           return GetUserTask.getUserTask().getCall("users/search/" + fieldSearch.getText());
         }
       };
-
-
+      
+      
       task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
         public void handle(WorkerStateEvent success) {
           ClientResponse result = (ClientResponse) success.getSource().getValue();
           progress.setProgress(0.);
           if (result.getStatus() == Status.OK) {
-
+            
             Stage stage = new Stage();
             Group inside = new Group();
             stage.setScene(new Scene(inside, 200, 200));
@@ -151,7 +151,7 @@ public class MainWindow extends Scene {
             if (listUser.isEmpty()) {
               pane.add(new Label("Aucun resultat :("), 0, height, 1, 1);
             }
-
+            
             inside.getChildren().add(pane);
             stage.show();
           } else {
