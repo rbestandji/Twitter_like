@@ -70,6 +70,8 @@ public class MainWindow extends Scene {
   private void init() {
     // Scene root
     StackPane root = (StackPane) this.getRoot();
+    root.setTranslateX(10);
+    root.setTranslateY(10);
     GridPane grid = new GridPane();
     grid.setHgap(7);
     grid.setVgap(5);

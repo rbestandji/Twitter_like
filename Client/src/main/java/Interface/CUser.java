@@ -19,7 +19,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import share.core.Status;
 import share.model.User;
 
@@ -31,45 +34,53 @@ public class CUser extends Parent {
   private Button registration;
   private TextField email = new TextField();
   private TextField password = new PasswordField();
+  private Text err = new Text();
 
   public CUser() throws URISyntaxException, MalformedURLException {
-    // titre grid
-    gridCaption = new Label("Connexion");
-    gridCaption.setWrapText(true);
-
     // grid
     grid = new GridPane();
     grid.setHgap(20);
     grid.setVgap(10);
-    grid.setPadding(new Insets(18));
+    grid.setPadding(new Insets(10));
+
+    // titre grid
+    gridCaption = new Label("Connexion");
+    gridCaption.setWrapText(true);
+    gridCaption.setFont(Font.font(null, FontWeight.BOLD, 12));
+    GridPane.setConstraints(gridCaption, 1, 0);
+    GridPane.setHalignment(gridCaption, HPos.CENTER);
 
     Label lemail = new Label("Email:");
-    GridPane.setConstraints(lemail, 0, 0);
+    GridPane.setConstraints(lemail, 0, 1);
     GridPane.setHalignment(lemail, HPos.RIGHT);
-    GridPane.setConstraints(email, 1, 0);
+    GridPane.setConstraints(email, 1, 1);
     GridPane.setHalignment(email, HPos.LEFT);
     email.setText("le.jitou@gmail.com");
-
+            
     Label lpassword = new Label("Mot de passe:");
-    GridPane.setConstraints(lpassword, 0, 1);
+    GridPane.setConstraints(lpassword, 0, 2);
     GridPane.setHalignment(lpassword, HPos.RIGHT);
-
-    GridPane.setConstraints(password, 1, 1);
+    GridPane.setConstraints(password, 1, 2);
     GridPane.setHalignment(password, HPos.LEFT);
     password.setText("password");
 
     // bouton valider
     validate = new Button("Valider");
-    validate.setTranslateX(120);
-    validate.setTranslateY(80);
+    GridPane.setConstraints(validate, 1, 3);
+    GridPane.setHalignment(validate, HPos.CENTER);
 
+    // champ d'erreur
+    GridPane.setConstraints(err, 0, 4, 3, 1);
+    GridPane.setHalignment(err, HPos.CENTER);
+    err.setFill(Color.ORANGE);
+    
     // bouton s'inscrire
     registration = new Button("S'inscrire");
-    registration.setTranslateX(400);
-    registration.setTranslateY(450);
+    GridPane.setConstraints(registration, 2, 11);
+    GridPane.setHalignment(registration, HPos.LEFT);
 
-    grid.getChildren().addAll(lemail, lpassword, email, password);
-    this.getChildren().addAll(gridCaption, grid, validate, registration);
+    grid.getChildren().addAll(gridCaption, lemail, lpassword, email, err, password, validate, registration);
+    this.getChildren().add(grid);
 
     // click bouton s'inscrire
     registration.setOnAction(new EventHandler<ActionEvent>() {
@@ -78,7 +89,7 @@ public class CUser extends Parent {
           grid.getChildren().clear();
           getChildren().clear();
           IUser iuser = new IUser();
-          Main.root.getChildren().add(iuser);
+          Main.vbox.getChildren().add(iuser);
         } catch (URISyntaxException ex) {
           Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MalformedURLException ex) {
@@ -94,9 +105,7 @@ public class CUser extends Parent {
   private class ServerConnection implements EventHandler<ActionEvent> {
 
     public void handle(ActionEvent t) {
-      gridCaption.setDisable(true);
       grid.setDisable(true);
-      validate.setDisable(true);
       Main.progress.setProgress(-1);
       Task<ClientResponse> task = new Task<ClientResponse>() {
         @Override
@@ -110,22 +119,20 @@ public class CUser extends Parent {
       task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
         public void handle(WorkerStateEvent success) {
           ClientResponse result = (ClientResponse) success.getSource().getValue();
-          gridCaption.setDisable(false);
           grid.setDisable(false);
-          validate.setDisable(false);
-          Main.progress.setProgress(1);
+          Main.progress.setProgress(0);
           if (result.getStatus() == Status.OK) {
             grid.getChildren().clear();
             getChildren().clear();
-            MainWindow wall = MainWindow.getMainWindow();
+            MainWindow mainwindow = MainWindow.getMainWindow();
 
             //Pas de suppression propre ?
-            Main.getMainWindow().setScene(wall);
+            Main.getMainWindow().setScene(mainwindow);
             User u = (User) result.getEntity(User.class);
             MainWindow.userConnected = u;
-            wall.setUser(u);
+            mainwindow.setUser(u);
           } else {
-            System.out.println(result.getStatus());
+            err.setText(Integer.toString(result.getStatus()));
           }
 
         }

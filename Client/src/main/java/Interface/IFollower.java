@@ -29,8 +29,8 @@ public class IFollower extends Parent {
     ScrollPane s1 = new ScrollPane();
     s1.setFitToWidth(true);
     box.setAlignment(Pos.CENTER_LEFT);
-    box.setSpacing(9);
-    box.setTranslateX(10);
+    box.setSpacing(5);
+    box.setTranslateX(5);
 
     box.getChildren().add(new Label("Abonnées"));
     ((Label)box.getChildren().get(0)).setTextFill(Color.BLUEVIOLET);
@@ -48,7 +48,7 @@ public class IFollower extends Parent {
           List<HashMap<String, ?>> listF = result.getEntity(List.class);
 
           for (int j = 0; j < listF.size(); j += 1) {
-            Button b = new Button(listF.get(j).get("name").toString() + "  "
+            Button b = new Button(listF.get(j).get("name").toString() + " "
                     + listF.get(j).get("firstname").toString());
             box.getChildren().add(b);
             b.setOnAction(new ConnectionOtherUser(Long.parseLong(listF.get(j).get("id").toString()), null));

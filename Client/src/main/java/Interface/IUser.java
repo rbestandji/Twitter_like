@@ -19,6 +19,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import share.core.Status;
 import share.model.User;
 
@@ -33,73 +37,71 @@ public class IUser extends Parent {
   private TextField name = new TextField();
   private TextField firstname = new TextField();
   private TextField password = new PasswordField();
+  private Text err = new Text();
 
-  /*
-   public void setUser(User user) {
-   this.user = (user);
-   this.name.setText(user.getFirstname());
-   this.surname.setText(user.getName());
-   this.email.setText(user.getEmail());
-   }*/
   public IUser() throws URISyntaxException, MalformedURLException {
-    gridCaption = new Label("Inscription");
-    gridCaption.setWrapText(true);
-    //this.setTranslateX(10);
-    //this.setTranslateY(10);
-
     grid = new GridPane();
     grid.setHgap(20);
     grid.setVgap(10);
-    grid.setPadding(new Insets(18));
+    grid.setPadding(new Insets(10));
+
+    gridCaption = new Label("Inscription");
+    gridCaption.setWrapText(true);
+    gridCaption.setFont(Font.font(null, FontWeight.BOLD, 12));
+    GridPane.setConstraints(gridCaption, 1, 0);
+    GridPane.setHalignment(gridCaption, HPos.CENTER);
 
     Label lemail = new Label("Email:");
-    GridPane.setConstraints(lemail, 0, 0);
+    GridPane.setConstraints(lemail, 0, 1);
     GridPane.setHalignment(lemail, HPos.RIGHT);
-
-    GridPane.setConstraints(email, 1, 0);
+    GridPane.setConstraints(email, 1, 1);
     GridPane.setHalignment(email, HPos.LEFT);
 
     Label lpassword = new Label("Mot de passe:");
-    GridPane.setConstraints(lpassword, 0, 1);
+    GridPane.setConstraints(lpassword, 0, 2);
     GridPane.setHalignment(lpassword, HPos.RIGHT);
-
-    GridPane.setConstraints(password, 1, 1);
+    GridPane.setConstraints(password, 1, 2);
     GridPane.setHalignment(password, HPos.LEFT);
 
     Label lname = new Label("Nom:");
-    GridPane.setConstraints(lname, 0, 2);
+    GridPane.setConstraints(lname, 0, 3);
     GridPane.setHalignment(lname, HPos.RIGHT);
-
-    GridPane.setConstraints(name, 1, 2);
+    GridPane.setConstraints(name, 1, 3);
     GridPane.setHalignment(name, HPos.LEFT);
 
     Label lfirstname = new Label("Prénom:");
-    GridPane.setConstraints(lfirstname, 0, 3);
+    GridPane.setConstraints(lfirstname, 0, 4);
     GridPane.setHalignment(lfirstname, HPos.RIGHT);
-
-    GridPane.setConstraints(firstname, 1, 3);
+    GridPane.setConstraints(firstname, 1, 4);
     GridPane.setHalignment(firstname, HPos.LEFT);
 
     // bouton valider
     validate = new Button("Valider");
-    validate.setTranslateX(120);
-    validate.setTranslateY(160);
+    GridPane.setConstraints(validate, 1, 5);
+    GridPane.setHalignment(validate, HPos.CENTER);
 
+    // champ d'erreur
+    GridPane.setConstraints(err, 0, 6, 3, 1);
+    GridPane.setHalignment(err, HPos.CENTER);
+    err.setFill(Color.ORANGE);
+    
     // bouton retour
     returnB = new Button("Retour");
-    returnB.setTranslateX(400);
-    returnB.setTranslateY(450);
+    GridPane.setConstraints(returnB, 2, 7);
+    GridPane.setHalignment(returnB, HPos.CENTER);
 
-    grid.getChildren().addAll(lemail, lpassword, lname, lfirstname, email, password, name, firstname);
-    this.getChildren().addAll(gridCaption, grid, validate, returnB);
+    grid.getChildren().addAll(gridCaption, lemail, lpassword, lname, lfirstname, email,
+                              password, name, firstname, err, validate, returnB);
+    this.getChildren().add(grid);
 
     // click bouton retour
     returnB.setOnAction(new EventHandler<ActionEvent>() {
       public void handle(ActionEvent t) {
         try {
+          grid.getChildren().clear();
           getChildren().clear();
           CUser cuser = new CUser();
-          getChildren().add(cuser);
+          Main.vbox.getChildren().add(cuser);
         } catch (URISyntaxException ex) {
           Logger.getLogger(IUser.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MalformedURLException ex) {
@@ -115,9 +117,7 @@ public class IUser extends Parent {
   private class ServerRegistration implements EventHandler<ActionEvent> {
 
     public void handle(ActionEvent t) {
-      gridCaption.setDisable(true);
       grid.setDisable(true);
-      validate.setDisable(true);
       Main.progress.setProgress(-1);
       Task<ClientResponse> task = new Task<ClientResponse>() {
         @Override
@@ -135,17 +135,15 @@ public class IUser extends Parent {
         public void handle(WorkerStateEvent success) {
           try {
             ClientResponse result = (ClientResponse) success.getSource().getValue();
-            gridCaption.setDisable(false);
             grid.setDisable(false);
-            validate.setDisable(false);
-            Main.progress.setProgress(1);
+            Main.progress.setProgress(0);
             if (result.getStatus() == Status.OK) {
               grid.getChildren().clear();
               getChildren().clear();
               CUser cuser = new CUser();
-              Main.root.getChildren().add(cuser);
+              Main.vbox.getChildren().add(cuser);
             } else {
-              System.out.println(result.getStatus());
+              err.setText(Integer.toString(result.getStatus()));
             }
           } catch (URISyntaxException ex) {
             Logger.getLogger(CUser.class.getName()).log(Level.SEVERE, null, ex);

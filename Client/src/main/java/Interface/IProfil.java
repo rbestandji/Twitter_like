@@ -14,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import share.core.Status;
 import share.model.User;
 import share.model.UserAssignment;
@@ -37,14 +38,13 @@ public class IProfil extends Parent {
   }
 
   private void init() {
-    GridPane pane = new GridPane();
-    pane.add(new Label(user.getName()), 0, 0, 1, 1);
-    pane.add(new Label(user.getFirstname()), 1, 0, 1, 1);
-    pane.add(new Label(user.getEmail()), 0, 1, 2, 1);
+    VBox vbox = new VBox();
+    vbox.getChildren().add(new Label(user.getName()+" "+user.getFirstname()));
+    vbox.getChildren().add(new Label(user.getEmail()));
 
     final Button state = new Button();
     if (user.getId() == MainWindow.userConnected.getId()) {
-      state.setText("Deconnexion");
+      state.setText("Déconnexion");
       state.setOnAction(new DisconnectUser());
     } else {
       state.setText("... Chargement ...");
@@ -68,10 +68,10 @@ public class IProfil extends Parent {
               }
             }
             if (present) {
-              state.setText("Arreter de suivre");
+              state.setText("Arrêter\n l'abonnement");
               state.setOnAction(new FollowStop(user.getId()));
             } else {
-              state.setText("Suivre");
+              state.setText("S'abonner");
               state.setOnAction(new FollowUser(user.getId()));
             }
 
@@ -84,9 +84,8 @@ public class IProfil extends Parent {
 
 
     }
-    pane.add(state, 0, 2, 2, 1);
+    vbox.getChildren().add(state);
 
-    pane.setHgap(10.);
-    this.getChildren().add(pane);
+    this.getChildren().add(vbox);
   }
 }
