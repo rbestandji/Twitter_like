@@ -27,6 +27,8 @@ public class Communication implements Serializable {
   private String text = "";
   @Temporal( javax.persistence.TemporalType.DATE)
   private Date msgDate;
+  private double latitude = -500;
+  private double longitude = -500;
 
   public Communication() {
   }
@@ -55,7 +57,7 @@ public class Communication implements Serializable {
   public Long getId() {
     return id;
   }
-  
+
   public void setId(Long id) {
     this.id = id;
   }
@@ -68,4 +70,19 @@ public class Communication implements Serializable {
     this.text = text;
   }
 
+  public double getLatitude() {
+    return latitude;
+  }
+
+  public void setLatitude(double latitude) {
+    this.latitude = latitude;
+  }
+
+  public double getLongitude() {
+    return longitude;
+  }
+
+  public void setLongitude(double longitude) {
+    this.longitude = longitude;
+  }
 }
