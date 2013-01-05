@@ -20,21 +20,28 @@ public class CommentsResource {
   /*
    * Permet à l'utilisateur connecté de commenter un message
    */
+
   @POST
   @Produces( MediaType.APPLICATION_JSON)
   @Path( "/send/{idMsg}")
   public Response sendComment(@CookieParam("authCookie") Cookie authenciateCookie,
-          @FormParam("comment") String msg, @PathParam("idMsg") String idMsg) {
+          @FormParam("comment") String msg, @FormParam("latitude") Double latitude,
+          @FormParam("longitude") Double longitude, @PathParam("idMsg") String idMsg) {
     if (authenciateCookie == null) {
       return Response.status(new Status(Status.USER_OFFLINE)).build();
     }
     Message comment = new Message(msg, new Date());
+    if (latitude != null) {
+      comment.setLatitude(latitude);
+    }
+    if (longitude != null) {
+      comment.setLatitude(longitude);
+    }
     try {
       CommentDAO.sendComment(Long.parseLong(authenciateCookie.getValue()), Long.parseLong(idMsg), comment);
-     return Response.ok(comment).status(Status.OK).build();
+      return Response.ok(comment).status(Status.OK).build();
     } catch (DAOExceptionUser ex) {
-    return Response.status(ex.getStatus()).build();
+      return Response.status(ex.getStatus()).build();
     }
   }
-  
 }

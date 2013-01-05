@@ -43,7 +43,7 @@ public class MainWindow extends Scene {
 
   //private TextArea text;
   private MainWindow() {
-    super(new StackPane(), 600, 700);
+    super(new StackPane(), 700, 750);
     wall = new Wall();
     profil = new IProfil();
     follower = new IFollower();

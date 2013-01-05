@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
@@ -19,6 +21,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import share.core.DAOExceptionUser;
 import share.core.Status;
 import share.model.Message;
 import share.model.User;
@@ -63,9 +66,11 @@ public class Wall extends Parent {
 
             ScrollPane s1 = new ScrollPane();
             s1.setFitToWidth(true);
-            s1.setMinWidth(420);
-            s1.setMinHeight(500);
-            ArrayList<Message> liste = new  ArrayList<Message>();
+            s1.setMinWidth(550);
+            s1.setMinHeight(600);
+            boxTmp.setSpacing(10);
+
+            ArrayList<Message> liste = new ArrayList<Message>();
             for (int j = 0; j < listMsg.size(); j += 2) {
               HashMap<String, ?> m1 = listMsg.get(j);//identifiant
               HashMap<String, ?> m2 = listMsg.get(j + 1);//message
@@ -78,10 +83,23 @@ public class Wall extends Parent {
                 uu.setName((String) m1.get("name"));
               } else {
                 uu = user;
-              }              
+              }
+
+              ArrayList<HashMap<String, ?>> listeComment = (ArrayList<HashMap<String, ?>>) m2.get("comments");
+              ArrayList<Message> listeCommentMessage = new ArrayList<Message>();
+              try {
+                listeCommentMessage = convertirEnMessage(listeComment);
+              } catch (Exception ex) {
+              }
+
+
+              System.out.println("Comment => : " + listeComment);
+              System.out.println("CommentM : " + listeCommentMessage);
+
               boxTmp.getChildren().add(new IMessage(Long.parseLong(m2.get("id").toString()), uu,
-                      (String)m2.get("text"), new SimpleDateFormat("yyyy.MM.dd ' à ' HH:mm:ss").
-                      format(new Date(Long.parseLong(m2.get("msgDate").toString()))).toString()));
+                      (String) m2.get("text"), new SimpleDateFormat("yyyy.MM.dd ' à ' HH:mm:ss").
+                      format(new Date(Long.parseLong(m2.get("msgDate").toString()))).toString(),
+                      listeCommentMessage));
             }
 
             s1.setContent(boxTmp);
@@ -89,6 +107,20 @@ public class Wall extends Parent {
           } else {
             System.out.println("Erreur chargement wall : " + result.getStatus());
           }
+        }
+
+        private ArrayList<Message> convertirEnMessage(ArrayList<HashMap<String, ?>> listeCommentMessage) throws Exception {
+          ArrayList<Message> m = new ArrayList<Message>();
+          for (HashMap<String, ?> u : listeCommentMessage) {
+            Message a = new Message();
+            a.setMsgDate(new Date(Long.parseLong(u.get("msgDate").toString())));
+            a.setId(Long.parseLong(u.get("id").toString()));
+            a.setText((String) u.get("text"));
+            a.setAuthor(new User("         ", "      ", "ddddd@ddd.com", "fffffffff"));
+            m.add(a);
+            a.setComments(convertirEnMessage((ArrayList<HashMap<String, ?>>) u.get("comments")));
+          }
+          return m;
         }
       });
       new Thread(task, "Wall connection").start();
@@ -100,20 +132,19 @@ public class Wall extends Parent {
       box.getChildren().add(newTweet);
       box.setSpacing(10.);
       VBox boxTmp = new VBox();
+      boxTmp.setSpacing(10);
       ScrollPane s1 = new ScrollPane();
       s1.setFitToWidth(true);
-      s1.setMinWidth(400);
-      s1.setMinHeight(500);
+      s1.setMinWidth(550);
+      s1.setMinHeight(600);
       for (Message m : user.getMessages()) {
         boxTmp.getChildren().add(new IMessage(m.getId(), user,
-                m.getText(), new SimpleDateFormat("yyyy.MM.dd ' à ' HH:mm:ss").format(m.getMsgDate()).toString()));
+                m.getText(), new SimpleDateFormat("yyyy.MM.dd ' à ' HH:mm:ss").format(m.getMsgDate()).toString(),
+                (ArrayList) m.getComments()));
       }
 
       s1.setContent(boxTmp);
       box.getChildren().add(s1);
     }
   }
-  
-  
-  
 }
