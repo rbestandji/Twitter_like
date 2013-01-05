@@ -49,11 +49,11 @@ public class MessagesResource {
     }
   }
 
-  @POST //Voir si on met du delete ensemble ?
+  @GET //Voir si on met du delete ensemble ?
   @Produces( MediaType.APPLICATION_JSON)
   @Path( "/delete/{idMsg}")
   public Response deleteMsg(@CookieParam("authCookie") Cookie authenciateCookie,
-          @FormParam("comment") String msg, @PathParam("idMsg") String idMsg) {
+          @PathParam("idMsg") String idMsg) {
     if (authenciateCookie == null) {
       return Response.status(new Status(Status.USER_OFFLINE)).build();
     }

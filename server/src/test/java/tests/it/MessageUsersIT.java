@@ -125,19 +125,19 @@ public class MessageUsersIT extends TestCase {
      
    //Suppression d'un message inexistant: échec attendu
    webResource = client.resource(new URL(this.baseUrl + "/messages/delete/30032").toURI());
-   result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+   result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
    Assert.assertEquals(Status.ID_NOT_EXIST, result.getStatus());
    System.out.println("L'utilisateur 1 tente, sans succes, de supprimer un message inexistant");
    result.close();
    
    //Suppression du commentaire ayant l'id 11 et des commentaires associés par cascade: succès attendu
    webResource = client.resource(new URL(this.baseUrl + "/messages/delete/11").toURI());
-   result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+   result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
    Assert.assertEquals(Status.OK, result.getStatus());
    System.out.println("L'utilisateur 1 supprime 1 message et tous les sous commentaires sont supprimés par effet cascade");
    result.close();
    webResource = client.resource(new URL(this.baseUrl + "/messages/delete/11").toURI());
-   result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+   result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
    Assert.assertEquals(Status.ID_NOT_EXIST, result.getStatus());
    System.out.println("L'utilisateur 1 vérifie que les sous commentaires ont bien ete supprimes en tentant, sans succes, de supprimer un des messages");
    result.close();
@@ -170,7 +170,7 @@ public class MessageUsersIT extends TestCase {
    
    //L'utilisateur 2 tente de supprimer le message 29 de l'utilisateur 1: échec attendu
    webResource = client.resource(new URL(this.baseUrl + "/messages/delete/12").toURI());
-   result = webResource.accept(MediaType.APPLICATION_JSON).post(ClientResponse.class, f);
+   result = webResource.accept(MediaType.APPLICATION_JSON).get(ClientResponse.class);
    Assert.assertEquals(Status.WRONG_USER, result.getStatus());
    System.out.println("L'utilisateur 2 tente, sans succes, de supprimer un message ecrit par l'utilisateur 3");
    result.close();
