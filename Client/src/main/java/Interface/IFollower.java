@@ -32,7 +32,7 @@ public class IFollower extends Parent {
     box.setSpacing(5);
     box.setTranslateX(5);
 
-    box.getChildren().add(new Label("Abonnées"));
+    box.getChildren().add(new Label("Abonnés"));
     ((Label)box.getChildren().get(0)).setTextFill(Color.BLUEVIOLET);
 
     Task<ClientResponse> task = new Task<ClientResponse>() {

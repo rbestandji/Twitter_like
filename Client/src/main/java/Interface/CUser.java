@@ -132,7 +132,7 @@ public class CUser extends Parent {
             MainWindow.userConnected = u;
             mainwindow.setUser(u);
           } else {
-            err.setText(Integer.toString(result.getStatus()));
+            err.setText(new Status(result.getStatus()).getReasonPhrase());
           }
 
         }

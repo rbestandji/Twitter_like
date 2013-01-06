@@ -143,7 +143,7 @@ public class IUser extends Parent {
               CUser cuser = new CUser();
               Main.vbox.getChildren().add(cuser);
             } else {
-              err.setText(Integer.toString(result.getStatus()));
+              err.setText(new Status(result.getStatus()).getReasonPhrase());
             }
           } catch (URISyntaxException ex) {
             Logger.getLogger(CUser.class.getName()).log(Level.SEVERE, null, ex);

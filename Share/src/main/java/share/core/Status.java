@@ -39,10 +39,21 @@ public class Status implements StatusType {
   public String getReasonPhrase() {
     String str = "";
     switch (code) {
-      /* Pff long à faire pour rien ....
-       * Seriously !!!
-       */
+      case USER_OFFLINE: str = "Veuillez vous connecter pour avoir à cette fonctionnalité"; break;
+      case USER_ONLINE: str = "Vous êtes déjà connecté avec un autre compte"; break;
+      case USER_NO_ACCOUNT: str = "L'email est incorrect"; break;
+      case USER_WRONG_PASSWORD: str = "Le mot de passe est incorrect"; break;
+      case DB_ERROR: str = "Une erreur s'est produite dans la base de données"; break;
+      case EMAIL_VALIDATED: str = "Cet email est déjà pris par un autre utilisateur"; break;
+      case NO_MESSAGE_ID: str = "Ce message n'existe pas dans la base de données"; break;
+      case WRONG_USER: str = "Droits insuffisants pour effectuer cette opération"; break;
+      case PASSWORD_TOO_SHORT: str = "Le mot de passe doit contenir au moins 8 caractères"; break;
+      case INVALID_EMAIL: str = "L'email n'est pas valide"; break;
+      case ID_NOT_EXIST: str = "Pas de résultat trouvé dans la base de données"; break;
+      case NOT_FOLLOWING: str = "Vous n'êtes pas abonnés à cet utilisateur"; break;
+      default: str = "Erreur inconnue";
     }
     return str;
   }
+  
 }
