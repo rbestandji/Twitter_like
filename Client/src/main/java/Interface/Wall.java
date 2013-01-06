@@ -79,8 +79,12 @@ public class Wall extends Parent {
               if (m1 != null) {
                 uu = new User();
                 uu.setId(Long.parseLong(m1.get("id").toString()));
-                uu.setFirstname((String) m1.get("firstname"));
-                uu.setName((String) m1.get("name"));
+                try {
+                  uu.setFirstname((String) m1.get("firstname"));
+                  uu.setName((String) m1.get("name"));
+                } catch (DAOExceptionUser ex) {
+                  Logger.getLogger(Wall.class.getName()).log(Level.SEVERE, null, ex);
+                }
               } else {
                 uu = user;
               }

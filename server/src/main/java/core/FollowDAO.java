@@ -40,8 +40,8 @@ public class FollowDAO {
                 .getSingleResult();
 
         UserAssignment ass = new UserAssignment(userFollower, userFollowing);
-        userFollower.getUsersFollowing().add(ass);
-        userFollowing.getUsersFollowers().add(ass);
+        userFollower.addUserFollowing(ass);
+        userFollowing.addUserFollowers(ass);
         em.persist(ass);
       } catch (NoResultException ex) {
         idProblem = true;
@@ -81,8 +81,8 @@ public class FollowDAO {
         q.setParameter("following", userFollowing);
         try {
           UserAssignment ass = (UserAssignment) q.getSingleResult();
-          userFollower.getUsersFollowing().remove(ass);
-          userFollowing.getUsersFollowers().remove(ass);
+          userFollower.removeUserFollowing(ass);
+          userFollowing.removeUserFollowers(ass);
           em.remove(ass);
         } catch (NoResultException ex) {
           followProblem = true;

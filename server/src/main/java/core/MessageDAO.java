@@ -30,7 +30,7 @@ public class MessageDAO {
         if (msg.getAuthor().getId() == authorId) {
           Message root = msg.getMsgRoot();
           if (root != null) { // Si c'est un commentaire.
-            root.getComments().remove(msg);
+            root.removeComment(msg);
           }
           em.remove(msg);
         } else {

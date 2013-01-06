@@ -29,6 +29,9 @@ public class UserRegistration {
     if (authenciateCookie != null) {
       return Response.status(new Status(Status.USER_ONLINE)).build();
     }
+    if (password.length() < 8) {
+      return Response.status(new Status(Status.PASSWORD_TOO_SHORT)).build();
+    }
 
     Status sta; 
     try {

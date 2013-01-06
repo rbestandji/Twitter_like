@@ -41,7 +41,7 @@ public class User implements Serializable {
   private Date lastLoginDate = new Date();
   @OneToMany( mappedBy = "author", cascade = CascadeType.ALL)
   @JsonManagedReference("msg_e")
-  private List<Message> messages = new ArrayList<>();
+  private List<Message> messages = new ArrayList<Message>();
   @OneToMany( mappedBy = "following", cascade = CascadeType.ALL)
   @JsonManagedReference("ing")
   private List<UserAssignment> usersFollowing = new ArrayList<UserAssignment>();
@@ -60,13 +60,13 @@ public class User implements Serializable {
   public User(String name, String firstname, String email, String password)
           throws DAOExceptionUser, NoSuchAlgorithmException {
     try {
-      this.setPassword(password);
       this.setEmail(email);
+      this.setPassword(password);
+      this.setName(name);
+      this.setFirstname(firstname);
     } catch (DAOExceptionUser ex) {
       throw ex;
     }
-    this.setName(name);
-    this.setFirstname(firstname);
   }
 
   public List<UserAssignment> getUsersFollowing() {
@@ -121,20 +121,24 @@ public class User implements Serializable {
     return password;
   }
 
-  public void setPassword(String password) throws DAOExceptionUser {
-    if (password.length() < 8) {
-      throw new DAOExceptionUser(new Status(Status.PASSWORD_TOO_SHORT));
-    } else {
+  public void setPassword(String password) {
       this.password = password;
+  }
+
+  public void setName(String name) throws DAOExceptionUser {
+    if (name.isEmpty()) {
+      throw new DAOExceptionUser(new Status(Status.EMPTY_FIELD));
+    } else {
+      this.name = name;
     }
   }
 
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public void setFirstname(String firstname) {
-    this.firstname = firstname;
+  public void setFirstname(String firstname) throws DAOExceptionUser {
+    if (firstname.isEmpty()) {
+      throw new DAOExceptionUser(new Status(Status.EMPTY_FIELD));
+    } else {
+      this.firstname = firstname;
+    }
   }
 
   public void setEmail(String email) throws DAOExceptionUser {
