@@ -96,10 +96,6 @@ public class Wall extends Parent {
               } catch (Exception ex) {
               }
 
-
-              System.out.println("Comment => : " + listeComment);
-              System.out.println("CommentM : " + listeCommentMessage);
-
               boxTmp.getChildren().add(new IMessage(Long.parseLong(m2.get("id").toString()), uu,
                       (String) m2.get("text"), new SimpleDateFormat("yyyy.MM.dd ' à ' HH:mm:ss").
                       format(new Date(Long.parseLong(m2.get("msgDate").toString()))).toString(),

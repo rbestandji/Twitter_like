@@ -1,6 +1,7 @@
 package Interface;
 
 import Controller.ConnectionOtherUser;
+import Map.WebMap;
 import Network.GetUserTask;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
@@ -89,7 +90,8 @@ public class MainWindow extends Scene {
     progress = new ProgressBar();
     progress.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
     fieldSearch = new TextField();
-    fieldSearch.setPrefWidth(100);
+    fieldSearch.setPrefWidth(150);
+    fieldSearch.setMinWidth(150);
     startSearch = new Button("Chercher");
 
     // Scene tree

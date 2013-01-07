@@ -45,9 +45,9 @@ public class Lifecycle implements ServletContextListener {
       int n = 0;
       for (Message m : msgs) {
         User tmp;
-        if (n==0){
+        if (n == 0) {
           tmp = users.get(0);
-        } else if (n==1){
+        } else if (n == 1) {
           tmp = users.get(2);
         } else {
           tmp = users.get((int) (Math.random() * (users.size() - 1)));
@@ -55,7 +55,7 @@ public class Lifecycle implements ServletContextListener {
         m.setAuthor(tmp);
         tmp.addMessage(m);
         em.persist(m);
-        n+=1;
+        n += 1;
       }
 
 
@@ -120,12 +120,11 @@ public class Lifecycle implements ServletContextListener {
     listText.add("I'll attract the enemy with my human call: 'I'm so wasted! I'm so wasted!'");
 
 
-
-
-
     List<Message> messages = new ArrayList<>();
     for (String l : listText) {
       messages.add(new Message(l, new Date()));
+      messages.get(messages.size() - 1).setLatitude(Math.random() * 90);
+      messages.get(messages.size() - 1).setLongitude(Math.random() * 90);
     }
     return messages;
   }

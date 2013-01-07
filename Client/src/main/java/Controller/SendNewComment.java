@@ -25,7 +25,7 @@ public class SendNewComment implements EventHandler<ActionEvent> {
     final Form f = new Form();
     f.add("comment", newTweet.getText());
     f.add("latitude", newTweet.getLatitude());
-    f.add("longitude", newTweet.getLatitude());
+    f.add("longitude", newTweet.getLongitude());
 
 
     MainWindow.getMainWindow().getProgress().setProgress(-1.);
@@ -47,7 +47,6 @@ public class SendNewComment implements EventHandler<ActionEvent> {
           System.out.println("Comment pas envoyé : fail : " + result.getStatus());
         }
         result.close();
-
       }
     });
     new Thread(task, "Chargement user Thread").start();

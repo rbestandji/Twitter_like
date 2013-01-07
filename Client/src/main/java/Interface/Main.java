@@ -1,5 +1,6 @@
 package Interface;
 
+import Map.WebMap;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import javafx.application.Application;
@@ -32,6 +33,9 @@ public class Main extends Application {
     Main.primaryStage = primaryStage;
     init(primaryStage);
     primaryStage.show();
+    
+
+    
   }
 
   private void init(Stage primaryStage) throws URISyntaxException, MalformedURLException {

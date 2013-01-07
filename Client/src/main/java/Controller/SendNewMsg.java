@@ -23,7 +23,7 @@ public class SendNewMsg implements EventHandler<ActionEvent> {
     final Form f = new Form();
     f.add("msg", newTweet.getText());
     f.add("latitude", newTweet.getLatitude());
-    f.add("longitude", newTweet.getLatitude());
+    f.add("longitude", newTweet.getLongitude());
 
 
     MainWindow.getMainWindow().getProgress().setProgress(-1.);

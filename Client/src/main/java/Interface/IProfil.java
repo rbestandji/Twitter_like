@@ -3,12 +3,14 @@ package Interface;
 import Controller.DisconnectUser;
 import Controller.FollowStop;
 import Controller.FollowUser;
+import Map.WebMap;
 import Network.GetUserTask;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 import java.util.List;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
@@ -38,7 +40,8 @@ public class IProfil extends Parent {
 
   private void init() {
     VBox vbox = new VBox();
-    vbox.getChildren().add(new Label(user.getName()+" "+user.getFirstname()));
+    vbox.setSpacing(4);
+    vbox.getChildren().add(new Label(user.getName() + " " + user.getFirstname()));
     vbox.getChildren().add(new Label(user.getEmail()));
 
     final Button state = new Button();
@@ -59,7 +62,8 @@ public class IProfil extends Parent {
         public void handle(WorkerStateEvent success) {
           ClientResponse result = (ClientResponse) success.getSource().getValue();
           if (result.getStatus() == Status.OK) {
-            List<User> r = result.getEntity(new GenericType<List<User>>() {});
+            List<User> r = result.getEntity(new GenericType<List<User>>() {
+            });
             boolean present = false;
             for (User u : r) {
               if (u.getId() == user.getId()) {
@@ -84,6 +88,14 @@ public class IProfil extends Parent {
 
     }
     vbox.getChildren().add(state);
+    final Button voirMap = new Button("Geolocalisation");
+    voirMap.setOnAction(new EventHandler<ActionEvent>() {
+      public void handle(ActionEvent t) {
+        WebMap m = new WebMap();
+        m.mapUser(user);
+      }
+    });
+    vbox.getChildren().add(voirMap);
 
     this.getChildren().add(vbox);
   }

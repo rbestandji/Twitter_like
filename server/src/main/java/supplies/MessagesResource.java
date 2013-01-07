@@ -38,7 +38,7 @@ public class MessagesResource {
       message.setLatitude(latitude);
     }
     if (longitude != null) {
-      message.setLatitude(longitude);
+      message.setLongitude(longitude);
     }
 
     try {
