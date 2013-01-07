@@ -172,18 +172,20 @@ public class UserDAO {
       }
     }
 
-    // On trie les messages par ordre temporel 
+    // On trie les messages par ordre temporel (tri par insertion)
     int i, j;
     for (i = 3; i < messagesWall.size(); i += 2) {
       Message elem = (Message) messagesWall.get(i);
-      Object auteur = messagesWall.get(i - 1);
+      Object author = messagesWall.get(i - 1);
+      j=i;
 
-      for (j = i; j > 1 && ((Message) messagesWall.get(j - 2)).getMsgDate().getTime() > elem.getMsgDate().getTime(); j -= 2) {
+      while (j > 1 && ((Message) messagesWall.get(j - 2)).getMsgDate().getTime() > elem.getMsgDate().getTime()) {
         messagesWall.set(j, messagesWall.get(j - 2));
         messagesWall.set(j - 1, messagesWall.get(j - 2 - 1));
+        j=j-2;
       }
       messagesWall.set(j, elem);
-      messagesWall.set(j - 1, auteur);
+      messagesWall.set(j - 1, author);
     }
 
     return messagesWall;

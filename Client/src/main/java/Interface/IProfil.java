@@ -5,7 +5,7 @@ import Controller.FollowStop;
 import Controller.FollowUser;
 import Network.GetUserTask;
 import com.sun.jersey.api.client.ClientResponse;
-import java.util.HashMap;
+import com.sun.jersey.api.client.GenericType;
 import java.util.List;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -13,7 +13,6 @@ import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import share.core.Status;
 import share.model.User;
@@ -60,10 +59,10 @@ public class IProfil extends Parent {
         public void handle(WorkerStateEvent success) {
           ClientResponse result = (ClientResponse) success.getSource().getValue();
           if (result.getStatus() == Status.OK) {
-            List<HashMap<String, ?>> r = result.getEntity(List.class);
+            List<User> r = result.getEntity(new GenericType<List<User>>() {});
             boolean present = false;
-            for (HashMap<String, ?> u : r) {
-              if (Long.parseLong(u.get("id").toString()) == user.getId()) {
+            for (User u : r) {
+              if (u.getId() == user.getId()) {
                 present = true;
               }
             }

@@ -3,7 +3,7 @@ package Interface;
 import Controller.ConnectionOtherUser;
 import Network.GetUserTask;
 import com.sun.jersey.api.client.ClientResponse;
-import java.util.HashMap;
+import com.sun.jersey.api.client.GenericType;
 import java.util.List;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -45,13 +45,13 @@ public class IFollower extends Parent {
       public void handle(WorkerStateEvent success) {
         ClientResponse result = (ClientResponse) success.getSource().getValue();
         if (result.getStatus() == Status.OK) {
-          List<HashMap<String, ?>> listF = result.getEntity(List.class);
+          List<User> listF = result.getEntity(new GenericType<List<User>>() {});
 
           for (int j = 0; j < listF.size(); j += 1) {
-            Button b = new Button(listF.get(j).get("name").toString() + " "
-                    + listF.get(j).get("firstname").toString());
+            Button b = new Button(listF.get(j).getName() + " "
+                    + listF.get(j).getFirstname());
             box.getChildren().add(b);
-            b.setOnAction(new ConnectionOtherUser(Long.parseLong(listF.get(j).get("id").toString()), null));
+            b.setOnAction(new ConnectionOtherUser(listF.get(j).getId(), null));
           }
 
         } else {

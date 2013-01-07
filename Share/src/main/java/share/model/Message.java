@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -16,7 +17,7 @@ public class Message extends Communication implements Serializable {
 
   @OneToMany(mappedBy = "msgRoot", cascade = CascadeType.ALL)
   @JsonManagedReference("com")
-  private Collection<Message> comments = new ArrayList<>();
+  private List<Message> comments = new ArrayList<Message>();
   @ManyToOne
   @JsonBackReference("com")
   private Message msgRoot = null;
@@ -28,11 +29,11 @@ public class Message extends Communication implements Serializable {
     super(text, msgDate);
   }
 
-  public Collection<Message> getComments() {
+  public List<Message> getComments() {
     return comments;
   }
 
-  public void setComments(Collection<Message> comments) {
+  public void setComments(List<Message> comments) {
     this.comments = comments;
   }
 

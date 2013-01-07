@@ -3,18 +3,12 @@ package Interface;
 import Controller.ConnectionOtherUser;
 import Network.GetUserTask;
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.representation.Form;
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import com.sun.jersey.api.client.GenericType;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -22,10 +16,8 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import share.core.Status;
-import share.model.Message;
 import share.model.User;
 
 public class MainWindow extends Scene {
@@ -141,17 +133,17 @@ public class MainWindow extends Scene {
             GridPane pane = new GridPane();
             pane.setHgap(15);
             pane.setVgap(10);
-            List<HashMap<String, ?>> listUser = result.getEntity(List.class);
+            List<User> listUser = result.getEntity(new GenericType<List<User>>() {});
             int height = 0;
-            for (HashMap<String, ?> u : listUser) {
-              pane.add(new Label(u.get("firstname") + "  " + u.get("name")), 0, height, 1, 1);
+            for (User u : listUser) {
+              pane.add(new Label(u.getFirstname() + " " + u.getName()), 0, height, 1, 1);
               Button go = new Button("Voir");
               pane.add(go, 1, height, 1, 1);
-              go.setOnAction(new ConnectionOtherUser(Long.parseLong(u.get("id").toString()), stage));
+              go.setOnAction(new ConnectionOtherUser(u.getId(), stage));
               height++;
             }
             if (listUser.isEmpty()) {
-              pane.add(new Label("Aucun resultat :("), 0, height, 1, 1);
+              pane.add(new Label("Aucun résultat :("), 0, height, 1, 1);
             }
             
             inside.getChildren().add(pane);
