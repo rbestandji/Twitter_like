@@ -11,7 +11,7 @@ public class INewComment extends Parent {
 
   public Button send;
   private TextField text = new TextField("Text");
-  private TextField lat = new TextField("Lattitude");
+  private TextField lat = new TextField("Latitude");
   private TextField lon = new TextField("Longitude");
   private Long id;
   private Stage stage;

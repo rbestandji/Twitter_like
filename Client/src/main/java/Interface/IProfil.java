@@ -83,12 +83,12 @@ public class IProfil extends Parent {
           }
         }
       });
-      new Thread(task, "Chargement user Thread").start();
+      new Thread(task, "Load user Thread").start();
 
 
     }
     vbox.getChildren().add(state);
-    final Button voirMap = new Button("Geolocalisation");
+    final Button voirMap = new Button("Géolocalisation");
     voirMap.setOnAction(new EventHandler<ActionEvent>() {
       public void handle(ActionEvent t) {
         WebMap m = new WebMap();
