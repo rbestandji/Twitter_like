@@ -21,8 +21,8 @@ public class INewTweet extends Parent {
   TextField text = new TextField("Text");
   TextField lat = new TextField("Latitude");
   TextField lon = new TextField("Longitude");
-  public static Double Lat = 0.;
-  public static Double Long = 0.;
+  private Double Lat = 0.;
+  private Double Long = 0.;
   private String ip;
 
   public INewTweet() {
@@ -82,8 +82,8 @@ public class INewTweet extends Parent {
       });
       new Thread(task2, "GeoIp Thread").start();
       */
-      ip = GetPubIP.getPubIP().getIP();
-      ClientResponse result = GetGeoIP.getGeoIP().getInfo(ip);
+      //ip = GetPubIP.getPubIP().getIP();
+      ClientResponse result = GetGeoIP.getGeoIP().getInfo("");
       HashMap<String, ?> info = result.getEntity(HashMap.class);
       Lat = Double.parseDouble((String) info.get("latitude"));
       Long = Double.parseDouble((String) info.get("longitude"));

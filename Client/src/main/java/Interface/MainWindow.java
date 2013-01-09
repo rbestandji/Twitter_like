@@ -1,7 +1,6 @@
 package Interface;
 
 import Controller.ConnectionOtherUser;
-import Map.WebMap;
 import Network.GetUserTask;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;

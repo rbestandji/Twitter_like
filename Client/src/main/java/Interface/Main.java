@@ -1,6 +1,5 @@
 package Interface;
 
-import Map.WebMap;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import javafx.application.Application;

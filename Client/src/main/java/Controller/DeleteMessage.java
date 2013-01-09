@@ -1,12 +1,8 @@
 package Controller;
 
-import Interface.Main;
 import Interface.MainWindow;
 import Network.GetUserTask;
 import com.sun.jersey.api.client.ClientResponse;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;

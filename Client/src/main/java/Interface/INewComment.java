@@ -1,6 +1,13 @@
 package Interface;
 
 import Controller.SendNewComment;
+import Network.GetGeoIP;
+import com.sun.jersey.api.client.ClientResponse;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -15,6 +22,8 @@ public class INewComment extends Parent {
   private TextField lon = new TextField("Longitude");
   private Long id;
   private Stage stage;
+  private Double Lat = 0.;
+  private Double Long = 0.;
   
   public INewComment(Long id, Stage stage) {
     this.id = id;
@@ -43,23 +52,24 @@ public class INewComment extends Parent {
     return text.getText();
   }
 
-  public Double getLongitude() {
-    Double x = null;
-    try {
-      x = Double.parseDouble(lon.getText());
-    } catch (Exception ex) {
-      x = new Double(-500);
-    };
-    return x;
-  }
-
-  public Double getLatitude() {
-    Double x = null;
+  public List<Double> getLatLong() throws MalformedURLException, URISyntaxException {
+    List l = new ArrayList();
+    Double x,y = null;
     try {
       x = Double.parseDouble(lat.getText());
+      y = Double.parseDouble(lon.getText());
     } catch (Exception ex) {
-      x = new Double(-500);
-    };
-    return x;
+      ClientResponse result = GetGeoIP.getGeoIP().getInfo("");
+      HashMap<String, ?> info = result.getEntity(HashMap.class);
+      Lat = Double.parseDouble((String) info.get("latitude"));
+      Long = Double.parseDouble((String) info.get("longitude"));
+      l.add(Lat);
+      l.add(Long);
+      return l;
+    }
+    l.add(x);
+    l.add(y);
+    return l;
   }
+
 }

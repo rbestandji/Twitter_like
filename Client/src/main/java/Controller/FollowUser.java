@@ -1,16 +1,13 @@
 package Controller;
 
-import Interface.Main;
 import Interface.MainWindow;
 import Network.GetUserTask;
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.representation.Form;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import share.core.Status;
-import share.model.User;
 
 public class FollowUser implements EventHandler<ActionEvent> {
 

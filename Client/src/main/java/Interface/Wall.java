@@ -65,7 +65,7 @@ public class Wall extends Parent {
             s1.setMinHeight(600);
             boxTmp.setSpacing(10);
 
-            ArrayList<Message> liste = new ArrayList<Message>();
+            ArrayList<Message> list = new ArrayList<Message>();
             for (int j = 0; j < listMsg.size(); j += 2) {
               HashMap<String, ?> m1 = listMsg.get(j);//identifiant
               HashMap<String, ?> m2 = listMsg.get(j + 1);//message
@@ -84,17 +84,17 @@ public class Wall extends Parent {
                 uu = user;
               }
 
-              ArrayList<HashMap<String, ?>> listeComment = (ArrayList<HashMap<String, ?>>) m2.get("comments");
-              ArrayList<Message> listeCommentMessage = new ArrayList<Message>();
+              ArrayList<HashMap<String, ?>> listComment = (ArrayList<HashMap<String, ?>>) m2.get("comments");
+              ArrayList<Message> listCommentMessage = new ArrayList<Message>();
               try {
-                listeCommentMessage = convertirEnMessage(listeComment);
+                listCommentMessage = convertIntoMessage(listComment);
               } catch (Exception ex) {
               }
 
               boxTmp.getChildren().add(new IMessage(Long.parseLong(m2.get("id").toString()), uu,
                       (String) m2.get("text"), new SimpleDateFormat("yyyy.MM.dd ' à ' HH:mm:ss").
                       format(new Date(Long.parseLong(m2.get("msgDate").toString()))).toString(),
-                      listeCommentMessage));
+                      listCommentMessage));
             }
 
             s1.setContent(boxTmp);
@@ -104,16 +104,16 @@ public class Wall extends Parent {
           }
         }
 
-        private ArrayList<Message> convertirEnMessage(ArrayList<HashMap<String, ?>> listeCommentMessage) throws Exception {
+        private ArrayList<Message> convertIntoMessage(ArrayList<HashMap<String, ?>> listCommentMessage) throws Exception {
           ArrayList<Message> m = new ArrayList<Message>();
-          for (HashMap<String, ?> u : listeCommentMessage) {
+          for (HashMap<String, ?> u : listCommentMessage) {
             Message a = new Message();
             a.setMsgDate(new Date(Long.parseLong(u.get("msgDate").toString())));
             a.setId(Long.parseLong(u.get("id").toString()));
             a.setText((String) u.get("text"));
             a.setAuthor(new User("         ", "      ", "ddddd@ddd.com", "fffffffff"));
             m.add(a);
-            a.setComments(convertirEnMessage((ArrayList<HashMap<String, ?>>) u.get("comments")));
+            a.setComments(convertIntoMessage((ArrayList<HashMap<String, ?>>) u.get("comments")));
           }
           return m;
         }
